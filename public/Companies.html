@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Companies</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0875e1;
+            --secondary-color: #f8faff;
+            --accent-color: #0875e1;
+            --text-dark: #2a2a2a;
+            --text-light: #5f6f81;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --highlight-color: #f1c40f;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--secondary-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar {
+            background: var(--primary-color);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .navbar-brand {
+            color: var(--white);
+            font-size: 1.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--white);
+            margin: 0 10px;
+            transition: color var(--transition-speed);
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .sign-out:hover {
+            color: var(--white);
+        }
+        .search-bar {
+            margin-bottom: 20px;
+        }
+        .company-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            background-color: var(--highlight-color);
+        }
+        .card-title {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+        .card-text {
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+        .card:nth-child(odd) {
+            background-color: #e3f2fd;
+        }
+        .card:nth-child(even) {
+            background-color: #fce4ec;
+        }
+        .add-company-btn {
+            background-color: var(--success-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .add-company-btn:hover {
+            background-color: var(--primary-color);
+        }
+        #searchInput {
+            width: 85%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
+                <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
+                <div>
+                    <span style="display: block;">Sips Finance</span>
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/AdminDashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/Companies">Companies</a>
+                    </li>
+               
+                </ul>
+                <div class="d-flex align-items-center ms-3 " >
+                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="my-4">Companies</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" class="form-control" onkeyup="searchCompanies()" placeholder="Search for companies...">
+        </div>
+        <a class="btn add-company-btn mb-4" href="/AddCompanyPage">Add New Company</a>
+        <div class="company-list" id="companyGrid"></div>
+    </div>
+    <a class="btn btn-primary" href="/AllJobsPage">All Jobs</a>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadCompanies);
+
+        function loadCompanies() {
+            fetch('/companiesdata')
+                .then(response => response.json())
+                .then(data => {
+                    const companyGrid = document.getElementById('companyGrid');
+                    companyGrid.innerHTML = '';
+                    data.forEach(company => {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-title"><b>${company.CompanyName}</b></div>
+                            <div class="card-text">Jobs Posted: ${company.JobsPosted}</div>
+                            <div class="card-text">Jobs Delivered: ${company.JobsDelivered}</div>
+                            <div class="card-text">Contact Number: ${company.ContactNumber}</div>
+                        `;
+                        card.addEventListener('click', () => {
+                            window.location.href = `/Company?companyName=${company.CompanyName}`;
+                        });
+                        companyGrid.appendChild(card);
+                    });
+                })
+                .catch(error => console.error('Error loading companies:', error));
+        }
+
+        function searchCompanies() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.getElementsByClassName('card');
+            for (let i = 0; i < cards.length; i++) {
+                const card = cards[i];
+                const companyName = card.getElementsByClassName('card-title')[0].innerText.toLowerCase();
+                if (companyName.includes(input)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+    </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

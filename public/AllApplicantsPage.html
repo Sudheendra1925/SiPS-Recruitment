@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicants</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+ <style>
+    :root {
+      --primary-color: #0875e1;
+      --secondary-color: #f8faff;
+      --accent-color: #0875e1;
+      --text-dark: #2a2a2a;
+      --text-light: #5f6f81;
+      --success-color: #27ae60;
+      --danger-color: #e74c3c;
+      --highlight-color: #f1c40f;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8faff;
+      color: #2a2a2a;
+      margin: 20px;
+    }
+    .navbar {
+            background: var(--primary-color);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .navbar-brand {
+            color: var(--white);
+            font-size: 1.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--white);
+            margin: 0 10px;
+            transition: color var(--transition-speed);
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .sign-out:hover {
+            color: var(--white);
+        }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+    table, th, td {
+      border: 1px solid #dcdcdc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #0875e1;
+      color: #ffffff;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    #search-container {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    #search-bar {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #dcdcdc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    #company-filter {
+      padding: 10px;
+      border: 1px solid #dcdcdc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
+            <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
+            <div>
+                <span style="display: block;">Sips Finance</span>
+            </div>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link " href="/AdminDashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Companies">Companies</a>
+                </li>
+           
+            </ul>
+            <div class="d-flex align-items-center ms-3 " >
+                <a href="/" class="sign-out btn btn-danger">Sign Out</a>
+            </div>
+        </div>
+    </div>
+</nav>
+  <h1>List of Applicants</h1>
+  <div id="search-container">
+    <input type="text" id="search-bar" placeholder="Search by Name, Phone Number, or Address..." oninput="filterApplicants()">
+    <select id="company-filter" onchange="filterApplicants()">
+      <option value="">All Companies</option>
+      <!-- Options will be populated dynamically -->
+    </select>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Applicant Name</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+        <th>Aadhar Card</th>  
+        <th>Currently</th>
+        <th>Comments</th>
+        <th>Edit</th>
+        <th>View Applicant</th>
+      </tr>
+    </thead>
+    <tbody id="applicants-body">
+      <!-- Data will be inserted here dynamically -->
+    </tbody>
+  </table>
+  
+  <script>
+    let applicantsData = [];
+    let companyNames = [];
+
+    async function fetchApplicants() {
+      try {
+        const response = await fetch('/AllApplicantsData'); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        applicantsData = await response.json();
+
+        renderApplicants(applicantsData);
+      } catch (error) {
+        console.error('Error fetching applicants:', error);
+        const tbody = document.getElementById('applicants-body');
+        tbody.innerHTML = '<tr><td colspan="8">Failed to load applicants.</td></tr>';
+      }
+    }
+
+    async function fetchCompanyNames() {
+      try {
+        const response = await fetch('/companiesdata'); // Replace with your API endpoint
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        companyNames = await response.json();
+
+        const companyFilter = document.getElementById('company-filter');
+        companyNames.forEach(company => {
+          const option = document.createElement('option');
+          option.value = company.CompanyName;
+          option.textContent = company.CompanyName;
+          companyFilter.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Error fetching companies:', error);
+      }
+    }
+
+    function renderApplicants(data) {
+      const tbody = document.getElementById('applicants-body');
+      tbody.innerHTML = '';
+
+      if (data.length > 0) {
+        data.forEach(applicant => {
+          const row = document.createElement('tr');
+
+          row.innerHTML = `
+            <td>${applicant.ApplicantName}</td>
+            <td>${applicant.PhoneNumber}</td>
+            <td>${applicant.Address}</td>
+            <td>${applicant.AadharCard}</td>
+             <td>${applicant.Currently}</td>
+                  <td>
+    <details>
+        <summary>Comment on Applicant</summary>
+        <p style="white-space: pre-wrap; margin: 0;">${applicant.Comments}</p>
+    </details>
+</td>
+
+             <td><a href="/EditApplicantPage/${applicant.ApplicantName}" target="_blank">Edit</a></td>
+             <td><a href="/ApplicantDetailsPage/${applicant.ApplicantName}" target="_blank">View</a></td>
+          `;
+             
+          tbody.appendChild(row);
+        });
+      } else {
+        tbody.innerHTML = '<tr><td colspan="8">No applicants found.</td></tr>';
+      }
+    }
+
+    function filterApplicants() {
+      const query = document.getElementById('search-bar').value.toLowerCase();
+      const selectedCompany = document.getElementById('company-filter').value;
+
+      const filteredApplicants = applicantsData.filter(applicant => {
+        const matchesSearch = applicant.ApplicantName.toLowerCase().includes(query) ||
+                              applicant.PhoneNumber.toLowerCase().includes(query) ||
+                              applicant.Address.toLowerCase().includes(query);
+        const matchesCompany = !selectedCompany || applicant.Currently === selectedCompany;
+
+        return matchesSearch && matchesCompany;
+      });
+
+      renderApplicants(filteredApplicants);
+    }
+
+    // Fetch data on page load
+    fetchApplicants();
+    fetchCompanyNames();
+  </script>
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Job Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  
+    <style>
+        :root {
+      --primary-color: #0875e1;
+      --secondary-color: #f8faff;
+      --accent-color: #0875e1;
+      --text-dark: #2a2a2a;
+      --text-light: #5f6f81;
+      --success-color: #27ae60;
+      --danger-color: #e74c3c;
+      --highlight-color: #f1c40f;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8faff;
+      color: #2a2a2a;
+      margin: 20px;
+    }
+    .navbar {
+            background: var(--primary-color);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .navbar-brand {
+            color: var(--white);
+            font-size: 1.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--white);
+            margin: 0 10px;
+            transition: color var(--transition-speed);
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .sign-out:hover {
+            color: var(--white);
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        select, input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+        }
+        th {
+            background-color: #0875e1;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
+                <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
+                <div>
+                    <span style="display: block;">Sips Finance</span>
+                </div>
+            </a>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">=</span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/AdminDashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Companies">Companies</a>
+                    </li>
+               
+                </ul>
+                <div class="d-flex align-items-center ms-3 " >
+                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+<div class="container">
+    <h1>Admin Job Management</h1>
+    <div class="search-bar">
+        <select id="jobTypeSelect">
+            <option value="">Filter by Job Type</option>
+        </select>
+        <select id="locationSelect">
+            <option value="">Filter by Location</option>
+        </select>
+        <select id="companySelect">
+            <option value="">Filter by Company</option>
+        </select>
+        <input type="text" id="keywordSearch" placeholder="Search by keyword...">
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Job Title</th>
+                <th>Job Type</th>
+                <th>Salary</th>
+                <th>Company</th>
+                <th>Location</th>
+                <th>No. of Jobs</th>
+                <th>Fulfilled</th>
+                <th>Posted Date</th>
+                <th>End Date</th>
+                
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody id="jobTableBody">
+            <!-- Jobs will be dynamically populated here -->
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<script>
+    // Fetch job data and initialize the application
+    let jobs = []; // Global variable to store job data
+
+    async function fetchJobs() {
+        try {
+            const response = await fetch('/JobsData'); // Fetch data from the endpoint
+            if (!response.ok) {
+                throw new Error('Failed to fetch job data');
+            }
+            jobs = await response.json(); // Parse the JSON response
+            initializeDropdowns(); // Initialize dropdowns with fetched data
+            displayJobs(); // Display all jobs initially
+        } catch (error) {
+            console.error('Error fetching job data:', error);
+            alert('Could not load job data. Please try again later.');
+        }
+    }
+
+    // Dropdown elements
+    const jobTypeSelect = document.getElementById("jobTypeSelect");
+    const locationSelect = document.getElementById("locationSelect");
+    const companySelect = document.getElementById("companySelect");
+    const keywordSearch = document.getElementById("keywordSearch");
+    const jobTableBody = document.getElementById("jobTableBody");
+
+    // Populate dropdowns with unique values
+    function populateSelectOptions(selectElement, options) {
+        selectElement.innerHTML = '<option value="">All</option>'; // Add default "All" option
+        options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.toLowerCase();
+            opt.textContent = option;
+            selectElement.appendChild(opt);
+        });
+    }
+
+    // Initialize dropdowns with unique values from job data
+    function initializeDropdowns() {
+        const jobTypes = [...new Set(jobs.map(job => job.JobType))].sort();
+        const locations = [...new Set(jobs.map(job => job.Location))].sort();
+        const companies = [...new Set(jobs.map(job => job.Company))].sort();
+
+        populateSelectOptions(jobTypeSelect, jobTypes);
+        populateSelectOptions(locationSelect, locations);
+        populateSelectOptions(companySelect, companies);
+    }
+
+    // Filter and display jobs based on selected filters and keyword search
+    function displayJobs() {
+        const selectedJobType = jobTypeSelect.value.toLowerCase();
+        const selectedLocation = locationSelect.value.toLowerCase();
+        const selectedCompany = companySelect.value.toLowerCase();
+        const keyword = keywordSearch.value.toLowerCase();
+
+        const filteredJobs = jobs.filter(job => {
+            const matchesJobType = !selectedJobType || job.JobType.toLowerCase() === selectedJobType;
+            const matchesLocation = !selectedLocation || job.Location.toLowerCase() === selectedLocation;
+            const matchesCompany = !selectedCompany || job.Company.toLowerCase() === selectedCompany;
+            const matchesKeyword = !keyword || Object.values(job).some(value =>
+                String(value).toLowerCase().includes(keyword)
+            );
+            return matchesJobType && matchesLocation && matchesCompany && matchesKeyword;
+        });
+
+        // Render filtered jobs into the table
+        jobTableBody.innerHTML = filteredJobs.map(job => `
+            <tr>
+                <td>${job.JobTitle}</td>
+                <td>${job.JobType}</td>
+                <td>${job.Salary}</td>
+                <td>${job.Company}</td>
+                <td>${job.Location}</td>
+                <td>${job.NoOfJobs}</td>
+                 <td>${job.Fulfilled}</td>
+                <td>${job.PostedDate.split('T')[0]}</td>
+                <td>${job.EndDate.split('T')[0]}</td>
+                <td><a href="/EditJobPage?JobId=${job.JobId}">Edit</a></td>
+            </tr>
+        `).join('');
+    }
+
+    // Set up event listeners for dropdowns and search input
+    function setupEventListeners() {
+        jobTypeSelect.addEventListener("change", displayJobs);
+        locationSelect.addEventListener("change", displayJobs);
+        companySelect.addEventListener("change", displayJobs);
+        keywordSearch.addEventListener("input", displayJobs);
+    }
+
+    // Initialize the application
+    async function init() {
+        await fetchJobs(); // Fetch job data and initialize
+        setupEventListeners(); // Set up filter and search functionality
+    }
+
+    // Start the application
+    init();
+</script>
+
+</body>
+</html>

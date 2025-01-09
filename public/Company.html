@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Details and Jobs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+     <style>
+        :root {
+            --primary-color: #0875e1;
+            --secondary-color: #f8faff;
+            --text-dark: #2a2a2a;
+            --text-light: #5f6f81;
+            --highlight-color: #f1c40f;
+            --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--secondary-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .navbar {
+            background: var(--primary-color);
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .navbar-brand {
+            color: var(--white);
+            font-size: 1.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: var(--white);
+            margin: 0 10px;
+            transition: color var(--transition-speed);
+        }
+        
+        .navbar-nav .nav-link:hover,
+        .navbar-nav .nav-link.active {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .sign-out:hover {
+            color: var(--white);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-bar input {
+            padding: 12px 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 50%;
+            max-width: 400px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--highlight-color);
+        }
+
+        .add-job-btn {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: inline-block;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .add-job-btn:hover {
+            background-color: var(--highlight-color);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            padding: 20px;
+            margin: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px var(--shadow-color);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        #companyGrid, #jobGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            color: var(--text-dark);
+        }
+
+        .table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .table td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .table tr:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
+                <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
+                <div>
+                    <span style="display: block;">Sips Finance</span>
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">=</span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarToggler">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/AdminDashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " href="/Companies">Companies</a>
+                    </li>
+               
+                </ul>
+                <div class="d-flex align-items-center ms-3 " >
+                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 class="my-4">Company Details and Jobs</h1>
+        <div id="companyGrid"></div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" class="form-control" onkeyup="searchJobs()" placeholder="Search for jobs...">
+        </div>
+        <div id="jobGrid"></div>
+        <a class="btn add-job-btn mb-4" href="/AddJobPage" id="AddJob">Add New Job</a>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCompanies();
+            loadJobs();
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+
+        function loadCompanies() {
+            fetch(`/companydata?CompanyName=${urlParams.get('companyName')}`)
+                .then(response => response.json())
+                .then(data => {
+                    const companyGrid = document.getElementById('companyGrid');
+                    companyGrid.innerHTML = '';
+                    data.forEach(company => {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-title"><b>${company.CompanyName}</b></div>
+                            <div class="card-text">Jobs Posted: ${company.JobsPosted}</div>
+                            <div class="card-text">Jobs Delivered: ${company.JobsDelivered}</div>
+                            <div class="card-text">Contact Number: ${company.ContactNumber}</div>
+
+                        `;
+                        document.getElementById('AddJob').href = `/AddJobPage?companyName=${company.CompanyName}`;
+                        companyGrid.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading companies:', error);
+                    document.getElementById('companyGrid').innerHTML = '<p>Error loading company details. Please try again later.</p>';
+                });
+        }
+
+        function loadJobs() {
+            fetch(`/CompanyiesJobsData?CompanyName=${urlParams.get('companyName')}`)
+                .then(response => response.json())
+                .then(data => {
+                    const jobGrid = document.getElementById('jobGrid');
+                    jobGrid.innerHTML = `
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Job Type</th>
+                                    <th>Salary</th>
+                                    <th>Location</th>
+                                    <th>No Of Jobs</th>
+                                    <th>Posted Date</th>
+                                    <th>End Date</th>
+                                    <th>Fulfilled Jobs</th>
+                                     <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    `;
+                    const tableBody = jobGrid.querySelector('tbody');
+                    data.forEach(job => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${job.JobTitle}</td>
+                            <td>${job.NoOfJobs}</td>
+                            <td>${job.Salary}</td>
+                            <td>${job.Location}</td>
+                            <td>${job.JobType}</td>
+                            <td>${job.PostedDate.split('T')[0]}</td>
+                            <td>${job.EndDate.split('T')[0]}</td>
+                            <td>${job.Fulfilled}</td>
+                            <td><a href="/EditJobPage?JobId=${job.JobId}">Edit</a></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading jobs:', error);
+                    document.getElementById('jobGrid').innerHTML = '<p>Error loading job details. Please try again later.</p>';
+                });
+        }
+
+        function searchJobs() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#jobGrid table tbody tr');
+            rows.forEach(row => {
+                const jobTitle = row.children[0].innerText.toLowerCase();
+                row.style.display = jobTitle.includes(input) ? '' : 'none';
+            });
+        }
+    </script>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    </body>
+</html>
