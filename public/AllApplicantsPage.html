@@ -1,245 +1,488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Applicants</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPS Recruitment - My Applicants</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
- <style>
-    :root {
-      --primary-color: #0875e1;
-      --secondary-color: #f8faff;
-      --accent-color: #0875e1;
-      --text-dark: #2a2a2a;
-      --text-light: #5f6f81;
-      --success-color: #27ae60;
-      --danger-color: #e74c3c;
-      --highlight-color: #f1c40f;
-    }
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #e8eaf6;
+            --danger-color: #c62828;
+            --border-color: #ddd;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --blue-btn: #2563eb;
+            --blue-btn-hover: #1d4ed8;
+        }
 
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f8faff;
-      color: #2a2a2a;
-      margin: 20px;
-    }
-    .navbar {
-            background: var(--primary-color);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .logo-section img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .nav-button {
             padding: 10px 20px;
-            box-shadow: 0 4px 8px var(--shadow-color);
-        }
-        
-        .navbar-brand {
-            color: var(--white);
-            font-size: 1.8em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--white);
-            margin: 0 10px;
-            transition: color var(--transition-speed);
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active {
-            color: var(--highlight-color);
-            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .sign-out:hover {
-            color: var(--white);
+        .nav-button:hover {
+            transform: translateY(-1px);
         }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-    }
-    table, th, td {
-      border: 1px solid #dcdcdc;
-    }
-    th, td {
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background-color: #0875e1;
-      color: #ffffff;
-    }
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    #search-container {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-    }
-    #search-bar {
-      flex: 1;
-      padding: 10px;
-      border: 1px solid #dcdcdc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    #company-filter {
-      padding: 10px;
-      border: 1px solid #dcdcdc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-  </style>
+
+        .nav-button i {
+            font-size: 14px;
+        }
+
+        .nav-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            display: inline-block;
+        }
+
+        .status-applied { background-color: #e3f2fd; color: #1e88e5; }
+        .status-Shortlisted { background-color: #fff3e0; color: #ff9800; }
+        .status-Qualified { background-color: #e0f2f1; color: #890072; }
+        .status-rejected { background-color: #fee2e2; color: #991b1b; }
+        .status-placed { background-color: #dbeafe; color: #00897b; }
+        .status-pending { background-color: #fef3c7; color: #92400e; }
+        .status-selected { background-color: #dcfce7; color: #166534; }
+
+        .status-dropdown {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .status-dropdown:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .status-dropdown.status-applied { background-color: #e3f2fd; color: #1e88e5; }
+        .status-dropdown.status-Shortlisted { background-color: #fff3e0; color: #ff9800; }
+        .status-dropdown.status-Qualified { background-color: #e0f2f1; color: #00897b; }
+        .status-dropdown.status-rejected { background-color: #fee2e2; color: #991b1b; }
+        .status-dropdown.status-placed { background-color: #dbeafe; color: #1e40af; }
+
+        .edit-btn {
+            padding: 8px 16px;
+            background-color: var(--blue-btn);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background-color: var(--blue-btn-hover);
+            transform: translateY(-1px);
+        }
+
+        .resume-link {
+            color: var(--blue-btn);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .resume-link:hover {
+            color: var(--blue-btn-hover);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-header {
+                grid-template-columns: 1fr;
+            }
+
+            .logo-section, 
+            .search-section, 
+            .nav-buttons {
+                justify-content: center;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dropdown {
+                width: 100%;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-content {
+            position: relative;
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .modal-footer {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding-top: 1rem;
+            margin-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .form-group:last-of-type {
+            margin-bottom: 0;
+            padding-bottom: 1rem;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .dropdown {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: white;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
-            <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
-            <div>
-                <span style="display: block;">Sips Finance</span>
-            </div>
-        </a>
-
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarToggler">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link " href="/AdminDashboard">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Companies">Companies</a>
-                </li>
-           
-            </ul>
-            <div class="d-flex align-items-center ms-3 " >
-                <a href="/" class="sign-out btn btn-danger">Sign Out</a>
-            </div>
+    <div class="dashboard-header">
+        <div class="logo-section">
+            <img src="./Images/images.jpeg" alt="SIPS Logo">
         </div>
-    </div>
-</nav>
-  <h1>List of Applicants</h1>
-  <div id="search-container">
-    <input type="text" id="search-bar" placeholder="Search by Name, Phone Number, or Address..." oninput="filterApplicants()">
-    <select id="company-filter" onchange="filterApplicants()">
-      <option value="">All Companies</option>
-      <!-- Options will be populated dynamically -->
-    </select>
-  </div>
-  <table>
-    <thead>
-      <tr>
-        <th>Applicant Name</th>
-        <th>Phone Number</th>
-        <th>Address</th>
-        <th>Aadhar Card</th>  
-        <th>Currently</th>
-        <th>Comments</th>
-        <th>Edit</th>
-        <th>View Applicant</th>
-      </tr>
-    </thead>
-    <tbody id="applicants-body">
-      <!-- Data will be inserted here dynamically -->
-    </tbody>
-  </table>
-  
-  <script>
-    let applicantsData = [];
-    let companyNames = [];
+        <div class="nav-buttons">
+            <a href="/AdminDashboard" style="text-decoration: none;" class="nav-button primary">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+            <a href="/Companies" style="text-decoration: none;" class="nav-button secondary">
+                <i class="fas fa-building"></i> Companies
+            </a>
+            <a href="/Login" style="text-decoration: none;" class="nav-button danger">
+                <i class="fas fa-sign-out-alt"></i> SignOut
+            </a>
+        </div>
+        </div>
+    
 
-    async function fetchApplicants() {
-      try {
-        const response = await fetch('/AllApplicantsData'); // Replace with your API endpoint
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
+    <main class="main-content">
+        <div class="search-container">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-bar" placeholder="Search by Name, Phone Number, or Address..." oninput="filterApplicants()">
+            </div>
+            <div>
+            <label><b>Currently Placed In</b></label>
+            <select id="company-filter" class="dropdown" onchange="filterApplicants()">
+                <option value="">All</option>
+                <!-- Options will be populated dynamically -->
+            </select>
+        </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Applicant Name</th>
+                        <th>Phone Number</th>
+                        <th>Address</th>
+                        <th>Aadhar Card</th>
+                        <th>Currently</th>
+                        <th>Comments</th>
+                        <th>Edit</th>
+                        <th>View Applicant</th>
+                    </tr>
+                </thead>
+                <tbody id="applicants-body">
+                    <!-- Data will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        let applicantsData = [];
+        let companyNames = [];
+
+        async function fetchApplicants() {
+            try {
+                const response = await fetch('/AllApplicantsData'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                applicantsData = await response.json();
+
+                renderApplicants(applicantsData);
+            } catch (error) {
+                console.error('Error fetching applicants:', error);
+                const tbody = document.getElementById('applicants-body');
+                tbody.innerHTML = '<tr><td colspan="8">Failed to load applicants.</td></tr>';
+            }
         }
-        applicantsData = await response.json();
 
-        renderApplicants(applicantsData);
-      } catch (error) {
-        console.error('Error fetching applicants:', error);
-        const tbody = document.getElementById('applicants-body');
-        tbody.innerHTML = '<tr><td colspan="8">Failed to load applicants.</td></tr>';
-      }
-    }
+        async function fetchCompanyNames() {
+            try {
+                const response = await fetch('/companiesdata'); // Replace with your API endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                companyNames = await response.json();
 
-    async function fetchCompanyNames() {
-      try {
-        const response = await fetch('/companiesdata'); // Replace with your API endpoint
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
+                const companyFilter = document.getElementById('company-filter');
+                companyNames.forEach(company => {
+                    const option = document.createElement('option');
+                    option.value = company.CompanyName;
+                    option.textContent = company.CompanyName;
+                    companyFilter.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching companies:', error);
+            }
         }
-        companyNames = await response.json();
 
-        const companyFilter = document.getElementById('company-filter');
-        companyNames.forEach(company => {
-          const option = document.createElement('option');
-          option.value = company.CompanyName;
-          option.textContent = company.CompanyName;
-          companyFilter.appendChild(option);
-        });
-      } catch (error) {
-        console.error('Error fetching companies:', error);
-      }
-    }
+        function renderApplicants(data) {
+            const tbody = document.getElementById('applicants-body');
+            tbody.innerHTML = '';
 
-    function renderApplicants(data) {
-      const tbody = document.getElementById('applicants-body');
-      tbody.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(applicant => {
+                    const row = document.createElement('tr');
 
-      if (data.length > 0) {
-        data.forEach(applicant => {
-          const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${applicant.ApplicantName}</td>
+                        <td>${applicant.PhoneNumber}</td>
+                        <td>${applicant.Address}</td>
+                        <td>${applicant.AadharCard}</td>
+                        <td>${applicant.Currently}</td>
+                        <td>
+                            <details>
+                                <summary>Comment on Applicant</summary>
+                                <p style="white-space: pre-wrap; margin: 0;">${applicant.Comments}</p>
+                            </details>
+                        </td>
+                        <td><a href="/EditApplicantPage/${applicant.ApplicantName}" class="btn btn-primary" >Edit</a></td>
+                        <td><a href="/ApplicantDetailsPage/${applicant.ApplicantName}" class="btn btn-primary">View</a></td>
+                    `;
 
-          row.innerHTML = `
-            <td>${applicant.ApplicantName}</td>
-            <td>${applicant.PhoneNumber}</td>
-            <td>${applicant.Address}</td>
-            <td>${applicant.AadharCard}</td>
-             <td>${applicant.Currently}</td>
-                  <td>
-    <details>
-        <summary>Comment on Applicant</summary>
-        <p style="white-space: pre-wrap; margin: 0;">${applicant.Comments}</p>
-    </details>
-</td>
+                    tbody.appendChild(row);
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="8">No applicants found.</td></tr>';
+            }
+        }
 
-             <td><a href="/EditApplicantPage/${applicant.ApplicantName}" target="_blank">Edit</a></td>
-             <td><a href="/ApplicantDetailsPage/${applicant.ApplicantName}" target="_blank">View</a></td>
-          `;
-             
-          tbody.appendChild(row);
-        });
-      } else {
-        tbody.innerHTML = '<tr><td colspan="8">No applicants found.</td></tr>';
-      }
-    }
+        function filterApplicants() {
+            const query = document.getElementById('search-bar').value.toLowerCase();
+            const selectedCompany = document.getElementById('company-filter').value;
 
-    function filterApplicants() {
-      const query = document.getElementById('search-bar').value.toLowerCase();
-      const selectedCompany = document.getElementById('company-filter').value;
+            const filteredApplicants = applicantsData.filter(applicant => {
+                const matchesSearch = applicant.ApplicantName.toLowerCase().includes(query) ||
+                                      applicant.PhoneNumber.toLowerCase().includes(query) ||
+                                      applicant.Address.toLowerCase().includes(query);
+                const matchesCompany = !selectedCompany || applicant.Currently === selectedCompany;
 
-      const filteredApplicants = applicantsData.filter(applicant => {
-        const matchesSearch = applicant.ApplicantName.toLowerCase().includes(query) ||
-                              applicant.PhoneNumber.toLowerCase().includes(query) ||
-                              applicant.Address.toLowerCase().includes(query);
-        const matchesCompany = !selectedCompany || applicant.Currently === selectedCompany;
+                return matchesSearch && matchesCompany;
+            });
 
-        return matchesSearch && matchesCompany;
-      });
+            renderApplicants(filteredApplicants);
+        }
 
-      renderApplicants(filteredApplicants);
-    }
-
-    // Fetch data on page load
-    fetchApplicants();
-    fetchCompanyNames();
-  </script>
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-
+        // Fetch data on page load
+        fetchApplicants();
+        fetchCompanyNames();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Job Management</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+          :root {
+            --primary-color: #0056b3; /* Richer deep blue */
+            --secondary-color: #eef3f8; /* Softer light background */
+            --accent-color: #1a73e8; /* Vibrant blue accent */
+            --highlight-color: #f0a500; /* Warmer gold highlight */
+            --danger-color: #e63946; /* Bold red for error/warnings */
+            --text-dark: #212529; /* Slightly lighter dark text */
+            --text-light: #6c757d; /* Muted text color */
+            --shadow: rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+            --card-shadow: rgba(0, 0, 0, 0.25); /* Stronger shadow for cards */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .logo-section img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-button i {
+            font-size: 14px;
+        }
+
+        .nav-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        select, input {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .logo-section img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+
+           
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .dropdown {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: white;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo-section, 
+            .search-section, 
+            .nav-buttons {
+                margin-left: 0;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dropdown {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="logo-section">
+            <img src="./Images/images.jpeg" height="30px" width="30px" alt="SIPS Logo">
+        </div>
+        <div class="nav-buttons">
+            <a href="/AdminDashboard" style="text-decoration: none;" class="nav-button primary">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+            <a href="/Companies" style="text-decoration: none;" class="nav-button secondary">
+                <i class="fas fa-building"></i> Company
+            </a>
+            <a href="/Login" style="text-decoration: none;" class="nav-button danger">
+                <i class="fas fa-sign-out-alt"></i> SignOut
+            </a>
+        </div>
+        </div>
+    <div class="container">
+        <h1>All Jobs</h1>
+       
+        <div class="search-bar">
+            <select id="jobTypeSelect">
+                <option value="">Job Type</option>
+            </select>
+            <select id="domainSelect">
+                <option value="">Domain</option>
+            </select>
+            <select id="categorySelect">
+                <option value="">Category</option>
+            </select>
+            <select id="locationSelect">
+                <option value="">Location</option>
+            </select>
+            <select id="companySelect">
+                <option value="">Company</option>
+            </select>
+            <input type="text" id="keywordSearch" placeholder="Search by keyword...">
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Job Type</th>
+                        <th>Salary</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>No. of Jobs</th>
+                        <th>Fulfilled</th>
+                        <th>Posted Date</th>
+                        <th>End Date</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="jobTableBody">
+                    <!-- Jobs will be dynamically populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+        // Fetch job data and initialize the application
+        let jobs = []; // Global variable to store job data
+
+        async function fetchJobs() {
+            try {
+                const response = await fetch('/JobsData'); // Fetch data from the endpoint
+                if (!response.ok) {
+                    throw new Error('Failed to fetch job data');
+                }
+                jobs = await response.json(); // Parse the JSON response
+                initializeDropdowns(); // Initialize dropdowns with fetched data
+                displayJobs(); // Display all jobs initially
+            } catch (error) {
+                console.error('Error fetching job data:', error);
+                alert('Could not load job data. Please try again later.');
+            }
+        }
+
+        // Dropdown elements
+        const jobTypeSelect = document.getElementById("jobTypeSelect");
+        const categorySelect = document.getElementById("categorySelect");
+        const locationSelect = document.getElementById("locationSelect");
+        const companySelect = document.getElementById("companySelect");
+        const keywordSearch = document.getElementById("keywordSearch");
+        const jobTableBody = document.getElementById("jobTableBody");
+
+        // Populate dropdowns with unique values
+        function populateSelectOptions(selectElement, options,type) {
+            selectElement.innerHTML = `<option value="">${type}</option>`; // Add default "All" option
+            options.forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option.toLowerCase();
+                opt.textContent = option;
+                selectElement.appendChild(opt);
+            });
+        }
+
+        // Initialize dropdowns with unique values from job data
+        function initializeDropdowns() {
+            const jobTypes = [...new Set(jobs.map(job => job.JobType))].sort();
+            const locations = [...new Set(jobs.map(job => job.Location))].sort();
+            const companies = [...new Set(jobs.map(job => job.Company))].sort();
+            const category = [...new Set(jobs.map(job => job.Category))].sort();
+            
+            populateSelectOptions(jobTypeSelect, category,"Category");
+            populateSelectOptions(categorySelect, jobTypes,"JobType");
+            populateSelectOptions(locationSelect, locations,"Location");
+            populateSelectOptions(companySelect, companies,"Company");
+        }
+
+        // Filter and display jobs based on selected filters and keyword search
+        function displayJobs() {
+            const selectedJobType = jobTypeSelect.value.toLowerCase();
+            const selectedLocation = locationSelect.value.toLowerCase();
+            const selectedCompany = companySelect.value.toLowerCase();
+            const keyword = keywordSearch.value.toLowerCase();
+
+            const filteredJobs = jobs.filter(job => {
+                const matchesJobType = !selectedJobType || job.JobType.toLowerCase() === selectedJobType;
+                const matchesLocation = !selectedLocation || job.Location.toLowerCase() === selectedLocation;
+                const matchesCompany = !selectedCompany || job.Company.toLowerCase() === selectedCompany;
+                const matchesKeyword = !keyword || Object.values(job).some(value =>
+                    String(value).toLowerCase().includes(keyword)
+                );
+                return matchesJobType && matchesLocation && matchesCompany && matchesKeyword;
+            });
+
+            // Render filtered jobs into the table
+            jobTableBody.innerHTML = filteredJobs.map(job => `
+                <tr>
+                    <td>${job.JobTitle}</td>
+                    <td>${job.JobType}</td>
+                    <td>${job.Salary}</td>
+                    <td>${job.Company}</td>
+                    <td>${job.Location}</td>
+                    <td>${job.NoOfJobs}</td>
+                    <td>${job.Fulfilled}</td>
+                    <td>${new Date(job.PostedDate).toLocaleDateString("en-In")}</td>
+                    <td>${new Date(job.EndDate).toLocaleDateString("en-In")}</td>
+                    <td><a href="/EditJobPage?JobId=${job.JobId}">Edit</a></td>
+                </tr>
+            `).join('');
+        }
+
+        // Set up event listeners for dropdowns and search input
+        function setupEventListeners() {
+            jobTypeSelect.addEventListener("change", displayJobs);
+            locationSelect.addEventListener("change", displayJobs);
+            companySelect.addEventListener("change", displayJobs);
+            keywordSearch.addEventListener("input", displayJobs);
+        }
+
+        // Initialize the application
+        async function init() {
+            await fetchJobs(); // Fetch job data and initialize
+            setupEventListeners(); // Set up filter and search functionality
+        }
+
+        // Start the application
+        init();
+    </script>
+</body>
+</html>

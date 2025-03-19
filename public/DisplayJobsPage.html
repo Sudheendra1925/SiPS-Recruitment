@@ -1,301 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Job Application Filter</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    :root {
-        --primary-color: #0875e1;  /* Deep blue */
-        --secondary-color: #f7f9fc;  /* Light background */
-        --accent-color: #0875e1;  /* Accent blue */
-        --highlight-color: #ffc107;  /* Gold highlight */
-        --danger-color: #dc3545;  /* Red for error/warnings */
-        --white: #ffffff;  /* White */
-        --shadow: rgba(0, 0, 0, 0.1);  /* Subtle shadow */
-    }
-    .navbar {
-        background: var(--primary-color);
-        padding: 10px 20px;
-        box-shadow: 0 4px 8px var(--shadow-color);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Filter</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
 
-    .navbar-brand {
-        color: var(--white);
-        font-size: 1.8em;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
+        :root {
+            --primary-color: #0056b3;
+            --secondary-color: #eef3f8;
+            --accent-color: #1a73e8;
+            --highlight-color: #f0a500;
+            --danger-color: #e63946;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --shadow: rgba(0, 0, 0, 0.15);
+            --card-shadow: rgba(0, 0, 0, 0.25);
+        }
 
-    .navbar-nav .nav-link {
-        color: var(--white);
-        margin: 0 10px;
-        transition: color var(--transition-speed);
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
 
-    .navbar-nav .nav-link:hover,
-    .navbar-nav .nav-link.active {
-        color: var(--highlight-color);
-        font-weight: bold;
-    }
+        #main {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
 
-    .sign-out:hover {
-        color: var(--white);
-        background-color: var(--danger-color);
-    }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            width: 100%;
+        }
 
-    /* Custom styles for the filter sidebar */
-    .filter-sidebar {
-        background-color: #f8f9fa;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
+        .logo img {
+            width: 80px;
+            height: 80px;
+        }
 
-    /* Main content area (jobs display) */
-    .main-content {
-        padding: 20px;
-    }
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
 
-    /* Search bar style */
-    .search-bar {
-        margin-bottom: 20px;
-    }
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
 
-    .search-bar input {
-        width: 100%;
-    }
+        .nav-button.primary {
+            background-color: #1a237e;
+            color: white;
+        }
 
-  </style>
+        .nav-button.secondary {
+            background-color: #e8eaf6;
+            color: #1a237e;
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .filter-sidebar {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .filter-sidebar h4 {
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        .filter-sidebar h6 {
+            color: #495057;
+            font-weight: bold;
+        }
+
+        .filter-sidebar .form-select {
+            width: 30vh;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+        }
+
+  
+
+        .main-content {
+            padding: 20px;
+            width: 100%;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            #main {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .filter-sidebar {
+                max-width: 100%;
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .filter-sidebar .form-select {
+                width: 90vw;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="/Home">
-                <img  alt="Logo" width="60" height="60" class="me-2">
-                <div>
-                    <span style="display: block;">Sips Recruitment</span>
-                </div>
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link " onclick="goto()">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" >ApplyJobs</a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center ms-3">
-                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
-                </div>
-            </div>
+    <div class="dashboard-header">
+        <div class="logo">
+            <img src="/Images/images.jpeg" alt="SIPS Logo">
         </div>
-    </nav>
-  
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Filter Sidebar (Left Side) -->
-            <div class="col-md-3 filter-sidebar">
-                <h4 class="mb-3">Job Filters</h4>
+        <div class="nav-buttons">
+            <a onclick="goto()" class="nav-button primary" style="text-decoration: none;">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/Login" class="nav-button danger" style="text-decoration: none;">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </a>
+        </div>
+    </div>
 
-                <!-- Job Type Filter -->
-                <div class="mb-3">
-                    <h6>Job Type</h6>
-                    <select class="form-select" id="job-type">
-                        <option value="">All</option>
-                 
-                    </select>
-                </div>
-
-                <!-- Location Filter -->
-                <div class="mb-3">
-                    <h6>Location</h6>
-                    <select class="form-select" id="location">
-                        <option value="">All Locations</option>
-                  
-                    </select>
-                </div>
-        
-                <div class="mb-3">
-                    <h6>Job Title</h6>
-                    <select class="form-select" id="JobTitle">
-                        <option value="">Any</option>
-               
-                    </select>
-                </div>
-
-                <button class="btn btn-primary w-100" id="apply-filters">Apply Filters</button>
+    <div class="row" id="main">
+        <!-- Filter Sidebar (Left Side) -->
+        <div class="col-md-3 filter-sidebar" id="filter-sidebar">
+            <!-- Job Type Filter -->
+            <div class="mb-3">
+                <h6>Job Type</h6>
+                <select class="form-select" id="job-type">
+                    <option value="">All</option>
+                </select>
             </div>
 
-            <!-- Job Listings (Right Side) -->
-            <div class="col-md-9 main-content">
-                <!-- Search Bar -->
-                <div class="search-bar">
-                    <input type="text" id="search-bar" class="form-control" placeholder="Search by Company" />
-                </div>
-
-                <h2>Available Jobs</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Job Title</th>
-                            <th>Company</th>
-                            <th>Salary</th>
-                            <th>Location</th>
-                            <th>Job Type</th>
-                            <th>End Date</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="job-listings">
-                        <!-- Dynamic job listings will go here -->
-                    </tbody>
-                </table>
+            <!-- Location Filter -->
+            <div class="mb-3">
+                <h6>Location</h6>
+                <select class="form-select" id="location">
+                    <option value="">All Locations</option>
+                </select>
             </div>
+
+            <div class="mb-3">
+                <h6>Job Title</h6>
+                <select class="form-select" id="JobTitle">
+                    <option value="">Any</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Job Listings (Right Side) -->
+        <div class="col-md-9 main-content">
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" id="search-bar" class="form-control" placeholder="Search by Company">
+            </div>
+
+            <h2>Available Jobs</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Company</th>
+                        <th>Salary</th>
+                        <th>Location</th>
+                        <th>Job Type</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="job-listings">
+                    <!-- Dynamic job listings will go here -->
+                </tbody>
+            </table>
         </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-
-    <!-- Custom JS for handling filter application -->
     <script>
 
  
-            const ApplicantName =window.location.pathname.split('/').pop(); // Replace with the actual ID you want to fetch
-    
-        // Function to fetch jobs from the server
-        async function fetchJobs() {
-            try {
-                const response = await fetch('/JobsData');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch job data');
-                }
-                return await response.json();
-            } catch (error) {
-                console.error('Error fetching jobs:', error);
-                return [];
+        const ApplicantName =window.location.pathname.split('/').pop(); // Replace with the actual ID you want to fetch
+
+    // Function to fetch jobs from the server
+    async function fetchJobs() {
+        try {
+            const response = await fetch('/JobsData');
+            if (!response.ok) {
+                throw new Error('Failed to fetch job data');
             }
-            console.log(response.json());
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+            return [];
         }
     
-        // Function to render job listings
-        async function renderJobs(jobList) {
-            const jobListings = document.getElementById('job-listings');
-            jobListings.innerHTML = ''; // Clear current listings
-    
-            if (jobList.length === 0) {
-                jobListings.innerHTML = '<tr><td colspan="7" class="text-center">No jobs found</td></tr>';
-                return;
-            }
-    
-            jobList.forEach((job) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${job.JobTitle}</td>
-                    <td>${job.Company}</td>
-                    <td>${job.Salary}</td>
-                    <td>${job.Location}</td>
-                    <td>${job.JobType}</td>
-                    <td>${job.EndDate.split('T')[0]}</td>
-                    <td><a class="btn btn-primary btn-sm" href="/ApplyJobPage?ApplicantName=${ApplicantName}&JobTitle=${job.JobTitle}&Company=${job.Company}&Salary=${job.Salary}" >Apply</a></td>
-     
-                `;
-                jobListings.appendChild(row);
-            });
-        }
-    
-        // Function to populate filter options
-        function populateFilters(jobs) {
-            const jobTypeSelect = document.getElementById('job-type');
-            const locationSelect = document.getElementById('location');
-            const JobTitleSelect = document.getElementById('JobTitle');
-    
-            const jobTypes = [...new Set(jobs.map(job => job.JobType))].sort();
-            const locations = [...new Set(jobs.map(job => job.Location))].sort();
-       const JobTitles = [...new Set(jobs.map(job => job.JobTitle))].sort();
-    
-            populateSelectOptions(jobTypeSelect, jobTypes);
-            populateSelectOptions(locationSelect, locations);
-            populateSelectOptions(JobTitleSelect, JobTitles);
-        }
-    
-        // Helper function to populate a <select> element with options
-        function populateSelectOptions(selectElement, options) {
-            selectElement.innerHTML = '<option value="">All</option>';
-            options.forEach(option => {
-                const opt = document.createElement('option');
-                opt.value = option.toLowerCase();
-                opt.textContent = option;
-                selectElement.appendChild(opt);
-            });
-        }
-    
-        // Helper function to generate salary ranges dynamically
+    }
+
+    // Function to render job listings
+    async function renderJobs(jobList) {
+    const jobListings = document.getElementById('job-listings');
+    jobListings.innerHTML = ''; // Clear current listings
+
+    if (jobList.length === 0) {
+        jobListings.innerHTML = '<tr><td colspan="7" class="text-center">No jobs found</td></tr>';
+        return;
+    }
+
+    const response = await fetch(`/SpecificApplications?ApplicantName=${ApplicantName}`);
+    const appliedJobs = await response.json(); // Ensure data is awaited properly
+
+    console.log(jobList, appliedJobs); // Debugging logs
+
+    jobList.forEach((job) => {
+        // Ensure all values exist before applying `.trim().toLowerCase()`
+        const jobRole = job.JobTitle ? job.JobTitle.trim().toLowerCase() : "";
+        const company = job.Company ? job.Company.trim().toLowerCase() : "";
+
+        let isApplied = appliedJobs.some(appliedJob => {
+            const appliedJobRole = appliedJob.JobRole ? appliedJob.JobRole.trim().toLowerCase() : "";
+            const appliedCompany = appliedJob.Company ? appliedJob.Company.trim().toLowerCase() : "";
+            
+            return appliedJobRole === jobRole && appliedCompany === company;
+        }) 
+        ? "<button class='btn btn-success btn-sm' >Applied</button>"
+        : `<a class="btn btn-primary btn-sm" href="/ApplyJobPage?ApplicantName=${ApplicantName}&JobTitle=${encodeURIComponent(job.JobTitle)}&Company=${encodeURIComponent(job.Company)}&Salary=${encodeURIComponent(job.Salary)}">Apply</a>`;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${job.JobTitle}</td>
+            <td>${job.Company}</td>
+            <td>${job.Salary}</td>
+            <td>${job.Location}</td>
+            <td>${job.JobType}</td>
+
+            <td>${isApplied}</td>
+        `;
+        jobListings.appendChild(row);
+    });
+}
+
+    // Function to populate filter options
+    function populateFilters(jobs) {
+        const jobTypeSelect = document.getElementById('job-type');
+        const locationSelect = document.getElementById('location');
+        const JobTitleSelect = document.getElementById('JobTitle');
+
+        const jobTypes = [...new Set(jobs.map(job => job.JobType))].sort();
+        const locations = [...new Set(jobs.map(job => job.Location))].sort();
+   const JobTitles = [...new Set(jobs.map(job => job.JobTitle))].sort();
+
+        populateSelectOptions(jobTypeSelect, jobTypes);
+        populateSelectOptions(locationSelect, locations);
+        populateSelectOptions(JobTitleSelect, JobTitles);
+    }
+
+    // Helper function to populate a <select> element with options
+    function populateSelectOptions(selectElement, options) {
+        selectElement.innerHTML = '<option value="">All</option>';
+        options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option.toLowerCase();
+            opt.textContent = option;
+            selectElement.appendChild(opt);
+        });
+    }
+
+    // Helper function to generate salary ranges dynamically
 
 
-    
-        // Function to filter jobs based on user input
-        function applyFilters(jobs) {
-            const jobType = document.getElementById('job-type').value.toLowerCase();
-            const location = document.getElementById('location').value.toLowerCase();
-            const JobTitle = document.getElementById('JobTitle').value.toLowerCase();
-    
-            const filteredJobs = jobs.filter(job => {
-                const matchesJobType = !jobType || job.JobType.toLowerCase() === jobType;
-                const matchesLocation = !location || job.Location.toLowerCase() === location;
-                const matchesJobTitle = !JobTitle || job.JobTitle.toLowerCase() === JobTitle;
-    
-                return matchesJobType && matchesLocation && matchesJobTitle;
-            });
-    
-            renderJobs(filteredJobs);
-        }
-    
-        // Helper function to check if salary is in range
-      
-        // Initialize and set up event listeners
-        async function initialize() {
-            const jobs = await fetchJobs();
-    
-            // Populate filter options dynamically
-            populateFilters(jobs);
-    
-            // Initial render of all jobs
-            renderJobs(jobs);
-    
-            // Event listener for applying filters
-            document.getElementById('apply-filters').addEventListener('click', () => {
+
+    // Function to filter jobs based on user input
+    function applyFilters(jobs) {
+        const jobType = document.getElementById('job-type').value.toLowerCase();
+        const location = document.getElementById('location').value.toLowerCase();
+        const JobTitle = document.getElementById('JobTitle').value.toLowerCase();
+
+        const filteredJobs = jobs.filter(job => {
+            const matchesJobType = !jobType || job.JobType.toLowerCase() === jobType;
+            const matchesLocation = !location || job.Location.toLowerCase() === location;
+            const matchesJobTitle = !JobTitle || job.JobTitle.toLowerCase() === JobTitle;
+
+            return matchesJobType && matchesLocation && matchesJobTitle;
+        });
+
+        renderJobs(filteredJobs);
+    }
+
+    // Helper function to check if salary is in range
+  
+    // Initialize and set up event listeners
+    async function initialize() {
+        const jobs = await fetchJobs();
+
+        // Populate filter options dynamically
+        populateFilters(jobs);
+
+        // Initial render of all jobs
+        renderJobs(jobs);
+
+   
+
+        document.querySelectorAll('.form-select').forEach(select => {
+            select.addEventListener('change', () => {
                 applyFilters(jobs);
             });
-    
-            // Event listener for the search bar
-            document.getElementById('search-bar').addEventListener('input', function (event) {
-                const searchTerm = event.target.value.toLowerCase();
-                const filteredJobs = jobs.filter(job =>
-                    job.Company.toLowerCase().includes(searchTerm)
-                );
-                renderJobs(filteredJobs);
-            });
-        }
-    
-        // Call the initialize function on page load
-        document.addEventListener('DOMContentLoaded', initialize);
-        function goto(){
-            window.location.href = `/Home/${ApplicantName}`;
-        }
+        });
+
+        // Event listener for the search bar
+        document.getElementById('search-bar').addEventListener('input', function (event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const filteredJobs = jobs.filter(job =>
+                job.Company.toLowerCase().includes(searchTerm)
+            );
+            renderJobs(filteredJobs);
+        });
+    }
+
+    // Call the initialize function on page load
+    document.addEventListener('DOMContentLoaded', initialize);
+    function goto(){
+        window.location.href = `/Home/${ApplicantName}`;
+    }
 
 
-    </script>
-</body>    
-
+</script>
+        
+</body>
 </html>

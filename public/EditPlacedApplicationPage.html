@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Placed Application</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .back-btn {
+            background-color: #008CBA;
+            margin-top: 10px;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .back-btn:hover {
+            background-color: #007B9F;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Edit Placed Application</h2>
+
+    <div class="container form-container">
+        <form id="editForm" action="/EditPlacedApplication" method="post">
+            <div class="mb-3">
+                <label for="ApplicationId" class="form-label">Application ID</label>
+                <input type="text" id="ApplicationId" name="ApplicationId" class="form-control" required readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="ApplicantName" class="form-label">Applicant Name</label>
+                <input type="text" id="ApplicantName" name="ApplicantName" class="form-control" required readonly>
+            </div>
+
+            <div class="mb-3">
+                <label for="Company" class="form-label">Company</label>
+                <input type="text" id="Company" name="Company" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Salary" class="form-label">Salary</label>
+                <input type="number" id="Salary" name="Salary" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="PaymentReceived" class="form-label">Payment Received</label>
+                <input type="number" id="PaymentReceived" name="PaymentReceived" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="Status" class="form-label">Status</label>
+                <select id="Status" name="Status" class="form-select" required>
+                    <option value="Not Received">Not Received</option>
+                    <option value="Completely Received">Completely Received</option>
+                    <option value="Partially Received">Partially Received</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a class="btn btn-danger" href="/RevenueAndReports">Cancel</a>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <script>
+async function fetchApplicationData() {
+    // Get the Application ID from the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const applicationId = urlParams.get('ApplicationId'); // Assuming ApplicationId is passed in the URL query parameter
+
+    try {
+        // Fetch application data from the server
+        const response = await fetch(`/PlacedApplicantsDetails?ApplicationId=${applicationId}`);
+        
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error('Failed to fetch application data');
+        }
+
+        const data = await response.json();
+        // Populate the form with the fetched data
+        document.getElementById('ApplicationId').value = data.ApplicationId;
+        document.getElementById('ApplicantName').value = data.ApplicantName;
+        document.getElementById('Company').value = data.Company;
+        document.getElementById('Salary').value = data.Salary;
+        document.getElementById('PaymentReceived').value = data.PaymentReceived;
+
+        const statusSelect = document.getElementById('Status');
+        const statusValue = data.Status;
+
+        // Set the selected option based on the status value
+        for (let option of statusSelect.options) {
+            if (option.value === statusValue) {
+                option.selected = true;
+                break; // Exit the loop once the correct option is selected
+            }
+        }
+
+    } catch (error) {
+        console.error('Error fetching application data:', error);
+    }
+}
+
+// Fetch application data when the page is loaded
+document.addEventListener('DOMContentLoaded', fetchApplicationData);
+    </script>
+
+</body>
+</html>

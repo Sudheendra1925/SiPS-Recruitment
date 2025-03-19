@@ -6,157 +6,209 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-    :root {
-        --primary-color: #0875e1;  /* Deep blue */
-        --secondary-color: #f7f9fc;  /* Light background */
-        --accent-color: #0875e1;  /* Accent blue */
-        --highlight-color: #ffc107;  /* Gold highlight */
-        --danger-color: #dc3545;  /* Red for error/warnings */
-        --white: #ffffff;  /* White */
-        --shadow: rgba(0, 0, 0, 0.1);  /* Subtle shadow */
-    }
-    
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: var(--secondary-color);  /* Light background */
-        color: #333;  /* Dark text for readability */
-        margin: 0;
-        padding: 0;
-    }
-    
-    /* Navbar styling */
-    .navbar {
-        background: var(--primary-color);
-        padding: 10px 20px;
-        box-shadow: 0 4px 8px var(--shadow-color);
-    }
-    
-    .navbar-brand {
-        color: var(--white);
-        font-size: 1.8em;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    
-    .navbar-nav .nav-link {
-        color: var(--white);
-        margin: 0 10px;
-        transition: color var(--transition-speed);
-    }
-    
-    .navbar-nav .nav-link:hover,
-    .navbar-nav .nav-link.active {
-        color: var(--highlight-color);
-        font-weight: bold;
-    }
-    
-     
-    
-    .sign-out:hover {
-        color: var(--white);
-    }
-    .summary-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
-    flex-wrap: wrap; 
-    padding: 20px;
-    background-color: var(--secondary-color);
-    margin-top: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px var(--shadow-color);
-    animation: fadeInUp 1s ease-in-out;
-   
-}
+                *{
+    font-family: 'Poppins', sans-serif;
+  }
+         :root {
+            --primary-color: #0056b3; /* Richer deep blue */
+            --secondary-color: #eef3f8; /* Softer light background */
+            --accent-color: #1a73e8; /* Vibrant blue accent */
+            --highlight-color: #f0a500; /* Warmer gold highlight */
+            --danger-color: #e63946; /* Bold red for error/warnings */
+            --text-dark: #212529; /* Slightly lighter dark text */
+            --text-light: #6c757d; /* Muted text color */
+            --shadow: rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+            --card-shadow: rgba(0, 0, 0, 0.25); /* Stronger shadow for cards */
+        }
 
-.summary-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    width: 280px;
-    border-radius: 12px;
-    color: var(--text-dark);
-    box-shadow: 0 2px 6px var(--shadow-color);
-    text-align: center;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    animation: fadeInUp 1s ease-in-out;
-   border:2px solid red;
-}
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
 
-.summary-box:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 6px 12px var(--shadow-color);
-}
+    
 
-.summary-box h3 {
-    font-size: 1.6em;
-    font-weight: bold;
-    color: var(--text-dark);
-    margin-top: 10px;
-    text-transform: uppercase;
-}
+        /* Navbar styling */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
 
-.summary-box p {
-    font-size: 2.5em;
-    font-weight: bold;
-    margin: 10px 0;
-    color: var(--highlight-color);
-}
+        .logo img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .global-search {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .global-search input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button.primary {
+            background-color: #1a237e;
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: #e8eaf6;
+            color: #1a237e;
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+
+.status-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px;
+        }
+
+        .status-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .status-card.applied { border-top: 4px solid #2196f3; }
+        .status-card.selected { border-top: 4px solid #4caf50; }
+        .status-card.rejected { border-top: 4px solid #f44336; }
+
+        .status-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .status-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+.status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-applied { background-color: #e3f2fd; color: #1976d2; }
+        .status-selected { background-color: #e8f5e9; color: #388e3c; }
+        .status-rejected { background-color: #ffebee; color: #d32f2f; }
+
+        .search-bar {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            width: 300px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        table th {
+            background-color: #f5f5f5;
+            color: #333;
+            font-weight: 600;
+        }
+
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
 </style>    
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="/Home">
-                <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
-                <div>
-                    <span style="display: block;">Sips Finance</span>
-                </div>
+   
+
+
+    <div class="dashboard-header">
+        <div class="logo">
+            <img src="../Images/images.jpeg" alt="SIPS Logo" >
+        </div>
+        <div class="nav-buttons">
+            <!-- <a  class="nav-button primary" >
+                <i class="fas fa-home"></i> Home
+            </a> -->
+            <a onclick="goto()" class="nav-button secondary" style="text-decoration: none;">
+                <i class="fas fa-briefcase"></i> Apply Jobs
             </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="goto()">Apply Jobs</a>
-                    </li>
-               
-                </ul>
-                <div class="d-flex align-items-center ms-3 " >
-                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
-                </div>
-            </div>
+            <a class="btn  btn-primary d-flex justify-content-center align-items-center"  id="EditProfile">Edit Profile</a>
+            <a href="/Login" class="nav-button danger" style="text-decoration: none;">
+                <i class="fas fa-sign-out-alt"></i> Sign Out
+            </a>
         </div>
-    </nav>
+    </div>
+    
+
+
+<div class="status-cards">
+    <div class="status-card applied">
+        <h3>Applied</h3>
+        <div class="status-value" id="Applied"></div>
+    </div>
+    <div class="status-card selected">
+        <h3>Selected</h3>
+        <div class="status-value" id="Selected"></div>
+    </div>
+    <div class="status-card rejected">
+        <h3>Rejected</h3>
+        <div class="status-value" id="Rejected"></div>
+    </div>
+</div>
+
+
     <div id="main">
-
-        <div class="container mt-5">
-           
-            <div class="summary-container">
-                <div id="InvestmentTotal" class="summary-box investment">
-                    <h3>Applied</h3>
-                    <p id="Applied"><span class="highlight"></span></p>
-                </div>
-                <div id="OrderTotal" class="summary-box order">
-                    <h3><span>Selected</span></h3>
-                    <p id="Selected"><span class="highlight"></span></p>
-            </div>
-            <div id="OrderTotal" class="summary-box order">
-                <h3><span>Rejected</span></h3>
-                <p id="Rejected"><span class="highlight"></span></p>
-        </div>
-
         <div class="container mt-4">
             <h1>My Applications</h1>
             <input type="text" id="ApplicationSearch" class="form-control mb-3" placeholder="Search Application By Status,Name" onkeyup="searchApplicationLeads()">
@@ -178,7 +230,7 @@
             </table>
 
     </div>
-    <a class="btn btn-primary" id="EditProfile">Edit Profile</a>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
      const ApplicantName =window.location.pathname.split('/').pop(); 
@@ -192,7 +244,6 @@ async function fetchData() {
         }
 
         const ApplicationData = await ApplicationResponse.json();
-        console.log(ApplicationData);
 
         // Update summary counts
         const totalApplied = ApplicationData.length;
@@ -215,7 +266,7 @@ async function fetchData() {
                 <td>${Application.Company}</td>
                 <td>${Application.JobRole}</td>
                 <td>${Application.Salary}</td>
-                <td>${Application.AppliedDate.split('T')[0]}</td>
+                <td>${new Date(Application.AppliedDate).toLocaleDateString("en-In")}</td>
                 <td style="color: ${statusColor}; font-weight: bold;">${Application.Status}</td>
             `;
             ApplicationTbody.appendChild(row);

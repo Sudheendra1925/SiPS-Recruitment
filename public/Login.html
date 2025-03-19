@@ -4,43 +4,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SiPS Finance Login</title>
+  <title>SiPS Recuritment Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
+    *{
+      color:black;
+    }
     :root {
-      --primary-color: #0875e1;
-      --secondary-color: #f8faff;
-      --accent-color: #0875e1;
-      --text-dark: #2a2a2a;
-      --text-light: #5f6f81;
-      --success-color: #27ae60;
-      --danger-color: #e74c3c;
-      --highlight-color: #f1c40f;
+      --primary-color: #1773d5;
+      --secondary-color: #eef3f8;
+      --accent-color: #3785eb;
+      --highlight-color: #f0a500;
+      --danger-color: #e63946;
+      --text-dark: #212529;
+      --text-light: #6c757d;
+      --shadow: rgba(0, 0, 0, 0.15);
+      --card-shadow: rgba(0, 0, 0, 0.25);
     }
 
     body {
-      background-color: var(--primary-color);
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
       margin: 0;
     }
-
+nav {
+  background-color: #1773d5;
+  width:80%;
+  color:black;
+padding:20px;
+}
     .forms-section {
       width: 90%;
-      max-width: 600px;
-      background-color: var(--secondary-color);
-      border-radius: 10px;
-      padding: 2rem;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+      margin: 10vh;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
     }
 
     .section-title {
       text-align: center;
-      font-size: 1.8rem;
+      font-size: 2rem;
       color: var(--primary-color);
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
     }
 
     .form-wrapper {
@@ -49,22 +61,6 @@
 
     .form-wrapper.is-active {
       display: block;
-    }
-
-    .switcher {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: var(--text-light);
-      border: none;
-      background-color: transparent;
-      cursor: pointer;
-      margin-bottom: 1rem;
-    }
-
-    .switcher.is-active {
-      color: var(--primary-color);
-      font-weight: 600;
     }
 
     .input-block {
@@ -78,197 +74,406 @@
       color: var(--text-light);
     }
 
+    .input-block input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--text-light);
+      border-radius: 5px;
+      transition: border-color 0.3s;
+    }
+
+    .input-block input:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
 
     .btn-eye {
-  position: absolute;
-  right: 10px;
-  top: 70%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-}
-.btn-eye:focus {
-  outline: none;
-}
-input[type="number"]::-webkit-outer-spin-button,
-        input[type="number"]::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
+      position: absolute;
+      right: 10px;
+      top: 70%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2em;
+    }
 
-        /* For Firefox */
-        input[type="number"] {
-          -moz-appearance: textfield;
-        }
+    .btn-eye:focus {
+      outline: none;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+      border: none;
+      padding: 0.75rem;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+    }
+
+    .switcher-question {
+      text-align: center;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .switcher {
+      color: var(--accent-color);
+      cursor: pointer;
+      
+      font-weight: 500;
+    }
+
+    .switcher:hover {
+      color: var(--primary-color);
+    }
+    .switcher-question-signup {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+        font-size: 16px;
+        color: #555;
+        margin-top: 20px;
+    }
+
+    .admin-btn {
+      display: block;
+      margin: 1rem auto 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--highlight-color);
+      border: 1px solid var(--highlight-color);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .admin-btn:hover {
+      background-color: var(--highlight-color);
+      color: #fff;
+    }
+
+  
+
+    .navbar {
+      background-color: var(--primary-color);
+    }
+
+    .navbar-brand,
+    .nav-link {
+      color: white !important;
+    }
+
+    .forms-section {
+      width: 90%;
+      margin: 10vh;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      color: var(--primary-color);
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
   </style>
+
+
 </head>
 
 <body>
-
-  <section class="forms-section">
-  
-    <h1 class="section-title">SiPS Recuruiment Client Login</h1>
-    <div class="d-flex justify-content-around mb-4">
-      <button class="switcher switcher-login is-active" data-target="login">Login</button>
-      <button class="switcher switcher-signup" data-target="signup">Sign Up</button>
-    </div>
-  
-    <!-- Login Form -->
-    <div class="form-wrapper is-active" id="login-form">
-      <form id="login-form" onsubmit="confirmAction('login', event)">
-        <div class="input-block">
-          <label for="login-ApplicantName">ApplicantName</label>
-          <input id="login-ApplicantName" type="text" class="form-control" placeholder="Enter your ApplicantName" required>
-        </div>
-        <div class="input-block position-relative">
-          <label for="login-password">Password</label>
-          <input id="login-password" type="password" class="form-control" placeholder="Enter your password" required>
-          <button type="button" class="btn-eye" onclick="togglePasswordVisibility('login-password')">
-            👁
-          </button>
-        </div>
-        <button type="submit" class="btn btn-success w-100">Login</button>
-      </form>
-      <div class="text-end mb-3">
-        <a href="/ForgetPasswordPage" class="text-decoration-none" style="color: var(--danger-color);">Forgot Password?</a>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="padding: 20px;;">
+   
+      <a  style="color:#212529;font-size:30px;">SiPS Recruitment</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li  >
+            <a style="color:white;text-decoration: none;"  href="/">HOME</a>
+          </li>
+     
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="/AdminLogin">Admin Login</a>   class="nav-link"  class="nav-item"
+          </li> -->
+        </ul>
       </div>
-    </div>
   
-    <!-- Sign-Up Form -->
-    <div class="form-wrapper" id="signup-form">
-      <form id="signup-form" onsubmit="confirmAction('signup', event)">
-        <div class="input-block">
-          <label for="signup-ApplicantName">ApplicantName</label>
-          <input id="signup-ApplicantName" type="text" name="SApplicantName" class="form-control" placeholder="Enter your ApplicantName" required>
-        </div>
-        <div class="input-block">
-          <label for="signup-Address">Address</label>
-          <input id="signup-Address" type="text" name="Address" class="form-control" placeholder="Enter your ApplicantName" required>
-        </div>
-        <div class="input-block">
-          <label for="signup-AadharCard">AadharCard</label>
-          <input id="signup-AadharCard" type="tel" name="AadharCard" class="form-control"  minlength="12" maxlength="12" placeholder="Enter your Aadhar Number" required>
-        </div>
-        <div class="input-block">
-          <label for="signup-phoneNumber">Phone Number</label>
-          <input id="signup-phoneNumber" type="tel" name="PhoneNumber" class="form-control"  minlength="10" maxlength="10" placeholder="Enter your Phone Number" required>
-        </div>
-        <div class="input-block position-relative">
-          <label for="signup-password">Password</label>
-          <input id="signup-password" type="password" name="SPassword" class="form-control" placeholder="Enter your password" required>
-          <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-password')">
-            👁
-          </button>
-        </div>
-        <div class="input-block position-relative">
-          <label for="signup-password-confirm">Confirm Password</label>
-          <input id="signup-password-confirm" type="password" name="SConfirmPassword" class="form-control" placeholder="Confirm your password" required>
-          <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-password-confirm')">
-            👁
-          </button>
-        </div>
-        <button type="submit" class="btn btn-success w-100">Sign Up</button>
-      </form>
-    </div>
-    <a class="btn " style="border:2px solid blueviolet" href="/AdminLogin"><img src="./Images/administrator.png" style="height:50px;width:50px;"> Click For Admin Login</a>
-  </section>
- 
+  </nav>
+  <div>
+   
+    <section class="forms-section">
+      <div class="form-wrapper is-active" id="login-form">
+        <form id="login-form" onsubmit="confirmLogin()">
+          <h1 class="section-title">SiPS Recruitment Applicant Login</h1>
+          <div class="input-block">
+            <label for="login-ApplicantName">Applicant Name</label>
+            <input id="login-ApplicantName" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
+          </div>
+          <div class="input-block position-relative">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" class="form-control" placeholder="Enter your password" required>
+            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('login-password')">👁</button>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Login</button>
+        </form>
+        <!-- <div class="switcher-question">
+          Already a client? <span class="switcher" onclick="showForm('signup')">Sign Up</span>
+          <span><a>Forget Password</a></span>
+        </div> -->
+        <div class="switcher-question-signup">
+        <div>  New Applicant? 
+          <span class="switcher" onclick="showForm('signup')" style="text-decoration: none;">Sign Up</span></div> 
+          <span class="switcher" ><a href="/ForgetPasswordPage?Type=Client" style="text-decoration: none;color:#e63946">Forgot Password?</a></span>
+      </div>
+      </div>
 
+      <div class="form-wrapper" id="signup-form">
+        <form id="signup-form" onsubmit="confirmSignUp()">
+          <h1 class="section-title">SiPS Recruitment signup</h1>
+          <div class="input-block">
+            <label for="signup-ApplicantName">Applicant Name*</label>
+            <input id="signup-ApplicantName" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
+            <p id="NameError" style="color:#e63946;font-size:2vh;padding-top: 0.5vh;"></p>
+          </div>
+          <div class="input-block">
+            <label for="signup-phoneNumber">Phone Number*</label>
+            <input id="signup-phoneNumber" type="tel" class="form-control" minlength="10" maxlength="10" placeholder="Enter your Phone Number" required>
+          </div>
+          <div class="input-block">
+            <label for="signup-Email">Email*</label>
+            <input id="signup-Email" type="email" class="form-control" placeholder="Enter your email" required>
+            <p id="EmailError" style="color:#e63946; font-size:2vh; padding-top: 0.5vh;"></p>
+        
+            <button id="send-otp-btn" type="button" class="btn btn-primary mt-2" onclick="sendOtp()">Send OTP</button>
+            <p id="email-otp-status" style="color:#e63946; font-size:2vh; padding-top: 0.5vh;"></p>
+        </div>
+        
+        <div class="input-block" id="otp-section" style="display: none;">
+            <label for="signup-email-otp">Enter OTP</label>
+            <input id="signup-email-otp" type="text" class="form-control" placeholder="Enter OTP" required oninput="enableVerifyButton()">
+            <button id="verify-otp-btn" type="button" class="btn btn-success mt-2" onclick="verifyOtp()" disabled>Verify OTP</button>
+            <p id="otp-status" style="color:#e63946; font-size:2vh; padding-top: 0.5vh;"></p>
+        </div>
+          <div class="input-block">
+            <label for="Address">Address*</label>
+            <input id="Address" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
+          </div>
+          <div class="input-block">
+            <label for="Aadhaar">Aadhaar*</label>
+            <input id="Aadhaar" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
+          </div>
+          <div class="input-block position-relative">
+            <label for="signup-password">Password*</label>
+            <input id="signup-password" type="password" class="form-control" placeholder="Enter your password" required>
+            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-password')">👁</button>
+          </div>
+          <div class="input-block position-relative">
+            <label for="signup-Confirmpassword">Confirm Password*</label>
+            <input id="signup-Confirmpassword" type="password" class="form-control" placeholder="Enter your password" required>
+            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-Confirmpassword')">👁</button>
+          </div>
+          <button type="submit" id="signupbutton" class="btn btn-success w-100" disabled>Sign Up</button>
+        </form>
+        <div class="switcher-question">
+          Already a client? <span class="switcher" onclick="showForm('login')" >Login</span>
+        </div>
+        
+      </div>
+
+      <a class="admin-btn" href="/AdminLogin"><img src="./Images/administrator.png" height="30px" width="30px"> Admin Login</a>
+    </section>
+  </div>
   <script>
-    const switchers = document.querySelectorAll('.switcher');
-    const forms = document.querySelectorAll('.form-wrapper');
-
-    switchers.forEach(switcher => {
-      switcher.addEventListener('click', () => {
-        switchers.forEach(sw => sw.classList.remove('is-active'));
-        forms.forEach(form => form.classList.remove('is-active'));
-
-        const target = switcher.getAttribute('data-target');
-        switcher.classList.add('is-active');
-        document.getElementById(`${target}-form`).classList.add('is-active');
-      });
-    });
-
-    async function confirmAction(action, event) {
-  event.preventDefault(); // Prevent form submission
-
-  try {
-    // Fetch user data
-    const response = await fetch('/AllApplicantsData');
-    if (!response.ok) throw new Error('Failed to fetch user data');
-    const users = await response.json();
-
-    if (action === 'signup') {
-      const password = document.getElementById('signup-password').value;
-      const confirmPassword = document.getElementById('signup-password-confirm').value;
-      const ApplicantName = document.getElementById('signup-ApplicantName').value;
-      const phoneNumber = document.getElementById('signup-phoneNumber').value;
-      const Address = document.getElementById('signup-Address').value;
-      const AadharCard = document.getElementById('signup-AadharCard').value;
-      
-      console.log(password,confirmPassword,ApplicantName,phoneNumber,Address,AadharCard);
-      // Check if ApplicantName already exists
-      if (users.some(user => user.ApplicantName === ApplicantName)) {
-        alert("The entered ApplicantName already exists. Please try another one.");
-        return;
-      }
-
-      // Check if passwords match
-      if (password !== confirmPassword) {
-        alert('Passwords do not match. Please try again.');
-        return;
-      }
-
-      // Redirect with query parameters
-      window.location.href = `/UserSignup?Password=${encodeURIComponent(password)}&ApplicantName=${encodeURIComponent(ApplicantName)}&PhoneNumber=${encodeURIComponent(phoneNumber)}&Address=${Address}&AadharCard=${AadharCard}`;
-      alert("Thank you for Signing up ! You can now Log In with your credentials");
+    function showForm(form) {
+      document.querySelectorAll('.form-wrapper').forEach(wrapper => wrapper.classList.remove('is-active'));
+      document.getElementById(`${form}-form`).classList.add('is-active');
     }
-
-    if (action === 'login') {
-      const ApplicantName = document.getElementById('login-ApplicantName').value;
-      const password = document.getElementById('login-password').value;
-      window.location.href = `/check?ApplicantName=${ApplicantName}&Password=${password}`;
-    
-    }
-  } catch (error) {
-    console.error('Error:', error.message);
-    alert('An error occurred. Please try again later.');
-  }
-}
-
-    
-  </script>
-  <script>
-
 
     function togglePasswordVisibility(inputId) {
-  const inputField = document.getElementById(inputId);
-  if (inputField.type === "password") {
-    inputField.type = "text";
-  } else {
-    inputField.type = "password";
-  }
-}
+      const inputField = document.getElementById(inputId);
+      inputField.type = inputField.type === "password" ? "text" : "password";
+    }
+  </script>
 
-    </script>
 <script>
+  function confirmSignUp() {
+    event.preventDefault();
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('signup-Confirmpassword').value;
 
-function togglePasswordVisibility(inputId) {
-  const inputField = document.getElementById(inputId);
-  const eyeButton = inputField.nextElementSibling; // Assuming the button is the next sibling
-  if (inputField.type === "password") {
-    inputField.type = "text";
-    eyeButton.textContent = "🙈"; // Change icon to hide
-  } else {
-    inputField.type = "password";
-    eyeButton.textContent = "👁"; // Change icon to show
+    if (password !== confirmPassword) {
+      alert('Passwords do not match. Please try again.');
+      return;
+    }
+  
+window.location.href = `/UserSignup?ApplicantName=${document.getElementById('signup-ApplicantName').value}&PhoneNumber=${document.getElementById('signup-phoneNumber').value}&Password=${password}&Address=${document.getElementById('Address').value}&AadharCard=${document.getElementById('Aadhaar').value}&Email=${document.getElementById('signup-Email').value}`;
+  
   }
-}
+
+
+  function confirmLogin() {
+    event.preventDefault();
+    window.location.href = `/check?ApplicantName=${document.getElementById('login-ApplicantName').value}&Password=${document.getElementById('login-password').value}`;
+  }
+  document.getElementById('signup-phoneNumber').addEventListener('input', function (e) {
+  let value = e.target.value;
+  if (!/^\d*$/.test(value)) {
+      value = value.replace(/\D/g, ''); // Remove non-numeric characters
+  }
+  if (value.length > 10) {
+      value = value.slice(0, 10); // Limit to 10 digits
+  }
+
+  e.target.value = value; // Update the input field
+});
+document.getElementById('Aadhaar').addEventListener('input', function (e) {
+  let value = e.target.value;
+  if (!/^\d*$/.test(value)) {
+      value = value.replace(/\D/g, ''); // Remove non-numeric characters
+  }
+  if (value.length > 12) {
+      value = value.slice(0, 12); // Limit to 10 digits
+  }
+
+  e.target.value = value; // Update the input field
+});
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  let allApplicants = [];
+
+  async function fetchAllApplicants() {
+    try {
+      const response = await fetch('/AllApplicantsData');
+      allApplicants = await response.json();
+    } catch (error) {
+      console.error('Error fetching applicants:', error);
+    }
+  }
+
+  async function checkIfExists(fieldId, fieldName, errorMessageId) {
+    const inputElement = document.getElementById(fieldId);
+    const inputValue = inputElement.value.trim().toLowerCase();
+
+    if (inputValue) {
+        const exists = allApplicants.some(applicant => 
+            applicant[fieldName].toLowerCase() === inputValue
+        );
+
+        if (exists) {
+            document.getElementById(errorMessageId).innerHTML = `${fieldName} already exists. Please choose a different ${fieldName}.`;
+            inputElement.setCustomValidity(`${fieldName} already exists.`);
+        } else {
+            inputElement.setCustomValidity('');
+            document.getElementById(errorMessageId).innerHTML = '';
+        }
+    }
+}
+
+// For Applicant Name validation
+document.getElementById('signup-ApplicantName').addEventListener('input', () => {
+    checkIfExists('signup-ApplicantName', 'ApplicantName', 'NameError');
+});
+
+// For Email validation
+document.getElementById('signup-Email').addEventListener('input', () => {
+    checkIfExists('signup-Email', 'Email', 'EmailError');
+});
+
+  window.onload = fetchAllApplicants;
+</script>
+
+<script>
+  let Otp = 0;
+  
+  async function sendOtp() {
+      const emailInput = document.getElementById('signup-Email');
+      const email = emailInput.value.trim();
+      const sendOtpBtn = document.getElementById('send-otp-btn');
+
+
+      if (!validateEmail(email)) {
+          document.getElementById('EmailError').innerText = 'Please enter a valid email.';
+          return;
+      }
+  
+      document.getElementById('EmailError').innerText = '';
+      sendOtpBtn.disabled = true; // Disable button to prevent multiple clicks
+      sendOtpBtn.innerText = "Sending...";
+  
+      Otp = Math.floor(100000 + Math.random() * 900000);
+  
+      try {
+          const response = await fetch(`/sendOtp?Email=${email}&Otp='Your Otp for email verification is ${Otp}'`, {
+              method: 'POST',
+              headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+          });
+  
+          if (response.ok) {
+              document.getElementById('email-otp-status').innerHTML = '<p style="color:green">OTP sent to your email.</p>';
+              document.getElementById('otp-section').style.display = 'block';
+              document.getElementById('signup-email-otp').focus(); // Auto-focus OTP input
+          } else {
+            console.log(response)
+              document.getElementById('email-otp-status').innerText = 'Failed to send OTP. Please try again.';
+          }
+      } catch (error) {
+          console.error(error);
+          document.getElementById('email-otp-status').innerText = 'Error sending OTP.';
+      }
+  
+      setTimeout(() => {
+          sendOtpBtn.disabled = false;
+          sendOtpBtn.innerText = "Send OTP";
+      }, 3000); // Re-enable button after 30 seconds
+  }
+  
+  function verifyOtp() {
+      const enteredOtp = document.getElementById('signup-email-otp').value.trim();
+      const verifyOtpBtn = document.getElementById('verify-otp-btn');
+  
+      if (enteredOtp === Otp.toString()) {
+          verifyOtpBtn.disabled = true;
+          document.getElementById('otp-status').innerText = 'Email verified successfully!';
+          document.getElementById('otp-status').style.color = 'green';
+          document.getElementById('signupbutton').disabled = false;
+      } else {
+          document.getElementById('otp-status').innerText = 'Invalid OTP. Please try again.';
+          document.getElementById('otp-status').style.color = 'red';
+      }
+  }
+  
+  function enableVerifyButton() {
+      const otpInput = document.getElementById('signup-email-otp').value.trim();
+      document.getElementById('verify-otp-btn').disabled = otpInput.length !== 6;
+  }
+  
+  function validateEmail(email) {
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email);
+  }
+  </script>
+
+
+
 </body>
 
 </html>

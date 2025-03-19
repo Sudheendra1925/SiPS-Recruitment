@@ -7,35 +7,99 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-.navbar {
-            background: var(--primary-color);
-            padding: 10px 20px;
-            box-shadow: 0 4px 8px var(--shadow-color);
-        }
-        
-        .navbar-brand {
-            color: var(--white);
-            font-size: 1.8em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--white);
-            margin: 0 10px;
-            transition: color var(--transition-speed);
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active {
-            color: var(--highlight-color);
-            font-weight: bold;
+           *{
+    font-family: 'Poppins', sans-serif;
+  }
+         :root {
+            --primary-color: #0056b3; /* Richer deep blue */
+            --secondary-color: #eef3f8; /* Softer light background */
+            --accent-color: #1a73e8; /* Vibrant blue accent */
+            --highlight-color: #f0a500; /* Warmer gold highlight */
+            --danger-color: #e63946; /* Bold red for error/warnings */
+            --text-dark: #212529; /* Slightly lighter dark text */
+            --text-light: #6c757d; /* Muted text color */
+            --shadow: rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+            --card-shadow: rgba(0, 0, 0, 0.25); /* Stronger shadow for cards */
         }
 
-        .sign-out:hover {
-            color: var(--white);
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--secondary-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
         }
+
+        #main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Navbar styling */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .logo-section img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-button i {
+            font-size: 14px;
+        }
+
+        .nav-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+
 input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
           -webkit-appearance: none;
@@ -46,38 +110,45 @@ input[type="number"]::-webkit-outer-spin-button,
         input[type="number"] {
           -moz-appearance: textfield;
         }
+        .suggestion-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 200px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+.suggestion-list li {
+    padding: 5px;
+    cursor: pointer;
+}
+.suggestion-list li:hover {
+    background: #f0f0f0;
+}
+
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
-                <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
-                <div>
-                    <span style="display: block;">Sips Finance</span>
-                </div>
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link ">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="goto()">Apply Jobs</a>
-                    </li>
-               
-                </ul>
-                <div class="d-flex align-items-center ms-3 " >
-                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
-                </div>
-            </div>
+    <div class="dashboard-header">
+        <div class="logo-section">
+            <img src="./Images/images.jpeg" alt="SIPS Logo">
         </div>
-    </nav>
+        <div class="nav-buttons">
+            <a href="/AdminDashboard" style="text-decoration: none;" class="nav-button primary">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+            <a href="/Companies" style="text-decoration: none;" class="nav-button secondary">
+                <i class="fas fa-building"></i> Companies
+            </a>
+            <a href="/Login" style="text-decoration: none;" class="nav-button danger">
+                <i class="fas fa-sign-out-alt"></i> SignOut
+            </a>
+        </div>
+        </div>
     <div class="container mt-5">
         <h1>Edit Job</h1>
 
@@ -85,12 +156,25 @@ input[type="number"]::-webkit-outer-spin-button,
         <div id="loadingSpinner" class="spinner-border text-primary" style="display: none;" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
-
-        <form id="editJobForm" method="post" >
+      
+        <form id="editJobForm" method="post" style="margin-bottom: 2vh;">
+            <div class="mb-3">
+                <label for="company" class="form-label">Company</label>
+                <input type="text" id="company" name="Company" class="form-control" required readonly>
+            </div>
+            
+            <div class="mb-3">
+                <label for="Category" class="form-label">Category</label>
+                <input type="text" id="Category" name="Category" class="form-control" required placeholder="Type or select a category" autocomplete="off">
+                <ul id="categorySuggestions" class="suggestion-list"></ul>
+            </div>
+        
             <div class="mb-3">
                 <label for="jobTitle" class="form-label">Job Title</label>
-                <input type="text" id="jobTitle" name="JobTitle" class="form-control" required>
+                <input type="text" id="jobTitle" name="JobTitle" class="form-control" required placeholder="Type a job title" autocomplete="off">
+                <ul id="jobSuggestions" class="suggestion-list"></ul>
             </div>
+        
             <div class="mb-3">
                 <label for="jobType" class="form-label">Job Type</label>
                 <select id="jobType" name="JobType" class="form-select" required>
@@ -100,36 +184,53 @@ input[type="number"]::-webkit-outer-spin-button,
                     <option value="Contract">Contract</option>
                 </select>
             </div>
+        
+            <div class="mb-3">
+                <label for="Budget" class="form-label">Budget</label>
+                <input type="number" id="Budget" name="Budget" class="form-control" required>
+            </div>
+        
             <div class="mb-3">
                 <label for="salary" class="form-label">Salary</label>
                 <input type="number" id="salary" name="Salary" class="form-control" required>
             </div>
-            <div class="mb-3">
-                <label for="company" class="form-label">Company</label>
-                <input type="text" id="company" name="Company" class="form-control" required readonly>
-            </div>
+        
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
-                <input type="text" id="location" name="Location" class="form-control" required>
+                <input type="text" id="location" name="Location" class="form-control" required placeholder="Type or select a location" autocomplete="off">
+                <ul id="locationSuggestions" class="suggestion-list"></ul>
             </div>
+        
             <div class="mb-3">
                 <label for="noOfJobs" class="form-label">No. of Jobs</label>
                 <input type="number" id="noOfJobs" name="NoOfJobs" class="form-control" required>
             </div>
+        
             <div class="mb-3">
                 <label for="postedDate" class="form-label">Posted Date</label>
-                <input type="date" id="postedDate" name="PostedDate" class="form-control" required >
+                <input type="date" id="postedDate" name="PostedDate" class="form-control" required>
             </div>
+        
             <div class="mb-3">
                 <label for="endDate" class="form-label">End Date</label>
                 <input type="date" id="endDate" name="EndDate" class="form-control" required>
             </div>
+        
             <div class="mb-3">
                 <label for="fulfilled" class="form-label">Fulfilled</label>
                 <input type="number" id="fulfilled" name="Fulfilled" class="form-control" required>
             </div>
+            <div class="mb-3">
+                <label for="Experience" class="form-label">Experience</label>
+                <input type="text" id="Experience" name="Experience" class="form-control" required readonly>
+            </div>
+            
+        
             <button type="submit" class="btn btn-primary">Update Job</button>
+            <a href="/Companies" class="btn btn-danger">Cancel</a>
         </form>
+        
+        
     </div>
 
     <!-- Bootstrap JS and dependencies -->
@@ -163,12 +264,23 @@ input[type="number"]::-webkit-outer-spin-button,
            
             document.getElementById('jobTitle').value = job.JobTitle;
             document.getElementById('jobType').value = job.JobType;
+            document.getElementById('Category').value = job.Category;
+            document.getElementById('Budget').value = job.Budget;
             document.getElementById('salary').value = job.Salary;
             document.getElementById('company').value = job.Company;
             document.getElementById('location').value = job.Location;
             document.getElementById('noOfJobs').value = job.NoOfJobs;
-            document.getElementById('postedDate').value = job.PostedDate.split('T')[0];
-            document.getElementById('endDate').value = job.EndDate.split('T')[0];
+            document.getElementById('Experience').value = job.Experience;
+            
+
+            let postedDate = new Date(job.PostedDate);
+            let formattedPostDate = postedDate.getFullYear() + '-'+ (postedDate.getMonth() + 1).toString().padStart(2, '0') + '-' + postedDate.getDate().toString().padStart(2, '0');
+            document.getElementById('postedDate').value = formattedPostDate;
+          
+            let endDate = new Date(job.EndDate);
+            let formattedDate = endDate.getFullYear() + '-'+ (endDate.getMonth() + 1).toString().padStart(2, '0') + '-' + endDate.getDate().toString().padStart(2, '0');
+            document.getElementById('endDate').value = formattedDate;
+          
             document.getElementById('fulfilled').value = job.Fulfilled;
             document.getElementById('editJobForm').action = `/EditJob?JobId=${jobId}`;
         }
@@ -177,6 +289,58 @@ input[type="number"]::-webkit-outer-spin-button,
      
         // Fetch job details when the page loads
         fetchJobDetails();
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Fetch job data from API
+                const response = await fetch("/JobsData");
+                const jobsData = await response.json(); // Assuming API returns a JSON array
+    
+                // Extract unique categories, job titles, and locations
+                const categories = [...new Set(jobsData.map(job => job.Category))]; 
+                const jobTitles = [...new Set(jobsData.map(job => job.JobTitle))];
+                const locations = [...new Set(jobsData.map(job => job.Location))];
+    
+                // Function to create an autocomplete dropdown
+                function setupAutocomplete(inputElement, suggestionBoxId, dataList) {
+                    const suggestionBox = document.getElementById(suggestionBoxId);
+    
+                    inputElement.addEventListener("input", function () {
+                        const value = this.value.toLowerCase();
+                        suggestionBox.innerHTML = ""; // Clear previous suggestions
+    
+                        if (value.length > 1) { // Show suggestions only after 2+ characters
+                            const filtered = dataList.filter(item => item.toLowerCase().includes(value));
+                            filtered.forEach(item => {
+                                const li = document.createElement("li");
+                                li.textContent = item;
+                                li.onclick = () => {
+                                    inputElement.value = item;
+                                    suggestionBox.innerHTML = ""; // Hide suggestions
+                                };
+                                suggestionBox.appendChild(li);
+                            });
+                        }
+                    });
+    
+                    // Hide suggestions when clicking outside
+                    document.addEventListener("click", function (e) {
+                        if (!inputElement.contains(e.target) && !suggestionBox.contains(e.target)) {
+                            suggestionBox.innerHTML = "";
+                        }
+                    });
+                }
+    
+                // Apply autocomplete to Category, Job Title, and Location fields
+                setupAutocomplete(document.getElementById("Category"), "categorySuggestions", categories);
+                setupAutocomplete(document.getElementById("jobTitle"), "jobSuggestions", jobTitles);
+                setupAutocomplete(document.getElementById("location"), "locationSuggestions", locations);
+    
+            } catch (error) {
+                console.error("Error fetching job data:", error);
+            }
+        });
     </script>
     
 </body>

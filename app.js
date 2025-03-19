@@ -7,20 +7,12 @@ const crypto = require('crypto');
 const app = express();
 const fs=require('fs');
 const bcrypt = require('bcrypt'); 
-
+const nodemailer = require('nodemailer');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 
 
-
-
-
-
-
-
-
-app.use(cookieParser( "4c8e9e8fb6e93f6456f3dc5f91794f27ba87ac63e09456119b8a792d4b172b5f"
-));
+app.use(cookieParser( "4c8e9e8fb6e93f6456f3dc5f91794f27ba87ac63e09456119b8a792d4b172b5f"));
 
 //////////////////////////////////////////////////////////////////////
 app.use(
@@ -30,6 +22,7 @@ app.use(
       saveUninitialized: true,
     })
   );
+
   function isAuthenticatedClient(req, res, next) {
  
     if (req.session.user && req.session.user.role === 'client') {
@@ -38,7 +31,7 @@ app.use(
       return res.send(`
         <script>
           alert("Please log in as a client to access this page!");
-          window.location.href = "/";  // Redirect to the client login page
+          window.location.href = "/Login";  // Redirect to the client login page
         </script>
       `);
     }
@@ -60,11 +53,6 @@ app.use(
   }
 
 
-
-
-
-
-
 // Set up database connection using environment variables
 const db = mysql.createConnection({
     host: 'localhost',
@@ -79,17 +67,29 @@ db.connect((err) => {
     }
     console.log('MySQL Connected...');
 });
+
 const dbPromise = db.promise();
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadsDir = path.join(__dirname, 'public/uploads/resumes');
-        if (!fs.existsSync(uploadsDir)) {
-            fs.mkdirSync(uploadsDir, { recursive: true });
+        // Set default upload path
+        let uploadPath =  'public/uploads/resumes';
+
+        // Check if the file field is 'companyLogo' to modify upload path
+        if (file.fieldname === 'companyLogo') {
+            uploadPath = path.join(__dirname, 'public/uploads/logos');
         }
-        cb(null, uploadsDir); // Save files to 'uploads/resumes'
+
+        // Create the directory if it doesn't exist
+        if (!fs.existsSync(uploadPath)) {
+            fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        // Pass the upload path to the callback function
+        cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname); // Create unique file names
+        // Generate a unique filename using timestamp and original file name
+        cb(null, Date.now() + '-' + file.originalname);
     }
 });
 
@@ -108,7 +108,7 @@ app.use(express.json());
 
 
 
-app.get('/', (req, res) => {
+app.get('/Login', (req, res) => {
     req.session.destroy((err) => {
         if (err) {
           console.error('Error destroying session:', err);
@@ -176,13 +176,30 @@ app.get('/ApplicantDetailsPage/:ApplicantName',isAuthenticatedAdmin, (req, res) 
 app.get('/EditApplicantPage/:ApplicantName',isAuthenticatedAdmin, (req, res) => {
     res.sendFile(path.join(__dirname, 'public/EditApplicantPage.html'));
 })
+app.get('/ForgetPasswordPage', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/ForgetPasswordPage.html'));
+})
+app.get('/EditAdminPage',isAuthenticatedAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/EditAdminPage.html'));
+})
+app.get('/RevenueAndReports',isAuthenticatedAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/RevenueAndReports.html'));
+})
+app.get('/EditPlacedApplicationPage',isAuthenticatedAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/EditPlacedApplicationPage.html'));
+})
+app.get('/AddPlacedApplicationPage',isAuthenticatedAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/AddPlacedApplicationPage.html'));
+})
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/ShowJobs.html'));
+})
 
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 app.get('/UserSignup', async (req, res) => {
-    const { ApplicantName, Password, PhoneNumber, Address, AadharCard } = req.query;
-console.log(ApplicantName, Password, PhoneNumber, Address, AadharCard)
-    if (!ApplicantName || !Password || !PhoneNumber || !Address || !AadharCard) {
+    const { ApplicantName, Password, PhoneNumber, Address, AadharCard,Email } = req.query;
+     if (!ApplicantName || !Password || !PhoneNumber || !Address || !AadharCard) {
         return res.status(400).send('All fields are required.');
     }
 
@@ -190,12 +207,18 @@ console.log(ApplicantName, Password, PhoneNumber, Address, AadharCard)
         const hash = await bcrypt.hash(Password, 10);
         const sql = `
             INSERT INTO Applicants 
-            (ApplicantName, Password, PhoneNumber, Address, Applied, Accepted, Rejected, AadharCard) 
-            VALUES (?, ?, ?, ?, 0, 0, 0, ?)`;
+            (ApplicantName, Password, PhoneNumber, Address, Applied, Accepted, Rejected, AadharCard,Email) 
+            VALUES (?, ?, ?, ?, 0, 0, 0, ?,?)`;
 
-        await dbPromise.query(sql, [ApplicantName, hash, PhoneNumber, Address, AadharCard]);
+        await dbPromise.query(sql, [ApplicantName, hash, PhoneNumber, Address, AadharCard,Email]);
         console.log('User signed up successfully.');
-        res.redirect('/');
+        return res.send(`
+            <script>
+              alert("Congratulations on successfully signing up! 🎉 Now, you can log in using your credentials");
+              window.location.href = "/Login";
+            </script>
+        `);
+        
     } catch (err) {
         console.error('Error during user signup:', err);
         res.status(500).send('Server error. Please try again.');
@@ -214,7 +237,7 @@ app.get('/check', async (req, res) => {
             return res.send(`
                 <script>
                   alert("Username and password are required!");
-                  window.location.href = "/";
+                  window.location.href = "/Login";
                 </script>
             `);
         }
@@ -230,7 +253,7 @@ app.get('/check', async (req, res) => {
             return res.send(`
                 <script>
                   alert("Invalid username or password!");
-                  window.location.href = "/";
+                  window.location.href = "/Login";
                 </script>
             `);
         }
@@ -245,7 +268,7 @@ app.get('/check', async (req, res) => {
             res.send(`
                 <script>
                   alert("Invalid username or password!");
-                  window.location.href = "/";
+                  window.location.href = "/Login";
                 </script>
             `);
         }
@@ -258,9 +281,9 @@ app.get('/check', async (req, res) => {
 
 // Route: Admin Signup
 app.get('/AdminSignup', async (req, res) => {
-    const { AdminName, Password, PhoneNumber } = req.query;
-console.log(AdminName, Password, PhoneNumber)
-    if (!AdminName || !Password || !PhoneNumber) {
+    const { AdminName, Password, PhoneNumber,Email } = req.query;
+
+    if (!AdminName || !Password || !PhoneNumber || !Email) {
         return res.status(400).send('All fields are required.');
     }
 
@@ -268,12 +291,17 @@ console.log(AdminName, Password, PhoneNumber)
         const hash = await bcrypt.hash(Password, 10);
         const sql = `
             INSERT INTO Admins 
-            (AdminName, Password, PhoneNumber, Level) 
-            VALUES (?, ?, ?, 10)`;
+            (AdminName, Password, PhoneNumber, Level,Email) 
+            VALUES (?, ?, ?, 10,?)`;
 
-        await dbPromise.query(sql, [AdminName, hash, PhoneNumber]);
-        console.log('Admin signed up successfully.');
-        res.redirect('/AdminLogin');
+        await dbPromise.query(sql, [AdminName, hash, PhoneNumber,Email]);
+        
+        return res.send(`
+            <script>
+              alert("SignUp Successful!Log in with your credentials");
+              window.location.href = "/AdminLogin";
+            </script>
+        `);;
     } catch (err) {
         console.error('Error during admin signup:', err);
         res.status(500).send('Server error. Please try again.');
@@ -303,7 +331,8 @@ app.get('/checkAdmin', async (req, res) => {
         if (isMatch) {
             // Save session
             req.session.user = { name: AdminName, role: 'admin' };
-            res.redirect(`/AdminDashboard`);
+            req.session.AdminName = AdminName;  // Save the AdminName in the session
+            res.redirect(`/AdminDashboard?AdminName`);
         } else {
             res.send(`
                 <script>
@@ -333,7 +362,7 @@ app.get("/AdminData", (req, res) => {
 
 app.get('/ApplicationData/:ApplicantName', (req, res) => {
     const ApplicantName = req.params.ApplicantName;
-    console.log(ApplicantName);
+  
     db.query('SELECT * FROM Applications where ApplicantName=?',[ApplicantName], (err, results) => {
         if (err) {
             console.error('Error fetching data:', err.message);
@@ -377,13 +406,14 @@ app.get('/ApplicantDetails/:ApplicantName', (req, res) => {
         if (results.length === 0) {
             return res.status(200).json([]); // Return an empty array if no applications found
         }
-console.log(results)
+
         res.status(200).json(results[0]); // Return the full array of results
     });
 });
 
 
-app.post('/Apply', upload.single('Resume'), (req, res) => {
+
+app.post('/Apply', upload.single('NewResume'), (req, res) => {
     const id = crypto.randomBytes(9).toString('hex');
     const ApplicationId = `Apl-${id}`;
 
@@ -393,9 +423,16 @@ app.post('/Apply', upload.single('Resume'), (req, res) => {
 
     // Retrieve form fields
     const PhoneNumber = req.body.PhoneNumber || null;
+    const OldResume = req.body.OldResume || null;  // Get the old resume filename from the form
 
-    // Get the resume file path, if uploaded
-    const ResumePath = req.file ? req.file.filename : null;
+    // Check if a new resume is uploaded, otherwise use the old resume
+    let ResumePath;
+    if (req.file) {
+        console.log(req.file.filename)
+        ResumePath = req.file.filename; // Use the new uploaded file
+    } else {
+        ResumePath = OldResume; // Use the existing resume if no new file is uploaded
+    }
 
     // Insert into database
     const query = `
@@ -409,19 +446,22 @@ app.post('/Apply', upload.single('Resume'), (req, res) => {
         (err, result) => {
             if (err) {
                 console.error('Error updating application details:', err);
-                return res.status(500).send('Error updating application details');
+                return res.status(500).send(`  
+                       <script>
+                  alert("We appreciate your interest towards applying through SiPS Portal. We're now in the process of reviewing your resume and will surely update the status of the job Applied. Thanks again!");
+                  window.location.href = "/Home/${ApplicantName}";
+                </script>`);
             }
             console.log('Application submitted successfully');
             res.send(`
                 <script>
-                  alert("Application Submitted Successfully!");
+                  alert("We appreciate your interest towards applying through SiPS Portal. We're now in the process of reviewing your resume and will surely update the status of the job Applied. Thanks again!");
                   window.location.href = "/Home/${ApplicantName}";
                 </script>
             `);
         }
     );
 });
-
 
 
 app.get('/JobsData', (req, res) => {
@@ -436,9 +476,7 @@ app.get('/JobsData', (req, res) => {
 });
 app.get('/CompanyiesJobsData', (req, res) => {
     const CompanyName = req.query.CompanyName;
-    console.log(CompanyName)
     db.query('SELECT * FROM jobs where company=?',[CompanyName], (err, results) => {
-        console.log(results);
         if (err) {
             console.error('Error fetching data:', err.message);
             return res.status(500).json({ error: "Internal Server Error" });
@@ -468,15 +506,7 @@ app.get('/getApplicationData/:ApplicationId', (req, res) => {
 
 app.post('/UpdateApplication/:ApplicationId', (req, res) => {
     const ApplicationId=req.params.ApplicationId;
-    const {
-       
-        phoneNumber, 
-        companyName, 
-        position, 
-        salary, 
-        appliedDate, 
-        status
-    } = req.body;
+    const {phoneNumber, companyName, position, salary, appliedDate,  status} = req.body;
 
     const query = `
         UPDATE Applications 
@@ -491,7 +521,6 @@ app.post('/UpdateApplication/:ApplicationId', (req, res) => {
         WHERE ApplicationId = ?`;
 
     db.query(query, [
-     
         phoneNumber, 
         companyName, 
         position, 
@@ -506,7 +535,7 @@ app.post('/UpdateApplication/:ApplicationId', (req, res) => {
         }
        res.send(` <script>
         alert("Application Submited Succesfully!");
-        window.location.href = "/AdminDashboard";
+        window.location.href = "/AllApplicantsPage";
       </script>`)
 
     });
@@ -540,40 +569,73 @@ app.get('/companydata', (req, res) => {
     });
 });
 
-app.post('/AddCompany', (req, res) => { 
-    const id = crypto.randomBytes(5).toString('hex');
-   
+// app.post('/AddCompany',upload.single('companyLogo'), (req, res) => { 
+//     const id = crypto.randomBytes(5).toString('hex');
+// const {companyName,ContactNumber}=req.body;
+// let CompanyLogo=null;
+// if (req.file) {
+//     CompanyLogo = req.file.filename;  // Set the ResumePath to the new file's filename
+// }
+// console.log(CompanyLogo)
 
-const {companyName,contactNumber}=req.body;
+// const query = 'Insert into companies (CompanyName,ContactNumber,CompanyLogo) values(?,?,?)';
+// db.query(query,[companyName,ContactNumber,CompanyLogo] , (err, result) => {
+//     if (err) {
+//         console.error('Error fetching application:', err);
+//         return res.status(500).send(`<script>
+//         alert("Company Name Already Exists!");
+//         window.location.href = "/companies";
+//       </script>`);
+//         }
+//     // Serve the HTML file with application data (replace placeholders in the HTML if needed)
+//     res.send(` <script>
+//         alert("Company Added Succesfully!");
+//         window.location.href = "/companies";
+//       </script>`)
+// });
 
-const query = 'Insert into companies (CompanyName,JobsPosted,JobsDelivered,ContactNumber) values(?,0,0,?)';
-db.query(query,[companyName,contactNumber] , (err, result) => {
-    if (err) {
-        console.error('Error fetching application:', err);
-        return res.status(500).send(`<script>
-        alert("Company Name Already Exists!");
-        window.location.href = "/companies";
-      </script>`);
+// })
+
+app.post('/AddCompany', upload.single('companyLogo'), (req, res) => {
+    const { companyName, ContactNumber } = req.body;
+    let CompanyLogo = null;
+
+    // If a company logo is uploaded, set the path
+    if (req.file) {
+        CompanyLogo = `/uploads/logos/${req.file.filename}`;  // Store the relative path to the image
+    }
+
+    // SQL Query to insert company details
+    const query = 'INSERT INTO companies (CompanyName, ContactNumber, CompanyLogo) VALUES (?, ?, ?)';
+    db.query(query, [companyName, ContactNumber, CompanyLogo], (err, result) => {
+        if (err) {
+            console.error('Error inserting company:', err);
+            return res.status(500).send(`
+                <script>
+                    alert("Company Name Already Exists!");
+                    window.location.href = "/companies";
+                </script>
+            `);
         }
-    // Serve the HTML file with application data (replace placeholders in the HTML if needed)
-    res.send(` <script>
-        alert("Company Added Succesfully!");
-        window.location.href = "/companies";
-      </script>`)
+        
+        // Send success message and redirect
+        res.send(`
+            <script>
+                alert("Company Added Successfully!");
+                window.location.href = "/companies";
+            </script>
+        `);
+    });
 });
-
-})
-
-
 
 app.post('/AddJob', (req, res) => {
 
     const id = crypto.randomBytes(9).toString('hex');
     const JobId = `job-${id}`;
 
-    const {JobTitle,JobType,Salary,Company,Location,NoOfJobs,EndDate}=req.body;
-    const query = 'Insert into jobs (JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled) values(?,?,?,?,?,?,?,CURDATE() + INTERVAL 1 DAY,?,0)';
-    db.query(query,[JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,EndDate] , (err, result) => {
+    const {JobTitle,JobType,Salary,Category,Company,Location,NoOfJobs,EndDate,Budget,Domain,Experience}=req.body;
+    const query = 'Insert into jobs (JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Category,Budget,Domain,Experience) values(?,?,?,?,?,?,?,CURDATE() + INTERVAL 1 DAY,?,0,?,?,?,?)';
+    db.query(query,[JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,EndDate,Category,Budget,Domain,Experience] , (err, result) => {
         if (err) {
             console.error('Error fetching application:', err);
             return res.status(500).send(`<script>
@@ -607,17 +669,17 @@ app.get('/getJobData', (req, res) => {
 app.post('/EditJob', (req, res) => {
     const JobId = req.query.JobId;
     const {
-        JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled
+        JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Budget,Category,Experience
     } = req.body;
 
     const query = `
         UPDATE jobs
         SET 
-            jobTitle=?, jobType=?, salary=?, company=?, location=?, noOfJobs=?, postedDate=?, endDate=?, fulfilled=?
+            jobTitle=?, jobType=?, salary=?, company=?, location=?, noOfJobs=?, postedDate=?, endDate=?, fulfilled=?,Budget=?,Category=?,Experience=?
         WHERE JobId = ?`;
 
     db.query(query, [
-        JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled, JobId
+        JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Budget,Category,Experience, JobId
     ], (err, result) => {
         if (err) {
             console.error('Error updating application:', err);
@@ -655,7 +717,6 @@ app.get('/ApplicantData', (req, res) => {
             console.error('Error fetching data:', err.message);
             return res.status(500).json({ error: "Internal Server Error" });
         }
-console.log(results)
         if (results.length === 0) {
             return res.status(200).json([]); // Return empty array if no applications found
         }
@@ -665,29 +726,46 @@ console.log(results)
 
 
 })
-
-app.post('/UpdateApplicant', (req, res) => {
+app.post('/UpdateApplicant', upload.single('NewResume'), (req, res) => {
     const ApplicantName = req.query.ApplicantName;
-    const {
-       phoneNumber,address
-    } = req.body;
+    const { phoneNumber, address,Email } = req.body;
 
+    // Use the existing Resume if no new file was uploaded
+    let ResumePath = req.body.Resume || null;  // Use the existing resume if no new one is uploaded
+
+    // If a new resume is uploaded, assign it to ResumePath
+    if (req.file) {
+        ResumePath = req.file.filename;  // Set the ResumePath to the new file's filename
+    }
+
+    // SQL query to update applicant's information
     const query = `
         UPDATE Applicants
-        SET 
-            phoneNumber=?,address=?
-        WHERE ApplicantName=?`;
+        SET phoneNumber = ?, address = ?, Resume = ?,Email=?
+        WHERE ApplicantName = ?
+    `;
 
-    db.query(query, [ phoneNumber,address,ApplicantName
-        
-    ], (err, result) => {
+    // Execute the query to update the applicant's details
+    db.query(query, [phoneNumber, address, ResumePath,Email, ApplicantName], (err, result) => {
         if (err) {
-            console.error('Error updating application:', err);
-            return res.status(500).json({ error: 'Failed to update application' });
+            console.error('Error updating applicant:', err);
+            return   res.send(`
+                <script>
+                alert("Error updating profile!,${err}");
+                window.location.href = "/Home/${ApplicantName}";
+                </script>
+                
+                `)
         }
-        
-        // Return a JSON response
-        res.redirect('/companies');
+
+        // Redirect to the applicant's home page after successful update
+        res.send(`
+            <script>
+            alert("Profile Updated Succesfully!");
+            window.location.href = "/Home/${ApplicantName}";
+            </script>
+            
+            `)
     });
 });
 
@@ -713,11 +791,423 @@ app.post('/AdminUpdateApplicant', (req, res) => {
         }
         
         // Return a JSON response
-        res.redirect('/companies');
+        res.redirect('/AllApplicantsPage');
+    });
+});
+
+app.get("/DeleteCompany",(req,res)=>{
+    const {companyName}=req.query;
+    const query = `Delete  from Companies where CompanyName=?`;
+
+db.query(query, [companyName], (err, result) => {
+    if (err) {
+        console.error('Error updating application:', err);
+        return res.status(500).json({ error: 'Failed to update application' });
+    }
+})
+res.send(
+`
+<script>
+alert("${companyName} is deleted");
+window.location.href="/Companies"
+
+</script>
+`
+
+)
+})
+app.get("/DeleteJob",(req,res)=>{
+    const {JobId}=req.query;
+    const query = `Delete  from Jobs where JobId=?`;
+
+db.query(query, [JobId], (err, result) => {
+    if (err) {
+        console.error('Error updating application:', err);
+        return res.status(500).json({ error: 'Failed to update application' });
+    }
+})
+res.send(
+`
+<script>
+alert("Job  deleted");
+window.location.href="/Companies"
+
+</script>
+`
+
+)
+})
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+let transporter = nodemailer.createTransport({
+    service: 'gmail',
+      auth: {
+        user: 'chatrapathi12052005@gmail.com', // your email
+        pass: 'ikrj obvn cxjr qmyb' // your app password
+    }
+});
+  app.post("/sendOtp", (req, res) => {
+    const { Email,Otp } = req.query;  // Email passed in request body
+  
+    if (!Email) {
+      return res.status(400).send("Email is required");
+    }
+  
+    // Setup email data
+    const mailOptions = {
+      from: "sips",  // sender address
+      to: Email,                             // recipient's email
+      subject: "Your OTP Code From  Sips",              // Subject line
+      text: `${Otp}`,      // OTP in text body
+    };
+  
+    // Send the OTP via email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        return res.status(500).send('Error sending email');
+      }
+      console.log('Message sent: %s', info.messageId);
+      res.status(200).json({ status: "success", message: "OTP sent successfully" });
+
+    });
+  });
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+app.get("/getAdminEmails",(req,res)=>{
+
+    db.query('SELECT Email FROM Admins', (err, results) => {
+        if (err) {
+            console.error('Error fetching data:', err);
+            return res.status(500).json({ error: 'Error fetching data' });
+        }
+        
+        // Extract only email values into an array
+        const emailArray = results.map(row => row.Email);
+        
+        res.json(emailArray); // Send only the array of emails
+    }); 
+})
+
+app.get("/getClientEmails",(req,res)=>{
+
+    db.query('SELECT Email FROM Applicants', (err, results) => {
+        if (err) {
+            console.error('Error fetching data:', err);
+            return res.status(500).json({ error: 'Error fetching data' });
+        }
+        
+        // Extract only email values into an array
+        const emailArray = results.map(row => row.Email);
+        
+        res.json(emailArray); // Send only the array of emails
+    }); 
+})
+
+app.get('/ResetPassword', async (req, res) => {
+    const { Email, Password,Type } = req.query;
+    
+    if (!Email || !Password || !Type) {
+
+        return res.send(` <script>
+            alert('Email and new password are required');
+            res.redirect('/ForgetPasswordPage');
+            </script>`)
+        
+    }
+
+    try {
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(Password, 10);
+
+
+if (Type==="Client") {
+
+        // Update the password in the database
+        const query = 'UPDATE Applicants SET Password = ? WHERE Email = ?';
+        db.query(query, [hashedPassword, Email], (err, result) => {
+            if (err) {
+                console.error('Error updating password:', err);
+                return  res.send(` <script>
+                alert("Internal server error!");
+                window.location.href = "/Login";
+              </script>`);
+            }
+
+            if (result.affectedRows === 0) {
+                return  res.send(` <script>
+                alert("No User Found With this Email!");
+                window.location.href = "/Login";
+              </script>`);
+            }
+
+           res.redirect("/Login");
+        });
+    }
+    else if (Type==="Admin") {
+
+        const query = 'UPDATE Admins SET Password = ? WHERE Email = ?';
+        db.query(query, [hashedPassword, Email], (err, result) => {
+            if (err) {
+                console.error('Error updating password:', err);
+                return  res.send(`
+                    <script>
+                      alert("Internal server error!");
+                      window.location.href = "/Login";
+                    </script>
+                  `);
+               
+            }
+
+            if (result.affectedRows === 0) {
+                return   res.send(`
+                    <script>
+                      alert("No User Found With this Email!");
+                      window.location.href = "/Login";
+                    </script>
+                  `);
+                 
+            }
+
+           res.redirect("/Login");
+        });
+
+
+}    
+}
+ catch (error) {
+        console.error('Error hashing password:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+})
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/SpecificApplications', (req, res) => {
+    const ApplicantName = req.query.ApplicantName;
+    db.query('SELECT * FROM Applications where ApplicantName=?',[ApplicantName],(err, results) => {
+        if (err) {
+            console.error('Error fetching data:', err);
+            return res.status(500).json({ error: 'Error fetching data' });
+        }
+       
+        res.json(results); 
+    }); 
+
+})
+
+
+app.get('/SpecificAdminData', (req, res) => {
+    const AdminName = req.session.AdminName;
+
+    if (!AdminName) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+   
+
+    db.query('SELECT * FROM Admins WHERE AdminName = ?', [AdminName], (err, results) => {
+        if (err) {
+            console.error('Error fetching data:', err.message);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ error: "Admin not found" });
+        }
+
+        res.status(200).json(results[0]); // Send only the first object, not an array
+    });
+});
+
+app.post('/UpdateAdmin', (req, res) => {
+
+    const AdminName = req.query.AdminName;
+    const {
+        PhoneNumber,Email
+    } = req.body;
+
+    const query = `
+        UPDATE Admins
+        SET 
+            PhoneNumber=?,Email=?
+        WHERE AdminName=?`;
+
+    db.query(query, [ PhoneNumber,Email,AdminName
+        
+    ], (err, result) => {
+        if (err) {
+            console.log(err)
+            
+            return res.send(`<script>
+                alert("Error updating profile!,${err}");
+                window.location.href = "/AdminDashboard";
+                </script>`)
+        }
+        
+        // Return a JSON response
+        res.redirect('/AdminDashboard');
+    });
+
+
+})
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+app.get('/PlacedTrendsMonthly', (req, res) => {
+    const Year = req.query.Year;  // Get the year from the query parameters
+
+    // Check if Year is provided
+    if (!Year) {
+        return res.status(400).json({ message: 'Year query parameter is required' });
+    }
+
+    // SQL query with the Year filter
+    const query = `
+      SELECT 
+        YEAR(AppliedDate) AS Year,
+        MONTH(AppliedDate) AS Month,
+        COUNT(ApplicationId) AS TotalApplications,
+        COUNT(CASE WHEN Status = 'Placed' THEN 1 END) AS PlacedApplications,
+        COUNT(CASE WHEN Status = 'Stage1' THEN 1 END) AS Stage1Applications
+      FROM 
+        YourTableName
+      WHERE
+        YEAR(AppliedDate) = ?
+      GROUP BY 
+        YEAR(AppliedDate),
+        MONTH(AppliedDate)
+      ORDER BY 
+        MONTH(AppliedDate) DESC;
+    `;
+
+    // Execute the query, passing the year as a parameter to prevent SQL injection
+    db.query(query, [Year], (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error querying database' });
+      } else {
+        res.json(results);
+      }
+    });
+});
+
+  
+  // Route for Yearly Breakdown
+  app.get('/PlacedTrendsYearly', (req, res) => {
+    const query = `
+      SELECT 
+        YEAR(AppliedDate) AS Year,
+        COUNT(ApplicationId) AS TotalApplications,
+        COUNT(CASE WHEN Status = 'Placed' THEN 1 END) AS PlacedApplications,
+        COUNT(CASE WHEN Status = 'Stage1' THEN 1 END) AS Stage1Applications
+      FROM 
+        Applications
+      GROUP BY 
+        YEAR(AppliedDate)
+      ORDER BY 
+        YEAR(AppliedDate) asc;
+    `;
+    
+    db.query(query, (err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error querying database' });
+      } else {
+        res.json(results);
+      }
+    });
+  });
+  
+
+  app.get('/placedApplicants', (req, res) => {
+
+    db.query('SELECT * FROM PlacedApplications ',(err, results) => {
+        if (err) {
+            console.error('Error fetching data:', err);
+            return res.status(500).json({ error: 'Error fetching data' });
+        }
+     
+        res.json(results); 
+    }); 
+
+  })
+  
+  app.post('/AddPlacedApplication', (req, res) => {
+    const {ApplicationId, ApplicantName, Company, Salary, PaymentReceived, Status } = req.body;
+    
+    // Query to insert data into PlacedApplications table
+    db.query('Insert into PlacedApplications (ApplicationId,ApplicantName, Company, Salary, PaymentReceived, Status) VALUES (?,?, ?, ?, ?, ?)', [ApplicationId,ApplicantName, Company, Salary, PaymentReceived, Status], (err, results) => {
+        if (err) {
+            return res.send(`
+                <script>
+                    alert("Error in adding: ${err.message}");
+                    window.location.href = '/RevenueAndReports';
+                </script>
+            `);
+        }
+        res.send(`
+            <script>
+                alert("Added Successfully!");
+                window.location.href = '/RevenueAndReports';
+            </script>
+        `);
     });
 });
 
 
+
+app.get('/PlacedApplicantsDetails', (req, res) => {
+
+    const ApplicationId = req.query.ApplicationId;
+    db.query('SELECT * FROM PlacedApplications where ApplicationId=?',[ApplicationId],(err,results) => {
+        if (err) {
+            res.send(`
+                <script>
+                    alert("error,${err}");
+                    window.location.href = '/RevenueAndReports';
+                </script>
+            `);
+        }
+       
+        res.json(results[0]); 
+    }); 
+
+})
+
+app.post('/EditPlacedApplication', (req, res) => {
+
+const {ApplicationId, ApplicantName, Company, Salary, PaymentReceived, Status } = req.body;
+
+    const query = `
+        UPDATE PlacedApplications
+        SET 
+            ApplicantName=?, Company=?, Salary=?, PaymentReceived=?, Status=?
+        WHERE ApplicationId=?`;
+
+    db.query(query, [ApplicantName, Company, Salary, PaymentReceived, Status, ApplicationId], (err, result) => {
+        if (err) {
+            console.log(err)
+            
+            return res.send(`<script>
+                alert("Error updating profile!,${err}");
+                window.location.href = "/AdminDashboard";
+                </script>`)
+        }
+        
+        res.send(`<script>
+            alert("Updated Successful");
+            window.location.href = "/RevenueAndReports";
+            </script>`)
+        
+
+  })
+  })
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 app.listen(2001, () => {
     console.log("Server is running on port 2001");
 });

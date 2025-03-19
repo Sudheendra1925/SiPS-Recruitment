@@ -3,190 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Companies</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>SIPS Recruitment - Companies</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0875e1;
-            --secondary-color: #f8faff;
-            --accent-color: #0875e1;
-            --text-dark: #2a2a2a;
-            --text-light: #5f6f81;
-            --success-color: #27ae60;
-            --danger-color: #e74c3c;
-            --highlight-color: #f1c40f;
-        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: var(--secondary-color);
-            margin: 0;
+            background-color: #f0f2f5;
             padding: 20px;
         }
-        .navbar {
-            background: var(--primary-color);
-            padding: 10px 20px;
-            box-shadow: 0 4px 8px var(--shadow-color);
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
         }
-        
-        .navbar-brand {
-            color: var(--white);
-            font-size: 1.8em;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .navbar-nav .nav-link {
-            color: var(--white);
-            margin: 0 10px;
-            transition: color var(--transition-speed);
-        }
-        
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active {
-            color: var(--highlight-color);
-            font-weight: bold;
+        .logo-section {
+            display: flex;
+            align-items: center;
         }
 
-        .sign-out:hover {
-            color: var(--white);
+        .search-section {
+            display: flex;
+            justify-content: center;
         }
+
         .search-bar {
-            margin-bottom: 20px;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
         }
-        .company-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .card {
-            background-color: #fff;
+
+        .search-bar input {
+            padding: 10px 35px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            transition: transform 0.2s, background-color 0.2s;
+            width: 100%;
+            font-size: 14px;
         }
-        .card:hover {
-            transform: scale(1.05);
-            background-color: var(--highlight-color);
+
+        .search-bar i {
+            position: absolute;
+            left: 12px;
+            top: 12px;
+            color: #666;
         }
-        .card-title {
-            font-size: 1.2em;
-            margin-bottom: 8px;
-            color: var(--text-dark);
+
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
         }
-        .card-text {
-            margin-bottom: 5px;
-            color: var(--text-light);
-        }
-        .card:nth-child(odd) {
-            background-color: #e3f2fd;
-        }
-        .card:nth-child(even) {
-            background-color: #fce4ec;
-        }
-        .add-company-btn {
-            background-color: var(--success-color);
-            color: #fff;
+
+        .nav-button {
+            padding: 8px 16px;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-        .add-company-btn:hover {
-            background-color: var(--primary-color);
+
+        .nav-button.primary {
+            background-color: #1a237e;
+            color: white;
         }
-        #searchInput {
-            width: 85%;
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+
+        .nav-button.secondary {
+            background-color: #e8eaf6;
+            color: #1a237e;
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .nav-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        .company-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .company-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .company-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .company-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2196f3;
+            margin-bottom: 10px;
+        }
+
+        .company-contact {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        @media (max-width: 768px) {
+            .top-buttons {
+                text-align: center;
+                margin-top: 10px;
+            }
+
+            .top-buttons .btn {
+                margin-bottom: 5px;
+                width: 100%;
+            }
+        }
+
+        /* Modal Design */
+        .modal-content {
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .modal-header {
+            background-color: #2196f3;
+            color: white;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-footer {
+            justify-content: space-between;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 12px;
+            display: none;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="/AdminDashboard">
-                <img src="./Images/Sips Finance Logo.png" alt="Logo" width="60" height="60" class="me-2">
-                <div>
-                    <span style="display: block;">Sips Finance</span>
+  
+        <!-- Top Navigation -->
+    
+        <div class="row align-items-center mb-4 dashboard-header">
+            <div class="col-md-4 d-flex align-items-center justify-content-center justify-content-md-start">
+                <img src="./Images/images.jpeg" alt="SIPS Logo" class="img-fluid" style="width: 80px; height: 80px;">
+                <button class="btn btn-primary ml-3" id="addCompanyBtn">
+                    <i class="fas fa-plus"></i> Add Company
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="col-md-4 search-container">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Search companies..." id="searchInput">
                 </div>
-            </a>
+            </div>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <!-- Buttons -->
+            <div class="nav-buttons">
+                <a href="/AdminDashboard" class="nav-button primary btn btn-primary">
+                    <i class="fas fa-chart-bar"></i> Dashboard
+                </a>
+                <!-- <a href="/AddCompanyPage" style="text-decoration: none;" class="nav-button secondary">
+                    <i class="fas fa-building"></i> Add Company
+                </a> -->
+                <a href="/Login" style="text-decoration: none;" class="nav-button danger">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </a>
+            </div>
+        </div>
+<center><a class="btn btn-secondary m-3" href="/AllJobsPage">All jobs</a></center>
+        <!-- Company Grid -->
+        <div class="company-grid" id="companiesGrid">
+            <!-- Dynamic content inserted here -->
+        </div>
+    </div>
 
-            <div class="collapse navbar-collapse" id="navbarToggler">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link " href="/AdminDashboard">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/Companies">Companies</a>
-                    </li>
-               
-                </ul>
-                <div class="d-flex align-items-center ms-3 " >
-                    <a href="/" class="sign-out btn btn-danger">Sign Out</a>
+    <!-- Add Company Modal -->
+    <div id="addCompanyModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Company</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCompanyForm" method="POST" action="/AddCompany" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="companyName">Company Name</label>
+                            <input type="text" id="companyName"  name="companyName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactNumber">Contact Number</label>
+                            <input type="tel" id="contactNumber" name="ContactNumber" class="form-control" 
+                            placeholder="Enter phone number" 
+                            oninput="removeLetters(event)" 
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="companyLogo">Company Logo</label>
+                            <input type="file" id="companyLogo"  name="companyLogo" class="form-control" >
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <input type="submit" class="btn btn-primary" placeholder="Add Company">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </nav>
-    <div class="container">
-        <h1 class="my-4">Companies</h1>
-        <div class="search-bar">
-            <input type="text" id="searchInput" class="form-control" onkeyup="searchCompanies()" placeholder="Search for companies...">
-        </div>
-        <a class="btn add-company-btn mb-4" href="/AddCompanyPage">Add New Company</a>
-        <div class="company-list" id="companyGrid"></div>
     </div>
-    <a class="btn btn-primary" href="/AllJobsPage">All Jobs</a>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', loadCompanies);
-
-        function loadCompanies() {
-            fetch('/companiesdata')
-                .then(response => response.json())
-                .then(data => {
-                    const companyGrid = document.getElementById('companyGrid');
-                    companyGrid.innerHTML = '';
-                    data.forEach(company => {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.innerHTML = `
-                            <div class="card-title"><b>${company.CompanyName}</b></div>
-                            <div class="card-text">Jobs Posted: ${company.JobsPosted}</div>
-                            <div class="card-text">Jobs Delivered: ${company.JobsDelivered}</div>
-                            <div class="card-text">Contact Number: ${company.ContactNumber}</div>
-                        `;
-                        card.addEventListener('click', () => {
-                            window.location.href = `/Company?companyName=${company.CompanyName}`;
-                        });
-                        companyGrid.appendChild(card);
-                    });
-                })
-                .catch(error => console.error('Error loading companies:', error));
-        }
-
-        function searchCompanies() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.getElementsByClassName('card');
-            for (let i = 0; i < cards.length; i++) {
-                const card = cards[i];
-                const companyName = card.getElementsByClassName('card-title')[0].innerText.toLowerCase();
-                if (companyName.includes(input)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
+        document.addEventListener('DOMContentLoaded', async () => {
+            const companiesGrid = document.getElementById('companiesGrid');
+            const searchInput = document.getElementById('searchInput');
+            let companiesData = []; // Store fetched companies for searching
+    
+            async function fetchCompanies() {
+                try {
+                    const response = await fetch('/companiesdata');
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    companiesData = await response.json();
+                    renderCompanies(companiesData);
+                } catch (error) {
+                    console.error('Error fetching company data:', error);
                 }
             }
+    
+            function createCompanyCard(company) {
+    return `
+        <div class="company-card" onclick="window.location.href='/Company?companyName=${encodeURIComponent(company.CompanyName)}'">
+            <img src="${company.CompanyLogo}" alt="${company.CompanyName}" class="img-fluid" style="width: 50px; height: 50px; border-radius: 50%;">
+            <div class="company-name"><i class="fas fa-building"></i> ${company.CompanyName}</div>
+            <div class="company-contact"><i class="fas fa-company"></i> ${company.ContactNumber || 'N/A'}</div>
+        </div>
+    `;
+}
+
+    
+            function renderCompanies(companiesList) {
+                companiesGrid.innerHTML = companiesList.map(createCompanyCard).join('');
+            }
+    
+            searchInput.addEventListener('input', () => {
+                const searchValue = searchInput.value.toLowerCase();
+                const filteredCompanies = companiesData.filter(company =>
+                    company.CompanyName.toLowerCase().includes(searchValue)
+                );
+                renderCompanies(filteredCompanies);
+            });
+    
+            fetchCompanies();
+    
+            document.getElementById('addCompanyBtn').addEventListener('click', () => {
+                $('#addCompanyModal').modal('show');
+            });
+        });
+    </script>
+    <script>
+        function removeLetters(event) {
+            let input = event.target;
+            // Remove any non-numeric characters and the optional '+' at the start
+            input.value = input.value.replace(/[^0-9\+]/g, '');
         }
     </script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
