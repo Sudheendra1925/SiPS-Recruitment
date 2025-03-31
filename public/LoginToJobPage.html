@@ -24,7 +24,7 @@
     }
 
     body {
-      /* background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); */
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -32,10 +32,9 @@
       margin: 0;
     }
 nav {
-   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-  width:100%;
+  background-color: #1773d5;
+  width:80%;
   color:black;
-
 padding:20px;
 }
     .forms-section {
@@ -189,33 +188,34 @@ padding:20px;
       margin-bottom: 2rem;
       font-weight: 600;
     }
- 
+    a{
+
+      text-decoration: none;
+    }
   </style>
 
 
 </head>
 
 <body>
-  <nav  style="padding: 20px;background-color: #fff;display: flex;align-items: center;">
-  <div> <img src="./Images/images.jpeg" height="50px" width="50px" style="border-radius: 10%;margin-right: 20px;">
-      <a href="/" style="text-decoration: none;color:white;font-size:30px;margin: 0;">Home</a>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="padding: 20px;;">
+   
+      <a  style="color:#212529;font-size:30px;">SiPS Recruitment</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button></div>
-      <h1 style="margin-left:15vw;">  <center>Find Your Dream Job With SiPS</center> </h1>
-
-      <!-- <div class="collapse navbar-collapse" id="navbarNav">
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li  >
             <a style="color:white;text-decoration: none;"  href="/">HOME</a>
           </li>
      
-           <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="/AdminLogin">Admin Login</a>   class="nav-link"  class="nav-item"
-          </li>
+          </li> -->
         </ul>
       </div>
-   -->
+  
   </nav>
   <div>
    
@@ -224,8 +224,8 @@ padding:20px;
         <form id="login-form" onsubmit="confirmLogin()">
           <h1 class="section-title">SiPS Recruitment Applicant Login</h1>
           <div class="input-block">
-            <label for="login-Email">Email Id</label>
-            <input id="login-Email" type="text" class="form-control" placeholder="Enter your Email Id" required>
+            <label for="login-Email">Email ID</label>
+            <input id="login-Email" type="text" class="form-control" placeholder="Enter your Email" required>
           </div>
           <div class="input-block position-relative">
             <label for="login-password">Password</label>
@@ -314,6 +314,20 @@ padding:20px;
   </script>
 
 <script>
+
+// Global variables to store URL parameters
+let jobTitle, company, salary;
+
+// Function to extract URL parameters and store them in global variables
+function getUrlParams() {
+    const params = new URLSearchParams(window.location.search);
+    JobTitle = params.get("JobTitle") || "";
+    Company = params.get("Company") || "";
+    Salary = params.get("Salary") || "";
+}
+
+// Call function to fetch parameters on page load
+getUrlParams();
   function confirmSignUp() {
     event.preventDefault();
     const password = document.getElementById('signup-password').value;
@@ -324,14 +338,12 @@ padding:20px;
       return;
     }
   
-window.location.href = `/UserSignup?ApplicantName=${document.getElementById('signup-ApplicantName').value}&PhoneNumber=${document.getElementById('signup-phoneNumber').value}&Password=${password}&Address=${document.getElementById('Address').value}&AadharCard=${document.getElementById('Aadhaar').value}&Email=${document.getElementById('signup-Email').value}`;
+window.location.href = `/UserSignupToJobPage?JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}&ApplicantName=${document.getElementById('signup-ApplicantName').value}&PhoneNumber=${document.getElementById('signup-phoneNumber').value}&Password=${password}&Address=${document.getElementById('Address').value}&AadharCard=${document.getElementById('Aadhaar').value}&Email=${document.getElementById('signup-Email').value}`;
   
   }
-
-
   function confirmLogin() {
     event.preventDefault();
-    window.location.href = `/check?Email=${document.getElementById('login-Email').value}&Password=${document.getElementById('login-password').value}`;
+    window.location.href = `/checkToJobPage?JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}&Email=${document.getElementById('login-Email').value}&Password=${document.getElementById('login-password').value}`;
   }
   document.getElementById('signup-phoneNumber').addEventListener('input', function (e) {
   let value = e.target.value;

@@ -206,6 +206,10 @@
         <div class="search-section">
             <select id="jobTypeSelect">
                 <option value="">Job Type</option>
+                <option value="Full-Time">Full-Time</option>
+                <option value="Part-Time">Part-Time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
             </select>
             <select id="domainSelect">
                 <option value="">Domain</option>
@@ -226,6 +230,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>S.No</th>
                         <th>Job Title</th>
                         <th>Job Type</th>
                         <th>Salary</th>
@@ -247,37 +252,37 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
-       // Fetch job data and initialize the application
+ // Fetch job data and initialize the application
 let jobs = []; // Global variable to store job data
 
-// Fetch job data from the server
 async function fetchJobs() {
     try {
         const response = await fetch('/JobsData'); // Fetch data from the endpoint
-        if (!response.ok) {
-            throw new Error('Failed to fetch job data');
-        }
+        if (!response.ok) throw new Error('Failed to fetch job data');
+
         jobs = await response.json(); // Parse the JSON response
         initializeDropdowns(); // Initialize dropdowns with fetched data
         displayJobs(); // Display all jobs initially
     } catch (error) {
         console.error('Error fetching job data:', error);
-        alert('Could not load job data. Please try again later.');
+        document.getElementById("jobTableBody").innerHTML = `<tr><td colspan="10">Failed to load job data.</td></tr>`;
     }
 }
 
 // Dropdown elements
-const domainSelect = document.getElementById("domainSelect");
-const categorySelect = document.getElementById("categorySelect");
-const jobTypeSelect = document.getElementById("jobTypeSelect");
-const locationSelect = document.getElementById("locationSelect");
-const companySelect = document.getElementById("companySelect");
-const keywordSearch = document.getElementById("keywordSearch");
-const jobTableBody = document.getElementById("jobTableBody");
+const elements = {
+    domain: document.getElementById("domainSelect"),
+    category: document.getElementById("categorySelect"),
+    jobType: document.getElementById("jobTypeSelect"),
+    location: document.getElementById("locationSelect"),
+    company: document.getElementById("companySelect"),
+    keyword: document.getElementById("keywordSearch"),
+    jobTableBody: document.getElementById("jobTableBody")
+};
 
 // Populate dropdowns with unique values
 function populateSelectOptions(selectElement, options, placeholder) {
-    selectElement.innerHTML = `<option value="">${placeholder}</option>`; // Add default "All" option
+    selectElement.innerHTML = `<option value="">${placeholder}</option>`; // Default option
     options.forEach(option => {
         const opt = document.createElement('option');
         opt.value = option.toLowerCase();
@@ -286,100 +291,110 @@ function populateSelectOptions(selectElement, options, placeholder) {
     });
 }
 
-// Initialize Domain, Category, and Job Type dropdowns
+// Initialize dropdowns with all values initially
 function initializeDropdowns() {
-    const domains = [...new Set(jobs.map(job => job.Domain))].sort();
-    populateSelectOptions(domainSelect, domains, "Domain");
+    populateSelectOptions(elements.domain, [...new Set(jobs.map(job => job.Domain))].sort(), "Domain");
+    populateSelectOptions(elements.category, [...new Set(jobs.map(job => job.Category))].sort(), "Category");
+    populateSelectOptions(elements.jobType, [...new Set(jobs.map(job => job.JobType))].sort(), "Job Type");
+    populateSelectOptions(elements.location, [...new Set(jobs.map(job => job.Location))].sort(), "Location");
+    populateSelectOptions(elements.company, [...new Set(jobs.map(job => job.Company))].sort(), "Company");
 
-    // Empty the Category and Job Type dropdowns initially
-    categorySelect.innerHTML = `<option value="">Category</option>`;
-    jobTypeSelect.innerHTML = `<option value="">Job Type</option>`;
+    elements.domain.addEventListener("change", updateCategoryDropdown);
+    elements.category.addEventListener("change", updateJobTypeDropdown);
+    elements.jobType.addEventListener("change", displayJobs);
 
-    // Update jobs based on selected domain
-    domainSelect.addEventListener("change", function() {
-        const selectedDomain = domainSelect.value.toLowerCase();
-        const categories = [...new Set(jobs.filter(job => job.Domain.toLowerCase() === selectedDomain).map(job => job.Category))].sort();
-        populateSelectOptions(categorySelect, categories, "Category");
+    displayJobs(); // Display jobs initially
+}
 
-        // Reset job type dropdown
-        jobTypeSelect.innerHTML = `<option value="">Job Type</option>`;
-        displayJobs();
-    });
+// Update Category dropdown based on selected Domain
+function updateCategoryDropdown() {
+    const selectedDomain = elements.domain.value.toLowerCase();
+    if (!selectedDomain) {
+        populateSelectOptions(elements.category, [...new Set(jobs.map(job => job.Category))].sort(), "Category");
+    } else {
+        const filteredCategories = [...new Set(jobs.filter(job => job.Domain.toLowerCase() === selectedDomain).map(job => job.Category))].sort();
+        populateSelectOptions(elements.category, filteredCategories, "Category");
+    }
+    updateJobTypeDropdown(); // Reset job type based on the new category selection
+    displayJobs();
+}
 
-    // Update job types based on selected category
-    categorySelect.addEventListener("change", function() {
-        const selectedDomain = domainSelect.value.toLowerCase();
-        const selectedCategory = categorySelect.value.toLowerCase();
-        const jobTypes = [...new Set(jobs.filter(job => job.Domain.toLowerCase() === selectedDomain && job.Category.toLowerCase() === selectedCategory).map(job => job.JobType))].sort();
-        populateSelectOptions(jobTypeSelect, jobTypes, "Job Type");
-        displayJobs();
-    });
-
-    // Update the location and company dropdowns based on selected jobs
-    const locations = [...new Set(jobs.map(job => job.Location))].sort();
-    populateSelectOptions(locationSelect, locations, "Location");
-
-    const companies = [...new Set(jobs.map(job => job.Company))].sort();
-    populateSelectOptions(companySelect, companies, "Company");
-
-    // Display all jobs on page load or when the filters are reset
+// Update Job Type dropdown based on selected Category
+function updateJobTypeDropdown() {
+    const selectedCategory = elements.category.value.toLowerCase();
+    if (!selectedCategory) {
+        populateSelectOptions(elements.jobType, [...new Set(jobs.map(job => job.JobType))].sort(), "Job Type");
+    } else {
+        const filteredJobTypes = [...new Set(jobs.filter(job => job.Category.toLowerCase() === selectedCategory).map(job => job.JobType))].sort();
+        populateSelectOptions(elements.jobType, filteredJobTypes, "Job Type");
+    }
     displayJobs();
 }
 
 // Filter and display jobs based on selected filters and keyword search
+
 function displayJobs() {
-    const selectedDomain = domainSelect.value.toLowerCase();
-    const selectedCategory = categorySelect.value.toLowerCase();
-    const selectedJobType = jobTypeSelect.value.toLowerCase();
-    const selectedLocation = locationSelect.value.toLowerCase();
-    const selectedCompany = companySelect.value.toLowerCase();
-    const keyword = keywordSearch.value.toLowerCase();
+    Sno=1;
+    const filters = {
+        domain: elements.domain.value.toLowerCase(),
+        category: elements.category.value.toLowerCase(),
+        jobType: elements.jobType.value.toLowerCase(),
+        location: elements.location.value.toLowerCase(),
+        company: elements.company.value.toLowerCase(),
+        keyword: elements.keyword.value.toLowerCase()
+    };
 
-    const filteredJobs = jobs.filter(job => {
-        const matchesDomain = !selectedDomain || job.Domain.toLowerCase() === selectedDomain;
-        const matchesCategory = !selectedCategory || job.Category.toLowerCase() === selectedCategory;
-        const matchesJobType = !selectedJobType || job.JobType.toLowerCase() === selectedJobType;
-        const matchesLocation = !selectedLocation || job.Location.toLowerCase() === selectedLocation;
-        const matchesCompany = !selectedCompany || job.Company.toLowerCase() === selectedCompany;
-        const matchesKeyword = !keyword || Object.values(job).some(value =>
-            String(value).toLowerCase().includes(keyword)
-        );
-        return matchesDomain && matchesCategory && matchesJobType && matchesLocation && matchesCompany && matchesKeyword;
-    });
-
-    // Render filtered jobs into the table
-    jobTableBody.innerHTML = filteredJobs.map(job => `
-        <tr>
-            <td>${job.JobTitle}</td>
-            <td>${job.JobType}</td>
-            <td>${job.Salary}</td>
-            <td>${job.Company}</td>
-            <td>${job.Location}</td>
-            <td>${job.NoOfJobs}</td>
-            <td>${job.Fulfilled}</td>
-            <td>${new Date(job.PostedDate).toLocaleDateString("en-IN")}</td>
-            <td>${new Date(job.EndDate).toLocaleDateString("en-IN")}</td>
-            <td><a href="/EditJobPage?JobId=${job.JobId}">Edit</a></td>
-        </tr>
-    `).join('');
+    const filteredJobs = jobs.filter(job =>
+        (!filters.domain || job.Domain.toLowerCase() === filters.domain) &&
+        (!filters.category || job.Category.toLowerCase() === filters.category) &&
+        (!filters.jobType || job.JobType.toLowerCase() === filters.jobType) &&
+        (!filters.location || job.Location.toLowerCase() === filters.location) &&
+        (!filters.company || job.Company.toLowerCase() === filters.company) &&
+        (!filters.keyword || Object.values(job).some(value => String(value).toLowerCase().includes(filters.keyword)))
+    );
+   
+    elements.jobTableBody.innerHTML = filteredJobs.length
+        ? filteredJobs.map(job => `
+            <tr>
+                <td>${Sno++}</td>
+                <td>${job.JobTitle}</td>
+                <td>${job.JobType}</td>
+                <td>${job.Salary}</td>
+                <td>${job.Company}</td>
+                <td>${job.Location}</td>
+                <td>${job.NoOfJobs}</td>
+                <td>${job.Fulfilled}</td>
+                <td>${new Date(job.PostedDate).toLocaleDateString("en-IN")}</td>
+                <td>${new Date(job.EndDate).toLocaleDateString("en-IN")}</td>
+                <td><a href="/EditJobPage?JobId=${job.JobId}">Edit</a></td>
+            </tr>`).join('')
+        : `<tr><td colspan="10">No jobs found.</td></tr>`;
+       
 }
 
-// Set up event listeners for dropdowns and search input
+// Set up event listeners
 function setupEventListeners() {
-    keywordSearch.addEventListener("input", displayJobs);
-    locationSelect.addEventListener("change", displayJobs);
-    companySelect.addEventListener("change", displayJobs);
+    ["location", "company"].forEach(id => elements[id].addEventListener("change", displayJobs));
+    elements.keyword.addEventListener("input", debounce(displayJobs, 300)); // Debounce for performance
+}
+
+// Debounce function to optimize search input
+function debounce(func, delay) {
+    let timer;
+    return (...args) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => func(...args), delay);
+    };
 }
 
 // Initialize the application
 async function init() {
-    await fetchJobs(); // Fetch job data and initialize
-    setupEventListeners(); // Set up filter and search functionality
+    await fetchJobs();
+    setupEventListeners();
 }
 
 // Start the application
 init();
-
     </script>
 </body>
 

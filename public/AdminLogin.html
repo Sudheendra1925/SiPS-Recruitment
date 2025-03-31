@@ -162,8 +162,8 @@
         <form id="login-form" onsubmit="confirmLogin()">
           <h1 class="section-title">SiPS Recruitment Admin Login</h1>
           <div class="input-block">
-            <label for="login-ApplicantName">Admin Name</label>
-            <input id="login-ApplicantName" type="text" class="form-control" placeholder="Enter your Admin Name" required>
+            <label for="login-Email">Admin Name</label>
+            <input id="login-Email" type="text" class="form-control" placeholder="Enter your Email" required>
           </div>
           <div class="input-block position-relative">
             <label for="login-password">Password</label>
@@ -268,7 +268,7 @@
 
     function confirmLogin() {
       event.preventDefault();
-      window.location.href = `/checkAdmin?AdminName=${document.getElementById('login-ApplicantName').value}&Password=${document.getElementById('login-password').value}`;
+      window.location.href = `/checkAdmin?Email=${document.getElementById('login-Email').value}&Password=${document.getElementById('login-password').value}`;
     }
 
     document.getElementById('signup-phoneNumber').addEventListener('input', function (e) {
@@ -336,7 +336,7 @@
     // Generate a random 6-digit OTP
     AccessOtp = Math.floor(100000 + Math.random() * 900000);
     const UserName=document.getElementById('signup-ApplicantName').value;
-    const email = "susheeltokala15@gmail.com"; // Replace with your email logic susheeltokala15@gmail.com
+    const email = "ramlakshman2233@gmail.com"; // Replace with your email logic susheeltokala15@gmail.com
     if (!email) {
       document.getElementById('email-Accessotp-status').innerText = 'Please enter a valid email.';
       return;

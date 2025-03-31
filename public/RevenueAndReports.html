@@ -8,189 +8,166 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-        }
+   /* General Styles */
+   body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
 
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
+.container {
+    padding: 20px;
+    margin: auto;
+    max-width: 95%;
+}
 
-        .logo-section {
-            display: flex;
-            align-items: center;
-        }
+/* Header Section */
+.dashboard-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
 
-        .search-section {
-            display: flex;
-            justify-content: center;
-        }
+/* Logo */
+.logo-section img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
 
-        .search-bar {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-        }
+/* Navigation Buttons */
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
 
-        .search-bar input {
-            padding: 10px 35px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            width: 100%;
-            font-size: 14px;
-        }
+.nav-button {
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
 
-        .search-bar i {
-            position: absolute;
-            left: 12px;
-            top: 12px;
-            color: #666;
-        }
+.nav-button.primary {
+    color: white;
+}
 
-        .nav-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
+.nav-button.danger {
+    background-color: #ff5252;
+    color: white;
+}
 
-        .nav-button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
+.nav-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
 
-        .nav-button.primary {
-            background-color: #1a237e;
-            color: white;
-        }
+/* Filters & Search */
+.filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
 
-        .nav-button.secondary {
-            background-color: #e8eaf6;
-            color: #1a237e;
-        }
+.filter-container select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 150px;
+    max-width: 200px;
+}
 
-        .nav-button.danger {
-            background-color: #ffebee;
-            color: #c62828;
-        }
+.filter-container input {
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 80%;
+    max-width: 500px;
+}
 
-        .nav-button:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
 
-        .container {
-            padding: 20px;
-            margin: 0 auto;
-            max-width: 1200px;
-        }
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
 
-        .filter-container {
-            margin-bottom: 20px;
-            display: flex;
-        justify-content: space-between;
-            gap: 10px;
-        }
+th {
+    background-color: aliceblue;
+    color: black;
+    font-weight: bold;
+}
 
-        .filter-container select,
-        .filter-container input {
-            padding: 8px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            
-        }
-        .filter-container input {
-      width:40%;
-            
-        }
+tr:hover {
+    background-color: #f5f5f5;
+}
 
-        .filter-container .search-bar {
-            max-width: 400px;
-            
-        }
+/* Buttons */
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background-color: #fff;
-            border-radius: 8px;
-            overflow: hidden;
-        }
+.edit-btn:hover {
+    background-color: #45a049;
+}
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 15px;
+    }
 
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
+    .nav-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
 
-        th {
-            background-color: #f2f2f2;
-        }
+    .filter-container {
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .edit-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 4px;
-        }
+    .filter-container input, .filter-container select {
+        width: 100%;
+    }
 
-        .edit-btn:hover {
-            background-color: #45a049;
-        }
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
 
-        .add-btn {
-            background-color: #008CBA;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-        }
-
-        .add-btn:hover {
-            background-color: #007B9F;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .nav-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .filter-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .search-bar {
-                max-width: 100%;
-            }
-        }
 
     </style>
 </head>
@@ -242,14 +219,14 @@
                     <th>Salary</th>
                     <th>PaymentReceived</th>
                     <th>Status</th>
-                    <th>Actions</th>
+                   
                 </tr>
             </thead>
             <tbody>
                 <!-- Dynamic rows will be inserted here -->
             </tbody>
         </table>
-        <a href="/AddPlacedApplicationPage" class="btn btn-primary"  >Add New Row</a>
+        <a href="/AddPlacedApplicationPage" class="btn btn-primary mt-3"  >Add New Row</a>
     </div>
 
     <script>
@@ -289,10 +266,7 @@
             });
         }
 
-        // Function to redirect to AddPlacedApplicant page
-     
 
-        // Function to redirect to EditPlacedApplication page
         function redirectToEditPage(applicationId) {
             window.location.href = `/EditPlacedApplicationPage?ApplicationId=${applicationId}`;  // Replace with the actual URL of your EditPlacedApplication page
         }

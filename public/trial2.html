@@ -3,1086 +3,1183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIPS Recruitment - Find Your Perfect Job</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  
+    <title>SIPS Recruitment - Admin Job Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-    
-    /* General Styles */
-    :root {
-        --primary-color: #2196f3;
-        --primary-light: #1976d2;
-        --primary-dark: #0d47a1;
-        --text-primary: #333333;
-        --text-secondary: #666666;
-        --text-light: #999999;
-        --background-light: #F5F5F5;
-        --background-dark: #242424;
-        --white: #FFFFFF;
-        --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
-        --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
-        --footer-bg: #1e3a5f;
-        --footer-text: #eeeeee;
-    }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    body {
-        background-color: var(--background-light);
-        color: var(--text-primary);
-        line-height: 1.6;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        /* background-color: var(--white); */
-    }
-
-    /* Header */
-    .header {
-        background-color: var(--white);
-        box-shadow: var(--shadow-light);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        width:100%;
-    }
-
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 15px 20px;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-right: 30px;
-    }
-
-    .header-left {
-        display: flex;
-        align-items: center;
-    }
-
-    .nav-menu {
-        display: flex;
-        gap: 25px;
-    }
-
-    .nav-item {
-        position: relative;
-    }
-
-    .nav-link {
-        text-decoration: none;
-        color: var(--text-secondary);
-        font-weight: 500;
-        transition: color 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 10px 0;
-    }
-
-    .nav-link:hover {
-        color: var(--primary-color);
-    }
-
-    .dropdown-content {
-        display: grid;
-        grid-template-rows: repeat(10, auto); /* Max 10 rows */
-        grid-auto-flow: column; /* Create dynamic columns */
-        position: absolute;
-        background-color: var(--white);
-        min-width: 220px;
-        max-height: 400px; /* Adjust based on content */
-        overflow-y: auto; /* Enable scrolling if needed */
-        box-shadow: var(--shadow-medium);
-        border-radius: 4px;
-        padding: 10px 0;
-        z-index: 1;
-        top: 100%;
-        left: 0;
-    }
-
-    .dropdown-item {
-        position: relative;
-    }
-
-    .dropdown-link {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 15px;
-        text-decoration: none;
-        color: var(--text-secondary);
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .dropdown-link:hover {
-        background-color: #f1f1f1;
-        color: var(--primary-color);
-    }
-
-    .sub-dropdown {
-        display: none;
-        position: absolute;
-        top: 0;
-        left: 100%;
-        min-width: 220px;
-        background-color: var(--white);
-        box-shadow: var(--shadow-medium);
-        border-radius: 4px;
-        padding: 10px 0;
-    }
-
-    .dropdown-item:hover .sub-dropdown {
-        display: block;
-    }
-
-    .nav-item:hover .dropdown-content {
-        display: block;
-    }
-
-    .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .login-btn, .register-btn {
-        text-decoration: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .login-btn {
-        color: var(--primary-color);
-        border: 1px solid var(--primary-color);
-    }
-
-    .login-btn:hover {
-        background-color: rgba(33, 150, 243, 0.1);
-    }
-
-    .register-btn {
-        background-color: var(--primary-color);
-        color: var(--white);
-    }
-
-    .register-btn:hover {
-        background-color: var(--primary-light);
-    }
-
-    /* Hero Search Section */
-    .hero-search {
-        background-color: var(--white);
-        padding: 40px 0;
-        /* box-shadow: var(--shadow-light);
-        background-color: var(--background-light); */
-    }
-
-    .search-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        background-color: var(--white);
-        border-radius: 8px;
-        padding: 30px;
-        box-shadow: var(--shadow-medium);
-        /* background-color: var(--background-light); */
-    }
-
-    .search-title {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .search-form {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr auto;
-        gap: 15px;
-    }
-
-    .search-input {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .search-input label {
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: var(--text-secondary);
-    }
-
-    .search-input input,
-    .search-input select {
-        padding: 10px;
-        border: 1px solid #E0E0E0;
-        border-radius: 4px;
-    }
-
-    .search-btn {
-        align-self: flex-end;
-        padding: 10px 20px;
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .search-btn:hover {
-        background-color: var(--primary-light);
-    }
-
-    /* Featured Jobs - GRID LAYOUT */
-    .featured-jobs {
-        max-width: 1200px;
-        margin: 40px auto;
-        padding: 0 20px;
-        flex: 1;
-    }
-
-    .section-title {
-        margin-bottom: 20px;
-        position: relative;
-        padding-bottom: 10px;
-    }
-
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 50px;
-        height: 3px;
-        background-color: var(--primary-color);
-    }
-
-    /* Grid layout for job cards */
-    .jobs-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(280px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-
-    .job-card {
-        background-color: var(--white);
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: var(--shadow-light);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%; /* Ensure equal height */
-       
-    }
-
-    .job-card:hover {
-        transform: translateY(-5px);
-        box-shadow: var(--shadow-medium);
-    }
-
-    .job-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .job-logo {
-        width: 50px;
-        height: 50px;
-        background-color: var(--background-light);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        margin-right: 15px;
-        font-weight: bold;
-        color: var(--primary-color);
-        font-size: 20px;
-    }
-
-    .job-details {
-        flex: 1;
-    }
-
-    .job-details h3 {
-        margin-bottom: 5px;
-        font-size: 16px;
-    }
-
-    .job-details p {
-        color: var(--text-secondary);
-        font-size: 14px;
-    }
-
-    .job-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        color: var(--text-secondary);
-        margin-bottom: 15px;
-    }
-
-    .job-meta span {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 13px;
-    }
-
-    .job-description {
-        margin-bottom: 15px;
-        font-size: 14px;
-        color: var(--text-secondary);
-        flex-grow: 1; /* Makes sure it takes available space */
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3; /* Limits to 3 lines */
-        -webkit-box-orient: vertical;
-    }
-
-    .job-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: auto; /* Push button to bottom */
-    }
-
-    .job-salary {
-        font-weight: 500;
-        color: #4CAF50;
-        font-size: 14px;
-    }
-
-    .apply-btn {
-        background-color: var(--primary-light);
-        color: var(--white);
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        font-size: 14px;
-    }
-
-    .apply-btn:hover {
-        background-color: var(--primary-color);
-    }
-
-    .job-tags {
-        display: flex;
-        flex-wrap: wrap;
-        margin-bottom: 15px;
-    }
-
-    .job-tag {
-        display: inline-block;
-        padding: 3px 8px;
-        background-color: rgba(33, 150, 243, 0.1);
-        color: var(--primary-color);
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 500;
-        margin-right: 8px;
-        margin-bottom: 8px;
-    }
-
-    .load-more-btn {
-        display: block;
-        width: 200px;
-        margin: 30px auto;
-        padding: 12px 0;
-        background-color: transparent;
-        border: 1px solid var(--primary-color);
-        color: var(--primary-color);
-        text-align: center;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-    }
-
-    .load-more-btn:hover {
-        background-color: var(--primary-color);
-        color: var(--white);
-    }
-
-    /* Footer */
-    .footer {
-        background-color: var(--footer-bg);
-        color: var(--footer-text);
-        padding: 50px 0 20px;
-        margin-top: 50px;
-    }
-
-    .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 30px;
-    }
-
-    .footer-section h3 {
-        font-size: 18px;
-        margin-bottom: 20px;
-        position: relative;
-        padding-bottom: 10px;
-    }
-
-    .footer-section h3::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 40px;
-        height: 2px;
-        background-color: var(--primary-color);
-    }
-
-    .footer-links {
-        list-style: none;
-    }
-
-    .footer-links li {
-        margin-bottom: 10px;
-    }
-
-    .footer-links a {
-        color: var(--footer-text);
-        text-decoration: none;
-        transition: color 0.3s ease;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .footer-links a:hover {
-        color: var(--primary-color);
-    }
-
-    .social-links {
-        display: flex;
-        gap: 15px;
-        margin-top: 15px;
-    }
-
-    .social-links a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        color: var(--footer-text);
-        transition: all 0.3s ease;
-    }
-
-    .social-links a:hover {
-        background-color: var(--primary-color);
-        transform: translateY(-3px);
-    }
-
-    .contact-info {
-        margin-top: 15px;
-    }
-
-    .contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-        margin-bottom: 12px;
-        font-size: 14px;
-    }
-
-    .contact-item i {
-        margin-top: 4px;
-    }
-
-    .footer-bottom {
-        max-width: 1200px;
-        margin: 30px auto 0;
-        padding: 20px 20px 0;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 15px;
-        font-size: 14px;
-    }
-
-    .footer-bottom-links {
-        display: flex;
-        gap: 20px;
-    }
-
-    .footer-bottom-links a {
-        color: var(--footer-text);
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .footer-bottom-links a:hover {
-        color: var(--primary-color);
-    }
-
-    /* Newsletter Subscription */
-    .newsletter-form {
-        display: flex;
-        margin-top: 15px;
-    }
-
-    .newsletter-input {
-        flex: 1;
-        padding: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background-color: rgba(255, 255, 255, 0.05);
-        color: var(--footer-text);
-        border-radius: 4px 0 0 4px;
-    }
-
-    .newsletter-btn {
-        padding: 10px 15px;
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-        border-radius: 0 4px 4px 0;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .newsletter-btn:hover {
-        background-color: var(--primary-light);
-    }
-
-    /* Mobile Menu Toggle */
-    .menu-toggle {
-        display: none;
-        cursor: pointer;
-        font-size: 24px;
-    }
-
-    /* Filter section for jobs */
-    .job-filters {
-        /* background-color: var(--white); */
-        background-color: var(--background-light);
-        padding: 20px;
-        border-radius: 8px;
-        margin-bottom: 30px;
-        box-shadow: var(--shadow-light);
-    }
-
-    .filter-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 15px;
-    }
-
-    .filter-group {
-        flex: 1;
-        min-width: 200px;
-    }
-
-    .filter-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: var(--text-secondary);
-        font-weight: 500;
-    }
-
-    .filter-group select, 
-    .filter-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .filter-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-    }
-
-    .filter-btn {
-        padding: 8px 16px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
-
-    .apply-filter {
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-    }
-
-    .apply-filter:hover {
-        background-color: var(--primary-light);
-    }
-
-    .reset-filter {
-        background-color: transparent;
-        color: var(--text-secondary);
-        border: 1px solid #e0e0e0;
-    }
-
-    .reset-filter:hover {
-        background-color: #f5f5f5;
-    }
-
-    /* Sidebar Styles */
-    #SideBar {
-        width: 250px;
-        background-color: var(--white);
-        box-shadow: var(--shadow-light);
-        padding: 20px;
-        margin-left: 0px;
-        margin-right: 20px;
-        height: calc(100vh - 80px);
-    }
-
-    .filter-group {
-        margin-bottom: 20px;
-    }
-
-    .filter-group label {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: var(--text-secondary);
-    }
-
-    .filter-group select, .filter-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        font-size: 14px;
-    }
-
-    .filter-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .filter-btn {
-        padding: 8px 16px;
-        border-radius: 4px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .apply-filter {
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-    }
-
-    .apply-filter:hover {
-        background-color: var(--primary-light);
-    }
-
-    .reset-filter {
-        background-color: transparent;
-        color: var(--text-secondary);
-        border: 1px solid #e0e0e0;
-    }
-
-    .reset-filter:hover {
-        background-color: #f5f5f5;
-    }
-
-    #main {
-        display: flex;
-        justify-content: center;
-        align-items: start;
-    }
-
-    #main2 {
-        width: 100%;
-    }
-
-    /* Responsive Design Enhancements */
-    @media (max-width: 992px) {
-        #SideBar {
-            width: 200px;
-            padding: 15px;
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #e8eaf6;
+            --danger-color: #c62828;
+            --border-color: #ddd;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --blue-btn: #2563eb;
+            --blue-btn-hover: #1d4ed8;
         }
 
-        .search-form {
-            grid-template-columns: 1fr 1fr auto;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .jobs-grid {
-            grid-template-columns: repeat(1, 1fr);
-        }
-    }
-
-    @media (max-width: 768px) {
-        #SideBar {
-            display: none; /* Hide sidebar on smaller screens */
-        }
-
-        #main {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .search-form {
-            grid-template-columns: 1fr;
-        }
-
-        .jobs-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .header-container {
-            flex-wrap: wrap;
-            padding: 10px;
-        }
-
-        .header-actions {
-            width: 100%;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-
-        .footer-container {
-            grid-template-columns: 1fr;
-        }
-
-        .footer-bottom {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .footer-bottom-links {
-            justify-content: center;
-        }
-
-        .search-container {
+        body {
+            background-color: #f0f2f5;
             padding: 20px;
         }
 
-        .search-title h1 {
-            font-size: 24px;
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
         }
 
-        .search-title p {
-            font-size: 14px;
+        .logo-section img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
         }
 
-        .job-card {
-            padding: 15px;
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: auto;
         }
 
-        .job-header {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .job-logo {
-            margin-bottom: 10px;
-        }
-
-        .job-meta {
-            flex-direction: column;
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
             gap: 8px;
         }
 
-        .apply-btn {
-            width: 100%;
-            text-align: center;
+        .nav-button:hover {
+            transform: translateY(-1px);
         }
-    }
 
+        .nav-button i {
+            font-size: 14px;
+        }
+
+        .nav-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .dropdown {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: white;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .edit-btn {
+            padding: 8px 16px;
+            background-color: var(--blue-btn);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .edit-btn:hover {
+            background-color: var(--blue-btn-hover);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo-section, 
+            .search-section, 
+            .nav-buttons {
+                margin-left: 0;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dropdown {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <div class="header-left">
-                <a href="#" class="logo">
-                    <img src="images/images.jpeg" alt="SIPS LOGO" height="60" width="60">
-                </a>
-                <div class="menu-toggle" id="menuToggle">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <nav class="nav-menu" id="navMenu">
-                    <div class="nav-item">
-                        <a href="#" class="nav-link">
-                            Jobs <i class="fas fa-chevron-down"></i>
-                        </a>
-                        <!-- <div class="dropdown-content" id="jobs-dropdown">
-                            
-                        </div> -->
-                    </div>
-                </nav>
-            </div>
-            <div class="header-actions">
-                <a href="/Login" class="login-btn">Login</a>
-            </div>
+    <div class="dashboard-header">
+        <div class="logo-section">
+            <img src="./Images/images.jpeg" alt="SIPS Logo">
         </div>
-    </header>
-<div id="main" class="d-flex justify-content-center align-items-center w-100 "  >
-    <!-- Sidebar with Filters -->
-    <div id="SideBar">
-        <div class="filter-group">
-            <label for="jobDomain">Job Domains</label>
-            <select id="jobDomain">
-                <option value="">All Domains</option>
-                <!-- Populate dynamically -->
-            </select>
+        <div class="nav-buttons">
+            <a href="/AdminDashboard" style="text-decoration: none;" class="nav-button primary">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+            <a href="/Companies" style="text-decoration: none;" class="nav-button secondary">
+                <i class="fas fa-building"></i> Companies
+            </a>
+            <a href="/Login" style="text-decoration: none;" class="nav-button danger">
+                <i class="fas fa-sign-out-alt"></i> SignOut
+            </a>
+        </div>
         </div>
 
-        <div class="filter-group">
-            <label for="jobCategory">Job Category</label>
-            <select id="jobCategory">
-                <option value="">All Categories</option>
-                <!-- Populate dynamically -->
-            </select>
-        </div>
-   
-        <!-- <div class="filter-group">
-            <label for="jobExperience">Experience</label>
-            <select id="jobExperience">
-                <option value="">All Experience Levels</option>
-                <option value="0-1">0-1 Years</option>
-                <option value="1-3">1-3 Years</option>
-                <option value="3-5">3-5 Years</option>
-                <option value="5+">5+ Years</option>
-            </select>
-        </div> -->
-        <div class="filter-group">
-            <label for="jobType">Job Type</label>
-            <select id="jobType">
-                <option value="">All Job Types</option>
-                <option value="Full-Time">Full-Time</option>
-                <option value="Part-Time">Part-Time</option>
-                <option value="Remote">Remote</option>
-            </select>
-        </div>
-        <div class="filter-actions">
-           
-            <button class="filter-btn reset-filter" id="resetFilter">Reset</button>
-        </div>
-    </div>
-<div id="main2" class="d-flex justify-content-center align-items-center" > 
-    <!-- Hero Search Section -->
-    <section class="hero-search">
-        <div class="search-container">
-            <div class="search-title">
-                <h1>Find Your Dream Job</h1>
-                <p>Over 10,000+ jobs for you to explore</p>
+    <main class="main-content">
+        <div class="search-section">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search jobs by Name, Date, Salary, PhoneNumber" id="ApplicationSearch" onchange="searchApplicationLeads()">
             </div>
-            <form class="search-form">
-                <div class="search-input">
-                    <label>What</label>
-                    <input type="text" placeholder="Job Title, Keywords, or Company">
-                </div>
-                <div class="search-input">
-                    <label>Where</label>
-                    <input type="text" placeholder="Location">
-                </div>
-                <button type="submit" class="search-btn">Search</button>
-            </form>
+        
+            <!-- <select class="dropdown" id="domain">
+                <option value="all">Domain</option>
+            </select>
+            <select class="dropdown" id="category">
+                <option value="all">Category</option>
+            </select>
+         -->
+            <select class="dropdown" id="jobRole">
+                <option value="all">Job Role</option>
+            </select>
+            <select class="dropdown" id="company">
+                <option value="all">Company</option>
+            </select>
+            <select class="dropdown" id="Status">
+                <option value="all">Status</option>
+            </select>
+        
+         
+        
         </div>
-    </section>
+        
 
-    <!-- Featured Jobs - GRID LAYOUT -->
-    <section class="featured-jobs">
-        <h2 class="section-title">Featured Jobs</h2>
-        <div class="jobs-grid">
-            <!-- Job Cards will be dynamically inserted here -->
+        <table class="table table-striped table-container">
+            <thead>
+                <tr>
+                    <th scope="col">S.No</th>
+                    <th scope="col">Applicant Name</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Company Name</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Salary</th>
+                    <th scope="col">Applied Date</th>
+                    <th scope="col">Resume</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Edit</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <!-- Dynamic content will be added here -->
+            </tbody>
+        </table>
+
         </div>
-    </section>
-</div>
-</div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-    const searchForm = document.querySelector(".search-form");
-    const jobTitleInput = document.querySelector(".search-input input[placeholder='Job Title, Keywords, or Company']");
-    const locationInput = document.querySelector(".search-input input[placeholder='Location']");
-    const jobsGrid = document.querySelector(".jobs-grid");
-    const jobCategorySelect = document.getElementById("jobCategory");
-    const jobDomainSelect = document.getElementById("jobDomain");
-    const jobLocationInput = document.getElementById("jobLocation");
-    const jobTypeSelect = document.getElementById("jobType");
-    const resetFilterBtn = document.getElementById("resetFilter");
+//         document.addEventListener("DOMContentLoaded", async () => {
+//             try {
+//                 // Fetch job data from API
+//                 const response = await fetch(`/TotalApplicationData`);
+//                 if (!response.ok) throw new Error('Network response was not ok');
+    
+//                 const data = await response.json();
+//                 window.ApplicationData = data; // Store globally for filtering
+           
+//                 populateFilters(data);
+//                 renderTable(data);
+//             } catch (error) {
+//                 console.error('Error fetching data:', error);
+//                 document.getElementById('tbody').innerHTML = '<tr><td colspan="11">Error loading data.</td></tr>';
+//             }
+//         });
+    
 
-    let allJobs = []; // Stores all jobs fetched from the API
-    let filteredJobs = []; // Stores jobs after applying filters
+        
+//         function populateFilters(data) {
+//             const jobTypeSet = new Set();
+//             const companySet = new Set();
+    
+//             data.forEach(app => {
+//                 jobTypeSet.add(app.JobRole.toLowerCase());
+//                 companySet.add(app.Company.toLowerCase());
+//             });
+    
+//             updateDropdown('jobRole', jobTypeSet, "Job Role");
+//             updateDropdown('Status', new Set(data.map(app => app.Status.toLowerCase())), "Status");
+//             updateDropdown('company', companySet, "Company");
+//         }
+    
+//         function updateDropdown(id, items, defaultOption) {
+//     const dropdown = document.getElementById(id);
+//     dropdown.innerHTML = `<option value="all">${defaultOption}</option>`;
 
-    // Fetch job data from API
-    fetch("/JobsData")
-        .then(response => response.json())
-        .then(data => {
-            allJobs = data;
-            filteredJobs = [...allJobs]; // Initialize filteredJobs with all jobs
-            populateFilters(allJobs);
-            renderJobs(filteredJobs);
-        })
-        .catch(error => console.error("Error fetching job data:", error));
+//     // Convert Set to Array and sort the items in ascending order
+//     const sortedItems = Array.from(items).sort((a, b) => a.localeCompare(b));
 
-    // Function to render jobs
-    function renderJobs(jobs) {
-        jobsGrid.innerHTML = "";
-        if (jobs.length === 0) {
-            jobsGrid.innerHTML = "<p>No jobs found.</p>";
-            return;
+//     sortedItems.forEach(item => {
+//         dropdown.innerHTML += `<option value="${item}">${item}</option>`;
+//     });
+
+//     // Apply scroll bar if there are more than 5 options
+//     if (sortedItems.length > 5) {
+//         dropdown.style.maxHeight = '50px'; // Adjust this based on your preference for height
+//         dropdown.style.overflowY = 'scroll';
+//     } else {
+//         dropdown.style.maxHeight = 'none'; // Remove maxHeight when there are fewer than 5 options
+//         dropdown.style.overflowY = 'none'; // Disable scrolling
+//     }
+// }
+
+    
+//         // Domain change event to update categories
+//         document.getElementById('domain').addEventListener('change', function () {
+//             const selectedDomain = this.value.toLowerCase();
+//             populateCategoryDropdown(window.ApplicationData, selectedDomain);
+    
+//             const filteredData = selectedDomain === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Domain.toLowerCase() === selectedDomain);
+    
+//             const jobTypeSet = new Set(filteredData.map(app => app.JobRole.toLowerCase()));
+//             const companySet = new Set(filteredData.map(app => app.Company.toLowerCase()));
+    
+//             updateDropdown('jobRole', jobTypeSet, "Job Role");
+//             updateDropdown('company', companySet, "Company");
+    
+//             searchApplicationLeads();
+//         });
+    
+//         // Category change event to filter data
+//         document.getElementById('category').addEventListener('change', function () {
+//             const selectedCategory = this.value.toLowerCase();
+//             const filteredData = selectedCategory === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Category.toLowerCase() === selectedCategory);
+    
+//             const jobTypeSet = new Set(filteredData.map(app => app.JobRole.toLowerCase()));
+//             const companySet = new Set(filteredData.map(app => app.Company.toLowerCase()));
+    
+//             updateDropdown('jobRole', jobTypeSet, "Job Role");
+//             updateDropdown('company', companySet, "Company");
+    
+//             searchApplicationLeads();
+//         });
+    
+//         // Function for searching and filtering application leads
+//         function searchApplicationLeads() {
+//             const searchInput = document.getElementById('ApplicationSearch').value.toLowerCase();
+//             const selectedCategory = document.getElementById('category').value.toLowerCase();
+//             const selectedJobType = document.getElementById('jobRole').value.toLowerCase();
+//             const selectedStatus = document.getElementById('Status').value.toLowerCase();
+//             const selectedCompany = document.getElementById('company').value.toLowerCase();
+    
+//             const filteredData = window.ApplicationData.filter(app => {
+//                 const matchesSearch = app.ApplicantName.toLowerCase().includes(searchInput) ||
+//                                       app.PhoneNumber.toLowerCase().includes(searchInput) ||
+//                                       new Date(app.AppliedDate).toLocaleDateString("en-IN").includes(searchInput);
+    
+//                 const matchesCategory = selectedCategory === "all" || app.Category.toLowerCase() === selectedCategory;
+//                 const matchesJobType = selectedJobType === "all" || app.JobRole.toLowerCase() === selectedJobType;
+//                 const matchesStatus = selectedStatus === "all" || app.Status.toLowerCase() === selectedStatus;
+//                 const matchesCompany = selectedCompany === "all" || app.Company.toLowerCase() === selectedCompany;
+    
+//                 return matchesSearch && matchesCategory && matchesJobType && matchesStatus && matchesCompany;
+//             });
+    
+//             renderTable(filteredData);
+//         }
+    
+//         // Function to render data into a table
+//         function renderTable(data) {
+//             const tbody = document.getElementById('tbody');
+//             tbody.innerHTML = '';
+    
+//             data.forEach((app, index) => {
+//                 const statusColor = getStatusColor(app.Status);
+//                 const row = document.createElement('tr');
+//                 row.innerHTML = `
+//                     <td>${index + 1}</td>
+//                     <td>${app.ApplicantName}</td>
+//                     <td>${app.PhoneNumber}</td>
+//                     <td>${app.Company}</td>
+//                     <td>${app.JobRole}</td>
+//                     <td>${app.Salary.toLocaleString("en-IN")}</td>
+//                     <td>${new Date(app.AppliedDate).toLocaleDateString("en-IN")}</td>
+//                     <td><a href="/uploads/resumes/${app.Resume}" target="_blank">Resume</a></td>
+//                     <td>
+//                         <details>
+//                             <summary>Why me</summary>
+//                             <p style="white-space: pre-wrap; margin: 0;">${app.Description}</p>
+//                         </details>
+//                     </td>
+//                     <td style="${statusColor}">${app.Status}</td>
+//                     <td>
+//                         <a href="/EditApplication/${encodeURIComponent(app.ApplicationId)}" class="btn btn-primary">Edit</a>
+//                     </td>
+//                 `;
+//                 tbody.appendChild(row);
+//             });
+    
+//             if (data.length === 0) {
+//                 tbody.innerHTML = '<tr><td colspan="11">No results found.</td></tr>';
+//             }
+//         }
+    
+//         // Add event listeners to dropdowns for filtering
+//         document.getElementById('jobRole').addEventListener('change', searchApplicationLeads);
+//         document.getElementById('Status').addEventListener('change', searchApplicationLeads);
+//         document.getElementById('company').addEventListener('change', searchApplicationLeads);
+//         document.getElementById('ApplicationSearch').addEventListener('input', searchApplicationLeads);
+    
+//         // Function to get color based on status
+//         function getStatusColor(status) {
+//             switch (status.toLowerCase()) {
+//                 case 'pending': return 'color: #f39c12';  // Amber
+//                 case 'selected': return 'color: #27ae60';  // Green
+//                 case 'rejected': return 'color: #e74c3c';  // Red
+//                 case 'stage1': return 'color: #3498db';  // Blue
+//                 default: return ''; 
+//             }
+//         }
+    </script>
+    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        // Fetch job data from API
+        const response = await fetch(`/TotalApplicationData`);
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const data = await response.json();
+        window.ApplicationData = data; // Store globally for filtering
+
+        populateFilters(data);
+        renderTable(data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('tbody').innerHTML = '<tr><td colspan="11">Error loading data.</td></tr>';
+    }
+});
+
+// Populate dropdowns with unique values
+function populateFilters(data) {
+    const jobTypeSet = new Set();
+    const companySet = new Set();
+
+    data.forEach(app => {
+        jobTypeSet.add(app.JobRole.toLowerCase());
+        companySet.add(app.Company.toLowerCase());
+    });
+
+    updateDropdown('domain', new Set(data.map(app => app.Domain.toLowerCase())), "Domain");
+    updateDropdown('category', new Set(data.map(app => app.Category.toLowerCase())), "Category");
+    updateDropdown('jobRole', jobTypeSet, "Job Role");
+    updateDropdown('Status', new Set(data.map(app => app.Status.toLowerCase())), "Status");
+    updateDropdown('company', companySet, "Company");
+
+    // ✅ Update applications after initializing filters
+    searchApplicationLeads();
+}
+
+// Update dropdown options dynamically
+function updateDropdown(id, items, defaultOption) {
+    const dropdown = document.getElementById(id);
+    dropdown.innerHTML = `<option value="all">${defaultOption}</option>`;
+
+    const sortedItems = Array.from(items).sort((a, b) => a.localeCompare(b));
+    sortedItems.forEach(item => {
+        dropdown.innerHTML += `<option value="${item}">${item}</option>`;
+    });
+
+    if (sortedItems.length > 5) {
+        dropdown.style.maxHeight = '50px';
+        dropdown.style.overflowY = 'scroll';
+    } else {
+        dropdown.style.maxHeight = 'none';
+        dropdown.style.overflowY = 'none';
+    }
+
+    // ✅ Ensure applications update on dropdown change
+    dropdown.addEventListener('change', searchApplicationLeads);
+}
+
+// Domain change event updates categories, job roles, and companies
+document.getElementById('domain').addEventListener('change', function () {
+    const selectedDomain = this.value.toLowerCase();
+    const filteredData = selectedDomain === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Domain.toLowerCase() === selectedDomain);
+
+    updateDropdown('category', new Set(filteredData.map(app => app.Category.toLowerCase())), "Category");
+    updateDropdown('jobRole', new Set(filteredData.map(app => app.JobRole.toLowerCase())), "Job Role");
+    updateDropdown('company', new Set(filteredData.map(app => app.Company.toLowerCase())), "Company");
+
+    searchApplicationLeads();
+});
+
+// Category change event updates job roles and companies
+document.getElementById('category').addEventListener('change', function () {
+    const selectedCategory = this.value.toLowerCase();
+    const filteredData = selectedCategory === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Category.toLowerCase() === selectedCategory);
+
+    updateDropdown('jobRole', new Set(filteredData.map(app => app.JobRole.toLowerCase())), "Job Role");
+    updateDropdown('company', new Set(filteredData.map(app => app.Company.toLowerCase())), "Company");
+
+    searchApplicationLeads();
+});
+
+// Function to filter and display applications
+function searchApplicationLeads() {
+    const searchInput = document.getElementById('ApplicationSearch').value.toLowerCase();
+    const selectedDomain = document.getElementById('domain').value.toLowerCase();
+    const selectedCategory = document.getElementById('category').value.toLowerCase();
+    const selectedJobType = document.getElementById('jobRole').value.toLowerCase();
+    const selectedStatus = document.getElementById('Status').value.toLowerCase();
+    const selectedCompany = document.getElementById('company').value.toLowerCase();
+
+    const filteredData = window.ApplicationData.filter(app => {
+        const matchesSearch = app.ApplicantName.toLowerCase().includes(searchInput) ||
+            app.PhoneNumber.toLowerCase().includes(searchInput) ||
+            new Date(app.AppliedDate).toLocaleDateString("en-IN").includes(searchInput);
+
+        const matchesDomain = selectedDomain === "all" || app.Domain.toLowerCase() === selectedDomain;
+        const matchesCategory = selectedCategory === "all" || app.Category.toLowerCase() === selectedCategory;
+        const matchesJobType = selectedJobType === "all" || app.JobRole.toLowerCase() === selectedJobType;
+        const matchesStatus = selectedStatus === "all" || app.Status.toLowerCase() === selectedStatus;
+        const matchesCompany = selectedCompany === "all" || app.Company.toLowerCase() === selectedCompany;
+
+        return matchesSearch && matchesDomain && matchesCategory && matchesJobType && matchesStatus && matchesCompany;
+    });
+
+    renderTable(filteredData);
+}
+
+// Function to render table with filtered applications
+function renderTable(data) {
+    const tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
+
+    data.forEach((app, index) => {
+        const statusColor = getStatusColor(app.Status);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${app.ApplicantName}</td>
+            <td>${app.PhoneNumber}</td>
+            <td>${app.Company}</td>
+            <td>${app.JobRole}</td>
+            <td>${app.Salary.toLocaleString("en-IN")}</td>
+            <td>${new Date(app.AppliedDate).toLocaleDateString("en-IN")}</td>
+            <td><a href="/uploads/resumes/${app.Resume}" target="_blank">Resume</a></td>
+            <td>
+                <details>
+                    <summary>Why me</summary>
+                    <p style="white-space: pre-wrap; margin: 0;">${app.Description}</p>
+                </details>
+            </td>
+            <td style="${statusColor}">${app.Status}</td>
+            <td>
+                <a href="/EditApplication/${encodeURIComponent(app.ApplicationId)}" class="btn btn-primary">Edit</a>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11">No results found.</td></tr>';
+    }
+}
+
+// Function to get color based on status
+function getStatusColor(status) {
+    switch (status.toLowerCase()) {
+        case 'pending': return 'color: #f39c12';  // Amber
+        case 'selected': return 'color: #27ae60';  // Green
+        case 'rejected': return 'color: #e74c3c';  // Red
+        case 'stage1': return 'color: #3498db';  // Blue
+        default: return ''; 
+    }
+}
+
+// ✅ Ensure applications update on dropdown selection
+document.getElementById('jobRole').addEventListener('change', searchApplicationLeads);
+document.getElementById('Status').addEventListener('change', searchApplicationLeads);
+document.getElementById('company').addEventListener('change', searchApplicationLeads);
+document.getElementById('ApplicationSearch').addEventListener('input', searchApplicationLeads);
+
+    </script>
+    
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPS Recruitment - Admin Job Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a237e;
+            --secondary-color: #e8eaf6;
+            --danger-color: #c62828;
+            --border-color: #ddd;
+            --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --blue-btn: #2563eb;
+            --blue-btn-hover: #1d4ed8;
         }
 
-        jobs.forEach(job => {
-            const jobCard = document.createElement("div");
-            jobCard.classList.add("job-card");
-            jobCard.innerHTML = `
-                <div class="job-header">
-                    <div class="job-logo">
-                        <img src="${job.logoUrl || './Images/images.jpg'}" alt="${job.Company}" style="height: 30px; width: 30px;">
-                    </div>
-                    <div class="job-details">
-                        <h3>${job.JobTitle}</h3>
-                        <p>${job.Company}</p>
-                    </div>
-                </div>
-                <div class="job-description">${job.Description || "No description available"}</div>
-                <div class="job-meta">
-                    <span><i class="fas fa-map-marker-alt"></i> ${job.Location}</span>
-                    <span><i class="fas fa-briefcase"></i> ${job.Experience}</span>
-                    <span><i class="fas fa-clock"></i> ${job.JobType}</span>
-                    <span class="job-salary">${job.Salary ? `<i class="fas fa-money-bill"></i> ${job.Salary}` : `<i class="fas fa-money-bill"></i> Salary not disclosed`}</span>
-                </div>
-                <div class="job-actions">
-                    <button class="apply-btn">Apply Now</button>
-                </div>
-            `;
-            jobsGrid.appendChild(jobCard);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        .logo-section img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        .nav-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-button i {
+            font-size: 14px;
+        }
+
+        .nav-button.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .nav-button.secondary {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        .nav-button.danger {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+            width: 400px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .dropdown {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            background-color: white;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+
+        .dropdown:focus {
+            border-color: var(--blue-btn);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .edit-btn {
+            padding: 8px 16px;
+            background-color: var(--blue-btn);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .edit-btn:hover {
+            background-color: var(--blue-btn-hover);
+            transform: translateY(-1px);
+        }
+
+        .status-pending {
+            color: #f39c12;
+        }
+
+        .status-selected {
+            color: #27ae60;
+        }
+
+        .status-rejected {
+            color: #e74c3c;
+        }
+
+        .status-stage1 {
+            color: #3498db;
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .logo-section, 
+            .search-section, 
+            .nav-buttons {
+                margin-left: 0;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .search-bar {
+                width: 100%;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .search-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dropdown {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <div class="logo-section">
+            <img src="./Images/images.jpeg" alt="SIPS Logo">
+        </div>
+        <div class="nav-buttons">
+            <a href="/AdminDashboard" style="text-decoration: none;" class="nav-button primary">
+                <i class="fas fa-chart-bar"></i> Dashboard
+            </a>
+            <a href="/Companies" style="text-decoration: none;" class="nav-button secondary">
+                <i class="fas fa-building"></i> Companies
+            </a>
+            <a href="/Login" style="text-decoration: none;" class="nav-button danger">
+                <i class="fas fa-sign-out-alt"></i> SignOut
+            </a>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="search-section">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search jobs by Name, Date, Salary, PhoneNumber" 
+                       id="ApplicationSearch" oninput="searchApplicationLeads()"
+                       aria-label="Search applications">
+            </div>
+        
+            <select class="dropdown" id="domain" aria-label="Filter by domain">
+                <option value="all">All Domains</option>
+            </select>
+            
+            <select class="dropdown" id="category" aria-label="Filter by category">
+                <option value="all">All Categories</option>
+            </select>
+            
+            <select class="dropdown" id="jobRole" aria-label="Filter by job role">
+                <option value="all">All Job Roles</option>
+            </select>
+            
+            <select class="dropdown" id="company" aria-label="Filter by company">
+                <option value="all">All Companies</option>
+            </select>
+            
+            <select class="dropdown" id="Status" aria-label="Filter by status">
+                <option value="all">All Statuses</option>
+            </select>
+        </div>
+
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Loading applications...</p>
+        </div>
+
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th scope="col">Applicant Name</th>
+                        <th scope="col">Phone Number</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Applied Date</th>
+                        <th scope="col">Resume</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <!-- Dynamic content will be added here -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                showLoading();
+                const response = await fetch(`/TotalApplicationData`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                window.ApplicationData = data;
+                
+                populateFilters(data);
+                renderTable(data);
+                hideLoading();
+                
+                // Add event listeners after initial render
+                setupEventListeners();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('tbody').innerHTML = 
+                    '<tr><td colspan="11" class="text-center text-danger">Error loading data. Please try again later.</td></tr>';
+                hideLoading();
+            }
         });
-    }
 
-    // Populate filters with job data
-    function populateFilters(data) {
-        // Populate Domain dropdown
-        const domains = [...new Set(data.map(job => job.Domain).sort())];
-        jobDomainSelect.innerHTML = `<option value="">All Domains</option>`;
-        domains.forEach(domain => {
-            const option = document.createElement("option");
-            option.value = domain;
-            option.textContent = domain;
-            jobDomainSelect.appendChild(option);
-        });
+        function showLoading() {
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('tbody').innerHTML = '';
+        }
 
-   
+        function hideLoading() {
+            document.getElementById('loadingSpinner').style.display = 'none';
+        }
 
-        // Populate Category dropdown based on selected domain
-        jobDomainSelect.addEventListener("change", () => {
-            const selectedDomain = jobDomainSelect.value;
-            const categories = [...new Set(data
-                .filter(job => selectedDomain === "" || job.Domain === selectedDomain)
-                .map(job => job.Category).sort())];
-            jobCategorySelect.innerHTML = `<option value="">All Categories</option>`;
-            categories.forEach(category => {
-                const option = document.createElement("option");
-                option.value = category;
-                option.textContent = category;
-                jobCategorySelect.appendChild(option);
+        function populateFilters(data) {
+            if (!data || !Array.isArray(data)) return;
+
+            const domains = [...new Set(data.map(app => app.Domain?.toLowerCase() || '').filter(Boolean))];
+            const categories = [...new Set(data.map(app => app.Category?.toLowerCase() || '').filter(Boolean))];
+            const jobRoles = [...new Set(data.map(app => app.JobRole?.toLowerCase() || '').filter(Boolean))];
+            const companies = [...new Set(data.map(app => app.Company?.toLowerCase() || '').filter(Boolean))];
+            const statuses = [...new Set(data.map(app => app.Status?.toLowerCase() || '').filter(Boolean))];
+
+            updateDropdown('domain', domains, "All Domains");
+            updateDropdown('category', categories, "All Categories");
+            updateDropdown('jobRole', jobRoles, "All Job Roles");
+            updateDropdown('company', companies, "All Companies");
+            updateDropdown('Status', statuses, "All Statuses");
+        }
+
+        function updateDropdown(id, items, defaultOption) {
+            const dropdown = document.getElementById(id);
+            if (!dropdown) return;
+
+            // Clear existing options
+            dropdown.innerHTML = `<option value="all">${defaultOption}</option>`;
+
+            // Sort items alphabetically
+            const sortedItems = items.sort((a, b) => a.localeCompare(b));
+
+            // Add new options
+            sortedItems.forEach(item => {
+                const displayText = item.charAt(0).toUpperCase() + item.slice(1);
+                dropdown.innerHTML += `<option value="${item}">${displayText}</option>`;
             });
 
-            // Trigger filtering automatically
-            filterJobs();
-        });
+            // Add scroll if more than 5 options
+            if (sortedItems.length > 5) {
+                dropdown.size = 5;
+                dropdown.style.overflowY = 'auto';
+            }
+        }
 
-        // Populate Job Type dropdown
-        const jobTypes = [...new Set(data.map(job => job.JobType))];
-        jobTypeSelect.innerHTML = `<option value="">All Job Types</option>`;
-        jobTypes.forEach(type => {
-            const option = document.createElement("option");
-            option.value = type;
-            option.textContent = type;
-            jobTypeSelect.appendChild(option);
-        });
-    }
+        function setupEventListeners() {
+            // Add event listeners for all filter dropdowns
+            document.getElementById('domain').addEventListener('change', function() {
+                filterByDomain(this.value.toLowerCase());
+                searchApplicationLeads();
+            });
 
-    // Function to filter jobs
-    function filterJobs() {
-        const category = jobCategorySelect.value;
-        const domain = jobDomainSelect.value;
-        const jobType = jobTypeSelect.value;
+            document.getElementById('category').addEventListener('change', searchApplicationLeads);
+            document.getElementById('jobRole').addEventListener('change', searchApplicationLeads);
+            document.getElementById('company').addEventListener('change', searchApplicationLeads);
+            document.getElementById('Status').addEventListener('change', searchApplicationLeads);
+            document.getElementById('ApplicationSearch').addEventListener('input', debounce(searchApplicationLeads, 300));
+        }
 
-        // Filter jobs based on selected criteria
-        filteredJobs = allJobs.filter(job => 
-            (category === "" || job.Category === category) &&
-            (domain === "" || job.Domain === domain) &&
-            (jobType === "" || job.JobType === jobType)
-        );
+        function filterByDomain(selectedDomain) {
+            if (selectedDomain === "all") {
+                // Reset category dropdown to all options
+                const allCategories = [...new Set(window.ApplicationData.map(app => 
+                    app.Category?.toLowerCase() || '').filter(Boolean))];
+                updateDropdown('category', allCategories, "All Categories");
+                return;
+            }
 
-        renderJobs(filteredJobs); // Render filtered jobs
-    }
+            // Filter categories by selected domain
+            const filteredCategories = [...new Set(
+                window.ApplicationData
+                    .filter(app => app.Domain?.toLowerCase() === selectedDomain)
+                    .map(app => app.Category?.toLowerCase() || '')
+                    .filter(Boolean)
+            )];
 
-    // Add event listeners to dropdowns for automatic filtering
-    jobCategorySelect.addEventListener("change", filterJobs);
-    jobDomainSelect.addEventListener("change", filterJobs);
-    jobTypeSelect.addEventListener("change", filterJobs);
+            updateDropdown('category', filteredCategories, "All Categories");
+        }
 
-    // Reset filters
-    resetFilterBtn.addEventListener("click", () => {
-        jobCategorySelect.value = "";
-        jobDomainSelect.value = "";
-        jobTypeSelect.value = "";
-        filteredJobs = [...allJobs]; // Reset filteredJobs to all jobs
-        renderJobs(filteredJobs); // Render all jobs
-    });
+        function searchApplicationLeads() {
+            if (!window.ApplicationData) return;
 
-    // Search form submission
-    searchForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const searchTitle = jobTitleInput.value.trim().toLowerCase();
-        const searchLocation = locationInput.value.trim().toLowerCase();
+            const searchTerm = document.getElementById('ApplicationSearch').value.toLowerCase();
+            const domain = document.getElementById('domain').value.toLowerCase();
+            const category = document.getElementById('category').value.toLowerCase();
+            const jobRole = document.getElementById('jobRole').value.toLowerCase();
+            const company = document.getElementById('company').value.toLowerCase();
+            const status = document.getElementById('Status').value.toLowerCase();
 
-        // Search within the currently filtered jobs
-        const searchedJobs = filteredJobs.filter(job => 
-            (searchTitle === "" || job.JobTitle?.toLowerCase().includes(searchTitle) || job.Company?.toLowerCase().includes(searchTitle)) &&
-            (searchLocation === "" || job.Location?.toLowerCase().includes(searchLocation))
-        );
+            const filteredData = window.ApplicationData.filter(app => {
+                // Search term matching
+                const matchesSearch = !searchTerm || 
+                    (app.ApplicantName?.toLowerCase().includes(searchTerm)) ||
+                    (app.PhoneNumber?.toLowerCase().includes(searchTerm)) ||
+                    (app.Salary?.toString().includes(searchTerm)) ||
+                    (new Date(app.AppliedDate)?.toLocaleDateString("en-IN").includes(searchTerm));
 
-        renderJobs(searchedJobs); // Render searched jobs
-    });
-});
+                // Filter matching
+                const matchesDomain = domain === "all" || app.Domain?.toLowerCase() === domain;
+                const matchesCategory = category === "all" || app.Category?.toLowerCase() === category;
+                const matchesJobRole = jobRole === "all" || app.JobRole?.toLowerCase() === jobRole;
+                const matchesCompany = company === "all" || app.Company?.toLowerCase() === company;
+                const matchesStatus = status === "all" || app.Status?.toLowerCase() === status;
+
+                return matchesSearch && matchesDomain && matchesCategory && 
+                       matchesJobRole && matchesCompany && matchesStatus;
+            });
+
+            renderTable(filteredData);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('tbody');
+            if (!tbody) return;
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="11" class="text-center">No applications found matching your criteria.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = data.map((app, index) => {
+                const statusClass = getStatusClass(app.Status);
+                const formattedDate = app.AppliedDate ? 
+                    new Date(app.AppliedDate).toLocaleDateString("en-IN") : 'N/A';
+                const formattedSalary = app.Salary ? 
+                    app.Salary.toLocaleString("en-IN") : 'N/A';
+
+                return `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${app.ApplicantName || 'N/A'}</td>
+                        <td>${app.PhoneNumber || 'N/A'}</td>
+                        <td>${app.Company || 'N/A'}</td>
+                        <td>${app.JobRole || 'N/A'}</td>
+                        <td>${formattedSalary}</td>
+                        <td>${formattedDate}</td>
+                        <td>
+                            ${app.Resume ? 
+                                `<a href="/uploads/resumes/${app.Resume}" target="_blank" aria-label="View resume">Resume</a>` : 
+                                'N/A'}
+                        </td>
+                        <td>
+                            <details>
+                                <summary>Why me</summary>
+                                <p style="white-space: pre-wrap; margin: 0;">${app.Description || 'No description provided'}</p>
+                            </details>
+                        </td>
+                        <td class="${statusClass}">${app.Status || 'N/A'}</td>
+                        <td>
+                            ${app.ApplicationId ? 
+                                `<a href="/EditApplication/${encodeURIComponent(app.ApplicationId)}" 
+                                   class="edit-btn" aria-label="Edit application">
+                                    Edit
+                                </a>` : 
+                                'N/A'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function getStatusClass(status) {
+            if (!status) return '';
+            
+            switch (status.toLowerCase()) {
+                case 'pending': return 'status-pending';
+                case 'selected': return 'status-selected';
+                case 'rejected': return 'status-rejected';
+                case 'stage1': return 'status-stage1';
+                default: return '';
+            }
+        }
+
+        // Debounce function to limit how often search is performed during typing
+        function debounce(func, wait) {
+            let timeout;
+            return function() {
+                const context = this, args = arguments;
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    func.apply(context, args);
+                }, wait);
+            };
+        }
     </script>
 </body>
 </html>

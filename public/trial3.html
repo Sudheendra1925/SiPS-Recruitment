@@ -7,8 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
     
     /* General Styles */
@@ -859,10 +857,7 @@
         display: none;
     }
 }
-a{
 
-text-decoration: none;
-}
     </style>
 </head>
 <body>
@@ -889,7 +884,7 @@ text-decoration: none;
         </div>
     </header>
 
-    <div id="main" class=" w-100">
+    <div id="main" class="d-flex justify-content-center align-items-center w-100">
         <!-- Sidebar with Filters -->
         <div id="SideBar">
             <div class="filter-group">
@@ -983,39 +978,38 @@ text-decoration: none;
     </script>
     <script>
         
-        document.addEventListener("DOMContentLoaded", async function () {
-    // Extract Applicant Name from URL
-    const ApplicantName = window.location.pathname.split('/').pop();
-    document.getElementById("Home").href = `/Home/${ApplicantName}`;
+   
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const ApplicantName = window.location.pathname.split('/').pop();
+        document.getElementById("Home").href = `/Home/${ApplicantName}`;
     const searchForm = document.querySelector(".search-form");
     const jobTitleInput = document.querySelector(".search-input input[placeholder='Job Title, Keywords, or Company']");
     const locationInput = document.querySelector(".search-input input[placeholder='Location']");
     const jobsGrid = document.querySelector(".jobs-grid");
     const jobCategorySelect = document.getElementById("jobCategory");
     const jobDomainSelect = document.getElementById("jobDomain");
+    const jobLocationInput = document.getElementById("jobLocation");
     const jobTypeSelect = document.getElementById("jobType");
     const resetFilterBtn = document.getElementById("resetFilter");
 
-    let allJobs = []; // Stores all jobs fetched from API
-    let filteredJobs = []; // Stores filtered jobs
-    let appliedJobs = []; // Stores applied jobs
-
-    try {
-        // Fetch applied jobs
-        const response = await fetch(`/SpecificApplications?ApplicantName=${encodeURIComponent(ApplicantName)}`);
-        appliedJobs = await response.json();
-        console.log("Applied Jobs:", appliedJobs);
-    } catch (error) {
-        console.error("Error fetching applied jobs:", error);
-    }
-
+    let allJobs = []; // Stores all jobs fetched from the API
+    let filteredJobs = []; // Stores jobs after applying filters
+    let appliedJobs = []; // Stores jobs applied by the user
+document.addEventListener("DOMContentLoaded", async function () {
+    const response = await fetch(`/SpecificApplications?ApplicantName=${ApplicantName}`);
+    const appliedJobs = await response.json();
+    console.log(appliedJobs);
+})
+   
+ // Stores jobs applied by the user
     // Fetch job data from API
+
     fetch("/JobsData")
         .then(response => response.json())
         .then(data => {
             allJobs = data;
-            filteredJobs = [...allJobs]; // Initialize filtered jobs with all jobs
+            filteredJobs = [...allJobs]; // Initialize filteredJobs with all jobs
             populateFilters(allJobs);
             renderJobs(filteredJobs);
         })
@@ -1034,14 +1028,14 @@ text-decoration: none;
             jobCard.classList.add("job-card");
 
             let isApplied = appliedJobs.some(appliedJob => {
-                const appliedJobRole = appliedJob.JobRole ? appliedJob.JobRole.trim().toLowerCase() : "";
-                const appliedCompany = appliedJob.Company ? appliedJob.Company.trim().toLowerCase() : "";
+            const appliedJobRole = appliedJob.JobRole ? appliedJob.JobRole.trim().toLowerCase() : "";
+            const appliedCompany = appliedJob.Company ? appliedJob.Company.trim().toLowerCase() : "";
+            
+            return appliedJobRole === jobRole && appliedCompany === company;
+        }) 
+        ? "<button class='btn btn-success btn-sm' >Applied</button>"
+        : `<a class="btn btn-primary btn-sm" href="/ApplyJobPage?ApplicantName=${ApplicantName}&JobTitle=${encodeURIComponent(job.JobTitle)}&Company=${encodeURIComponent(job.Company)}&Salary=${encodeURIComponent(job.Salary)}">Apply</a>`;
 
-                return appliedJobRole === job.JobTitle.trim().toLowerCase() &&
-                    appliedCompany === job.Company.trim().toLowerCase();
-            }) 
-            ? "<button class='btn btn-success btn-sm'>Applied</button>"
-            : `<a class="btn btn-primary btn-sm" href="/ApplyJobPage?ApplicantName=${ApplicantName}&JobTitle=${encodeURIComponent(job.JobTitle)}&Company=${encodeURIComponent(job.Company)}&Salary=${encodeURIComponent(job.Salary)}">Apply</a>`;
 
             jobCard.innerHTML = `
                 <div class="job-header">
@@ -1062,14 +1056,15 @@ text-decoration: none;
                 </div>
                 <div class="job-actions">
                    ${isApplied}
-                </div>
+                    </div>
             `;
             jobsGrid.appendChild(jobCard);
         });
     }
 
-    // Function to populate filters
+    // Populate filters with job data
     function populateFilters(data) {
+        // Populate Domain dropdown
         const domains = [...new Set(data.map(job => job.Domain).sort())];
         jobDomainSelect.innerHTML = `<option value="">All Domains</option>`;
         domains.forEach(domain => {
@@ -1088,6 +1083,7 @@ text-decoration: none;
             jobCategorySelect.appendChild(option);
         });
 
+        // Populate Category dropdown based on selected domain
         jobDomainSelect.addEventListener("change", () => {
             const selectedDomain = jobDomainSelect.value;
             const categories = [...new Set(data
@@ -1101,9 +1097,11 @@ text-decoration: none;
                 jobCategorySelect.appendChild(option);
             });
 
+            // Trigger filtering automatically
             filterJobs();
         });
 
+        // Populate Job Type dropdown
         const jobTypes = [...new Set(data.map(job => job.JobType))];
         jobTypeSelect.innerHTML = `<option value="">All Job Types</option>`;
         jobTypes.forEach(type => {
@@ -1120,16 +1118,17 @@ text-decoration: none;
         const domain = jobDomainSelect.value;
         const jobType = jobTypeSelect.value;
 
-        filteredJobs = allJobs.filter(job =>
+        // Filter jobs based on selected criteria
+        filteredJobs = allJobs.filter(job => 
             (category === "" || job.Category === category) &&
             (domain === "" || job.Domain === domain) &&
             (jobType === "" || job.JobType === jobType)
         );
 
-        renderJobs(filteredJobs);
+        renderJobs(filteredJobs); // Render filtered jobs
     }
 
-    // Event listeners for filtering
+    // Add event listeners to dropdowns for automatic filtering
     jobCategorySelect.addEventListener("change", filterJobs);
     jobDomainSelect.addEventListener("change", filterJobs);
     jobTypeSelect.addEventListener("change", filterJobs);
@@ -1139,8 +1138,8 @@ text-decoration: none;
         jobCategorySelect.value = "";
         jobDomainSelect.value = "";
         jobTypeSelect.value = "";
-        filteredJobs = [...allJobs];
-        renderJobs(filteredJobs);
+        filteredJobs = [...allJobs]; // Reset filteredJobs to all jobs
+        renderJobs(filteredJobs); // Render all jobs
     });
 
     // Search form submission
@@ -1149,15 +1148,15 @@ text-decoration: none;
         const searchTitle = jobTitleInput.value.trim().toLowerCase();
         const searchLocation = locationInput.value.trim().toLowerCase();
 
-        const searchedJobs = filteredJobs.filter(job =>
+        // Search within the currently filtered jobs
+        const searchedJobs = filteredJobs.filter(job => 
             (searchTitle === "" || job.JobTitle?.toLowerCase().includes(searchTitle) || job.Company?.toLowerCase().includes(searchTitle)) &&
             (searchLocation === "" || job.Location?.toLowerCase().includes(searchLocation))
         );
 
-        renderJobs(searchedJobs);
+        renderJobs(searchedJobs); // Render searched jobs
     });
 });
-
     </script>
 
  

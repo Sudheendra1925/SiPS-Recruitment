@@ -23,20 +23,13 @@
         }
 
         body {
-            background-color: var(--secondary-color);
+          
             color: var(--text-dark);
             margin: 0;
             padding: 0;
         }
 
-        #main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            width: 100%;
-            padding: 20px;
-        }
+
 
         /* Navbar styling */
         .dashboard-header {
@@ -101,16 +94,17 @@
         }
 
         #main {
-            max-width: 600px;
-            width: 100%;
-            padding: 20px;
-            background: #fff;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border-radius: 8px;
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10%;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 4%;
+            background-color: var(--secondary-color);
         }
 
         label {
@@ -158,12 +152,13 @@
                 margin-bottom: 10px;
             }
         }
+   
     </style>
 </head>
 <body>
-
+    <h1 class="text-center ">Apply Here</h1>
     <div id="main" class="container">
-        <h2 class="text-center mb-4">Apply Here</h2>
+      
         <form id="applyForm" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="ApplicantNameInput" class="form-label">Applicant Name *</label>
@@ -183,9 +178,10 @@
                        required>
             </div>
             <div class="mb-3">
-                <a id="Resumepreview" target="_blank">Resume Preview</a>
+               
                 <label for="Resume">Resume *</label>
                 <input type="file" class="form-control" id="NewResume" name="NewResume" >
+                <a id="Resumepreview" target="_blank">Resume Preview</a>
                 <input type="hidden" id="OldResume" name="OldResume">
             </div>
             <div class="mb-3">
@@ -194,7 +190,7 @@
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="button" onclick="history.back()" class="btn btn-danger">Cancel</button>
+                <a  id="Cancel" class="btn btn-danger">Cancel</a>
             </div>
         </form>
     </div>
@@ -232,7 +228,7 @@
                     const data = await response.json();
 
                     // Set Resume Preview link
-                    document.getElementById('Resumepreview').href = data.Resume ? `/uploads/resumes/${data.Resume}` : '#';
+                    document.getElementById('Resumepreview').href = data.Resume ? `/uploads/resumes/${data.Resume}` :'';
                     document.getElementById('Resumepreview').textContent = data.Resume ? 'Existing resume' : 'No resume available';
 
                     document.getElementById('PhoneNumber').value = data.PhoneNumber || '';
@@ -242,7 +238,9 @@
                     console.error('Error fetching applicant details:', error);
                 }
             }
+            document.getElementById('Cancel').href=`/DisplayJobsPage/${ApplicantName}`;
         });
+     
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

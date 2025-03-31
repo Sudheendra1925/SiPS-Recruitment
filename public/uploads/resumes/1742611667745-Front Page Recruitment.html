@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPS Recruitment - Find Your Perfect Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2196f3;
+            --primary-light: #1976d2;
+            --primary-dark: #0d47a1;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --background-light: #F5F5F5;
+            --background-dark: #242424;
+            --white: #FFFFFF;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
+            --footer-bg: #1e3a5f;
+            --footer-text: #eeeeee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-right: 30px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 0;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 220px;
+            box-shadow: var(--shadow-medium);
+            border-radius: 4px;
+            padding: 10px 0;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .dropdown-item {
+            position: relative;
+        }
+
+        .dropdown-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .dropdown-link:hover {
+            background-color: #f1f1f1;
+            color: var(--primary-color);
+        }
+
+        .sub-dropdown {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            min-width: 220px;
+            background-color: var(--white);
+            box-shadow: var(--shadow-medium);
+            border-radius: 4px;
+            padding: 10px 0;
+        }
+
+        .dropdown-item:hover .sub-dropdown {
+            display: block;
+        }
+
+        .nav-item:hover .dropdown-content {
+            display: block;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-btn, .register-btn {
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: rgba(33, 150, 243, 0.1);
+        }
+
+        .register-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .register-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Hero Search Section */
+        .hero-search {
+            background-color: var(--white);
+            padding: 40px 0;
+            box-shadow: var(--shadow-light);
+        }
+
+        .search-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .search-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 15px;
+        }
+
+        .search-input {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .search-input label {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .search-input input,
+        .search-input select {
+            padding: 10px;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+        }
+
+        .search-btn {
+            align-self: flex-end;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Featured Jobs - GRID LAYOUT */
+        .featured-jobs {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        /* Grid layout for job cards */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .job-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .job-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .job-logo {
+            width: 50px;
+            height: 50px;
+            background-color: var(--background-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-right: 15px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        .job-details {
+            flex: 1;
+        }
+
+        .job-details h3 {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .job-details p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .job-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+        }
+
+        .job-description {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            flex: 1;
+        }
+
+        .job-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .job-salary {
+            font-weight: 500;
+            color: #4CAF50;
+            font-size: 14px;
+        }
+
+        .apply-btn {
+            background-color: var(--primary-light);
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 14px;
+        }
+
+        .apply-btn:hover {
+            background-color: var(--primary-color);
+        }
+
+        .job-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: rgba(33, 150, 243, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .job-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .load-more-btn {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px 0;
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .load-more-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--footer-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--footer-text);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        .contact-info {
+            margin-top: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .contact-item i {
+            margin-top: 4px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 30px auto 0;
+            padding: 20px 20px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-bottom-links a {
+            color: var(--footer-text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Newsletter Subscription */
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--footer-text);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .newsletter-btn {
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        /* Filter section for jobs */
+        .job-filters {
+            background-color: var(--white);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-light);
+        }
+
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .filter-group select, 
+        .filter-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .filter-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .apply-filter {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+        }
+
+        .apply-filter:hover {
+            background-color: var(--primary-light);
+        }
+
+        .reset-filter {
+            background-color: transparent;
+            color: var(--text-secondary);
+            border: 1px solid #e0e0e0;
+        }
+
+        .reset-filter:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .nav-menu {
+                gap: 15px;
+            }
+            
+            .sub-dropdown {
+                left: 0;
+                top: 100%;
+                width: 100%;
+            }
+
+            .jobs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .header-left {
+                flex-grow: 1;
+                justify-content: space-between;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--white);
+                box-shadow: var(--shadow-light);
+                flex-direction: column;
+                gap: 0;
+                display: none;
+                z-index: 1000;
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-item {
+                width: 100%;
+            }
+
+            .nav-link {
+                padding: 15px 20px;
+                justify-content: space-between;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                border-radius: 0;
+                width: 100%;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .nav-item.active .dropdown-content {
+                max-height: 500px;
+                display: block;
+            }
+
+            .dropdown-item.active .sub-dropdown {
+                max-height: 500px;
+                display: block;
+            }
+
+            .dropdown-content a {
+                padding: 10px 30px;
+            }
+
+            .sub-dropdown {
+                position: static;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .sub-dropdown a {
+                padding: 10px 45px;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+
+            .jobs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header-container {
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="#" class="logo">
+                <img src="images/sips logo.png" alt="SIPS LOGO" height="60" width="60">
+                </a>
+                <div class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <div class="nav-item">
+                        <a href="#" class="nav-link">
+                            Jobs <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    Browse by Category <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Technology</a>
+                                    <a href="#">Finance</a>
+                                    <a href="#">Healthcare</a>
+                                    <a href="#">Marketing</a>
+                                    <a href="#">Education</a>
+                                    <a href="#">Engineering</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    Browse by Location <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Bengaluru</a>
+                                    <a href="#">Hyderabad</a>
+                                    <a href="#">Delhi NCR</a>
+                                    <a href="#">Mumbai</a>
+                                    <a href="#">Chennai</a>
+                                    <a href="#">Pune</a>
+                                </div>
+                            </div>
+                            <a href="#" class="dropdown-link">Government Jobs</a>
+                            <a href="#" class="dropdown-link">International Jobs</a>
+                            <a href="#" class="dropdown-link">Remote Jobs</a>
+                            <a href="#" class="dropdown-link">Entry Level Jobs</a>
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#" class="nav-link">
+                            Companies <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    By Industry <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">IT & Software</a>
+                                    <a href="#">Banking & Finance</a>
+                                    <a href="#">Healthcare & Pharma</a>
+                                    <a href="#">E-commerce & Retail</a>
+                                    <a href="#">Education & Training</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    By Type <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Top MNCs</a>
+                                    <a href="#">Startups</a>
+                                    <a href="#">Public Sector</a>
+                                    <a href="#">Fortune 500</a>
+                                </div>
+                            </div>
+                            <a href="#" class="dropdown-link">Company Reviews</a>
+                            <a href="#" class="dropdown-link">Interview Experiences</a>
+                            <a href="#" class="dropdown-link">Salary Insights</a>
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#" class="nav-link">
+                            Services <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    Resume Services <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Resume Writing</a>
+                                    <a href="#">Resume Review</a>
+                                    <a href="#">Cover Letter</a>
+                                    <a href="#">LinkedIn Profile</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    Career Growth <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Career Counseling</a>
+                                    <a href="#">Skill Assessment</a>
+                                    <a href="#">Mock Interviews</a>
+                                    <a href="#">Mentorship</a>
+                                </div>
+                            </div>
+                            <a href="#" class="dropdown-link">Profile Boost</a>
+                            <a href="#" class="dropdown-link">Job Alerts</a>
+                            <a href="#" class="dropdown-link">Premium Membership</a>
+                        </div>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#" class="nav-link">
+                            Career Advice <i class="fas fa-chevron-down"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    Job Search Tips <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Resume Building</a>
+                                    <a href="#">Cover Letter Writing</a>
+                                    <a href="#">Job Search Strategy</a>
+                                    <a href="#">Social Media Presence</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="#" class="dropdown-link">
+                                    Interview Preparation <i class="fas fa-chevron-right"></i>
+                                </a>
+                                <div class="sub-dropdown">
+                                    <a href="#">Common Questions</a>
+                                    <a href="#">Technical Interviews</a>
+                                    <a href="#">HR Interviews</a>
+                                    <a href="#">Behavioral Interviews</a>
+                                </div>
+                            </div>
+                            <a href="#" class="dropdown-link">Salary Negotiation</a>
+                            <a href="#" class="dropdown-link">Industry Insights</a>
+                            <a href="#" class="dropdown-link">Career Paths</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="header-actions">
+                <a href="#" class="login-btn">Login</a>
+                <a href="#" class="register-btn">Register</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Search Section -->
+    <section class="hero-search">
+        <div class="search-container">
+            <div class="search-title">
+                <h1>Find Your Dream Job</h1>
+                <p>Over 10,000+ jobs for you to explore</p>
+            </div>
+            <form class="search-form">
+                <div class="search-input">
+                    <label>What</label>
+                    <input type="text" placeholder="Job Title, Keywords, or Company">
+                </div>
+                <div class="search-input">
+                    <label>Where</label>
+                    <input type="text" placeholder="Location">
+                </div>
+                <div class="search-input">
+                    <label>Experience</label>
+                    <select>
+                        <option>Select Experience</option>
+                        <option>0-1 Years</option>
+                        <option>1-3 Years</option>
+                        <option>3-5 Years</option>
+                        <option>5-10 Years</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Featured Jobs - GRID LAYOUT -->
+    <section class="featured-jobs">
+        <h2 class="section-title">Featured Jobs</h2>
+            <!-- Job Cards Grid -->
+            <div class="jobs-grid">
+                <!-- Job Card 1 -->
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-logo">G</div>
+                        <div class="job-details">
+                            <h3>Senior Frontend Developer</h3>
+                            <p>Google</p>
+                        </div>
+                    </div>
+                    <div class="job-tags">
+                        <span class="job-tag">React</span>
+                        <span class="job-tag">TypeScript</span>
+                        <span class="job-tag">UI/UX</span>
+                    </div>
+                    <div class="job-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Bengaluru</span>
+                        <span><i class="fas fa-briefcase"></i> 3-5 years</span>
+                        <span><i class="fas fa-clock"></i> Full-time</span>
+                    </div>
+                    <div class="job-description">
+                        Looking for a skilled Frontend Developer with expertise in React, TypeScript, and modern UI frameworks to join our product team...
+                    </div>
+                    <div class="job-actions">
+                        <div class="job-salary">₹18-25 LPA</div>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                </div>
+    
+                <!-- Job Card 2 -->
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-logo">AF</div>
+                        <div class="job-details">
+                            <h3>Financial Analyst</h3>
+                            <p>Axis Finance</p>
+                        </div>
+                    </div>
+                    <div class="job-tags">
+                        <span class="job-tag">Finance</span>
+                        <span class="job-tag">Excel</span>
+                        <span class="job-tag">Data Analysis</span>
+                    </div>
+                    <div class="job-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Mumbai</span>
+                        <span><i class="fas fa-briefcase"></i> 2-4 years</span>
+                        <span><i class="fas fa-clock"></i> Full-time</span>
+                    </div>
+                    <div class="job-description">
+                        Join our financial team to analyze market trends, prepare financial models, and provide strategic insights for business growth...
+                    </div>
+                    <div class="job-actions">
+                        <div class="job-salary">₹8-12 LPA</div>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                </div>
+    
+                <!-- Job Card 3 -->
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-logo">SIPS</div>
+                        <div class="job-details">
+                            <h3>HR Manager</h3>
+                            <p>SIPS</p>
+                        </div>
+                    </div>
+                    <div class="job-tags">
+                        <span class="job-tag">HR</span>
+                        <span class="job-tag">Recruitment</span>
+                        <span class="job-tag">People Management</span>
+                    </div>
+                    <div class="job-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Hyderabad</span>
+                        <span><i class="fas fa-briefcase"></i> 5-8 years</span>
+                        <span><i class="fas fa-clock"></i> Full-time</span>
+                    </div>
+                    <div class="job-description">
+                        Looking for an experienced HR Manager to oversee recruitment, employee relations, performance management, and HR strategies...
+                    </div>
+                    <div class="job-actions">
+                        <div class="job-salary">₹12-18 LPA</div>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                </div>
+    
+                <!-- Job Card 4 -->
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-logo">SIPS</div>
+                        <div class="job-details">
+                            <h3>Digital Marketing Specialist</h3>
+                            <p>SIPS</p>
+                        </div>
+                    </div>
+                    <div class="job-tags">
+                        <span class="job-tag">SEO</span>
+                        <span class="job-tag">Social Media</span>
+                        <span class="job-tag">Content</span>
+                    </div>
+                    <div class="job-meta">
+                        <span><i class="fas fa-map-marker-alt"></i>Hyderabad</span>
+                        <span><i class="fas fa-briefcase"></i> 2-5 years</span>
+                        <span><i class="fas fa-clock"></i> Full-time</span>
+                    </div>
+                    <div class="job-description">
+                        Join our creative team to develop and implement digital marketing strategies, manage social media campaigns, and drive online growth...
+                    </div>
+                    <div class="job-actions">
+                        <div class="job-salary">₹7-12 LPA</div>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                </div>
+    
+                <!-- Job Card 5 -->
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-logo">A</div>
+                        <div class="job-details">
+                            <h3>DevOps Engineer</h3>
+                            <p>Amazon</p>
+                        </div>
+                    </div>
+                    <div class="job-tags">
+                        <span class="job-tag">AWS</span>
+                        <span class="job-tag">Docker</span>
+                        <span class="job-tag">CI/CD</span>
+                    </div>
+                    <div class="job-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Pune</span>
+                        <span><i class="fas fa-briefcase"></i> 3-6 years</span>
+                        <span><i class="fas fa-clock"></i> Full-time</span>
+                    </div>
+                    <div class="job-description">
+                        Looking for a DevOps Engineer with strong experience in cloud platforms, CI/CD pipelines, and infrastructure automation...
+                    </div>
+                    <div class="job-actions">
+                        <div class="job-salary">₹15-22 LPA</div>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                </div>
+    
+                <!-- Job Card 6 -->
+                <div class="job-card">
+                    <div class="job-header">
+                        <div class="job-logo">K</div>
+                        <div class="job-details">
+                            <h3>Product Manager</h3>
+                            <p>KANTAR</p>
+                        </div>
+                    </div>
+                    <div class="job-tags">
+                        <span class="job-tag">Science</span>
+                        <span class="job-tag">Teaching</span>
+                        <span class="job-tag">Curriculum</span>
+                    </div>
+                    <div class="job-meta">
+                        <span><i class="fas fa-map-marker-alt"></i> Chennai</span>
+                        <span><i class="fas fa-briefcase"></i> 2-5 years</span>
+                        <span><i class="fas fa-clock"></i> Full-time</span>
+                    </div>
+                    <div class="job-description">
+                        Join our educational institution to teach science subjects, develop curriculum, and inspire the next generation of students...
+                    </div>
+                    <div class="job-actions">
+                        <div class="job-salary">₹5-8 LPA</div>
+                        <button class="apply-btn">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="load-more-btn">Load More Jobs</button>
+        </section>
+    
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h3>About SIPS</h3>
+                    <p>SIPS is India's leading job portal connecting job seekers with employers across various industries. We help professionals find their dream jobs and companies find the right talent.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Job Seekers</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Browse Jobs</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Create Resume</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Job Alerts</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Career Resources</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Salary Calculator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Employers</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Post a Job</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Browse Resumes</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Recruitment Solutions</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Employer Branding</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Pricing Plans</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>SIPS Constructions, OM Residency<br>Nagole, Hyderabad 500068</div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone-alt"></i>
+                            <div>+91 7702624555</div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>pranay.divedi@gmail.com</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get the latest job opportunities and career advice.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Your Email">
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>© 2025 SIPS Recruitment. All rights reserved.</div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Sitemap</a>
+                </div>
+            </div>
+        </footer>
+    
+        <script>
+            // Toggle mobile menu
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            menuToggle.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+            });
+            
+            // Handle dropdown menus for mobile
+            document.addEventListener('DOMContentLoaded', function() {
+                const navItems = document.querySelectorAll('.nav-item');
+                const dropdownItems = document.querySelectorAll('.dropdown-item');
+                
+                if (window.innerWidth <= 768) {
+                    navItems.forEach(item => {
+                        const link = item.querySelector('.nav-link');
+                        
+                        link.addEventListener('click', (e) => {
+                            if (window.innerWidth <= 768) {
+                                e.preventDefault();
+                                item.classList.toggle('active');
+                                
+                                // Close other open dropdowns
+                                navItems.forEach(otherItem => {
+                                    if (otherItem !== item) {
+                                        otherItem.classList.remove('active');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                    
+                    dropdownItems.forEach(item => {
+                        const link = item.querySelector('.dropdown-link');
+                        
+                        link.addEventListener('click', (e) => {
+                            if (window.innerWidth <= 768) {
+                                e.preventDefault();
+                                item.classList.toggle('active');
+                                
+                                // Close other open sub-dropdowns
+                                dropdownItems.forEach(otherItem => {
+                                    if (otherItem !== item) {
+                                        otherItem.classList.remove('active');
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        </script>
+    </body>
+    </html>

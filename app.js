@@ -194,6 +194,101 @@ app.get('/AddPlacedApplicationPage',isAuthenticatedAdmin, (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/ShowJobs.html'));
 })
+app.get('/LoginToJob',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'public/LoginToJobPage.html'));
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/UserSignupToJobPage', async (req, res) => {
+    const { ApplicantName, Password, PhoneNumber, Address, AadharCard,Email,JobTitle,Company,Salary } = req.query;
+     if (!ApplicantName || !Password || !PhoneNumber || !Address || !AadharCard) {
+        return res.status(400).send('All fields are required.');
+    }
+
+    try {
+        const hash = await bcrypt.hash(Password, 10);
+        const sql = `
+            INSERT INTO Applicants 
+            (ApplicantName, Password, PhoneNumber, Address, Applied, Accepted, Rejected, AadharCard,Email) 
+            VALUES (?, ?, ?, ?, 0, 0, 0, ?,?)`;
+
+        await dbPromise.query(sql, [ApplicantName, hash, PhoneNumber, Address, AadharCard,Email]);
+        console.log('User signed up successfully.');
+        return res.send(`
+            <script>
+              alert("Congratulations on successfully signing up! 🎉 Now, you can log in using your credentials");
+              window.location.href = "/LoginToJobPage?JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}";
+            </script>
+        `);
+        
+    } catch (err) {
+        console.error('Error during user signup:', err);
+        res.status(500).send('Server error. Please try again.');
+    }
+});
+
+app.get('/checkToJobPage', async (req, res) => {
+    const { Email, Password,JobTitle,Company,Salary  } = req.query;
+
+    try {
+        // Validate input
+        if (!Email || !Password) {
+            return res.send(`
+                <script>
+                  alert("Email and password are required!");
+                  window.location.href = "/LoginToJobPage?JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}";
+                </script>
+            `);
+        }
+
+        // Fetch user from the database
+        const [users] = await dbPromise.query('SELECT * FROM Applicants WHERE Email = ?', [Email]);
+        const user = users[0];
+
+let ApplicantName=user.ApplicantName
+        // Debug logs
+   
+
+        if (!user) {
+            return res.send(`
+                <script>
+                  alert("Invalid username or password!");
+                  window.location.href = "/LoginToJobPage?JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}";
+                </script>
+            `);
+        }
+
+
+        // Compare password
+        const isMatch = await bcrypt.compare(Password,user.Password);
+        if (isMatch) {
+            req.session.user = { name: ApplicantName, role: 'client' };
+
+
+
+            res.redirect(`/ApplyJobPage?ApplicantName=${ApplicantName}&JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}`);
+        } else {
+            res.send(`
+                <script>
+                  alert("Invalid Email or password!");
+                  window.location.href = "/LoginToJobPage?JobTitle=${JobTitle}&Company=${Company}&Salary=${Salary}";
+                </script>
+            `);
+        }
+    } catch (err) {
+        console.error('Error during user login:', err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+
+
+
+
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -225,27 +320,25 @@ app.get('/UserSignup', async (req, res) => {
     }
 });
 
-// Route: User Login
-
-
 app.get('/check', async (req, res) => {
-    const { ApplicantName, Password } = req.query;
+    const { Email, Password } = req.query;
 
     try {
         // Validate input
-        if (!ApplicantName || !Password) {
+        if (!Email || !Password) {
             return res.send(`
                 <script>
-                  alert("Username and password are required!");
+                  alert("Email and password are required!");
                   window.location.href = "/Login";
                 </script>
             `);
         }
 
         // Fetch user from the database
-        const [users] = await dbPromise.query('SELECT * FROM Applicants WHERE ApplicantName = ?', [ApplicantName]);
+        const [users] = await dbPromise.query('SELECT * FROM Applicants WHERE Email = ?', [Email]);
         const user = users[0];
 
+let ApplicantName=user.ApplicantName
         // Debug logs
    
 
@@ -267,7 +360,7 @@ app.get('/check', async (req, res) => {
         } else {
             res.send(`
                 <script>
-                  alert("Invalid username or password!");
+                  alert("Invalid Email or password!");
                   window.location.href = "/Login";
                 </script>
             `);
@@ -310,17 +403,18 @@ app.get('/AdminSignup', async (req, res) => {
 
 // Route: Admin Login
 app.get('/checkAdmin', async (req, res) => {
-    const { AdminName, Password } = req.query;  // Use req.query for GET requests
+    const { Email, Password } = req.query;  // Use req.query for GET requests
 
     try {
         // Query the database for the admin by AdminName
-        const [rows] = await dbPromise.query('SELECT * FROM Admins WHERE AdminName = ?', [AdminName]);
-        const admin = rows[0];
+        const [rows] = await dbPromise.query('SELECT * FROM Admins WHERE Email = ?', [Email]);
+        const admin = rows[0] || null;
+let AdminName=admin.AdminName || null;
 
         if (!admin) {
             return res.send(`
                 <script>
-                  alert("Invalid username or password!");
+                  alert("Invalid Email or password!");
                   window.location.href = "/AdminLogin";
                 </script>
             `);
@@ -332,7 +426,7 @@ app.get('/checkAdmin', async (req, res) => {
             // Save session
             req.session.user = { name: AdminName, role: 'admin' };
             req.session.AdminName = AdminName;  // Save the AdminName in the session
-            res.redirect(`/AdminDashboard?AdminName`);
+            res.redirect(`/AdminDashboard?${AdminName}`);
         } else {
             res.send(`
                 <script>
@@ -343,7 +437,12 @@ app.get('/checkAdmin', async (req, res) => {
         }
     } catch (err) {
         console.error('Error during admin login:', err);
-        res.status(500).send('Internal Server Error');
+        res.send(`
+            <script>
+              alert("Admin Not found!");
+              window.location.href = "/AdminLogin";
+            </script>
+        `);
     }
 });
 

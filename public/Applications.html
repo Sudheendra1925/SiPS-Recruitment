@@ -247,13 +247,6 @@
                 <input type="text" placeholder="Search jobs by Name, Date, Salary, PhoneNumber" id="ApplicationSearch" onchange="searchApplicationLeads()">
             </div>
         
-            <select class="dropdown" id="domain">
-                <option value="all">Domain</option>
-            </select>
-            <select class="dropdown" id="category">
-                <option value="all">Category</option>
-            </select>
-        
             <select class="dropdown" id="jobRole">
                 <option value="all">Job Role</option>
             </select>
@@ -275,7 +268,6 @@
                     <th scope="col">S.No</th>
                     <th scope="col">Applicant Name</th>
                     <th scope="col">Phone Number</th>
-                
                     <th scope="col">Company Name</th>
                     <th scope="col">Position</th>
                     <th scope="col">Salary</th>
@@ -295,7 +287,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {
                 // Fetch job data from API
@@ -304,8 +296,7 @@
     
                 const data = await response.json();
                 window.ApplicationData = data; // Store globally for filtering
-                populateDomainDropdown(data);
-                populateCategoryDropdown(data);
+           
                 populateFilters(data);
                 renderTable(data);
             } catch (error) {
@@ -314,20 +305,8 @@
             }
         });
     
-        function populateDomainDropdown(data) {
-            const domainSet = new Set();
-            data.forEach(app => domainSet.add(app.Domain.toLowerCase()));
-            updateDropdown('domain', domainSet, "Domain");
-        }
-    
-        function populateCategoryDropdown(data, selectedDomain="all") {
-            const filteredData = selectedDomain === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Domain.toLowerCase() === selectedDomain);
-    
-            const categorySet = new Set(filteredData.map(app => app.Category.toLowerCase()));
-            // Filter categories based on the selected domain
-            updateDropdown('category', categorySet, "Category");
-        }
-    
+
+        
         function populateFilters(data) {
             const jobTypeSet = new Set();
             const companySet = new Set();
@@ -364,40 +343,9 @@
 }
 
     
-        // Domain change event to update categories
-        document.getElementById('domain').addEventListener('change', function () {
-            const selectedDomain = this.value.toLowerCase();
-            populateCategoryDropdown(window.ApplicationData, selectedDomain);
-    
-            const filteredData = selectedDomain === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Domain.toLowerCase() === selectedDomain);
-    
-            const jobTypeSet = new Set(filteredData.map(app => app.JobRole.toLowerCase()));
-            const companySet = new Set(filteredData.map(app => app.Company.toLowerCase()));
-    
-            updateDropdown('jobRole', jobTypeSet, "Job Role");
-            updateDropdown('company', companySet, "Company");
-    
-            searchApplicationLeads();
-        });
-    
-        // Category change event to filter data
-        document.getElementById('category').addEventListener('change', function () {
-            const selectedCategory = this.value.toLowerCase();
-            const filteredData = selectedCategory === "all" ? window.ApplicationData : window.ApplicationData.filter(app => app.Category.toLowerCase() === selectedCategory);
-    
-            const jobTypeSet = new Set(filteredData.map(app => app.JobRole.toLowerCase()));
-            const companySet = new Set(filteredData.map(app => app.Company.toLowerCase()));
-    
-            updateDropdown('jobRole', jobTypeSet, "Job Role");
-            updateDropdown('company', companySet, "Company");
-    
-            searchApplicationLeads();
-        });
-    
-        // Function for searching and filtering application leads
         function searchApplicationLeads() {
             const searchInput = document.getElementById('ApplicationSearch').value.toLowerCase();
-            const selectedCategory = document.getElementById('category').value.toLowerCase();
+            // const selectedCategory = document.getElementById('category').value.toLowerCase();
             const selectedJobType = document.getElementById('jobRole').value.toLowerCase();
             const selectedStatus = document.getElementById('Status').value.toLowerCase();
             const selectedCompany = document.getElementById('company').value.toLowerCase();
@@ -407,7 +355,7 @@
                                       app.PhoneNumber.toLowerCase().includes(searchInput) ||
                                       new Date(app.AppliedDate).toLocaleDateString("en-IN").includes(searchInput);
     
-                const matchesCategory = selectedCategory === "all" || app.Category.toLowerCase() === selectedCategory;
+                // const matchesCategory = selectedCategory === "all" || app.Category.toLowerCase() === selectedCategory;
                 const matchesJobType = selectedJobType === "all" || app.JobRole.toLowerCase() === selectedJobType;
                 const matchesStatus = selectedStatus === "all" || app.Status.toLowerCase() === selectedStatus;
                 const matchesCompany = selectedCompany === "all" || app.Company.toLowerCase() === selectedCompany;
@@ -470,10 +418,137 @@
                 default: return ''; 
             }
         }
+    </script> -->
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        // Fetch job data from API
+        const response = await fetch(`/TotalApplicationData`);
+        if (!response.ok) throw new Error('Network response was not ok');
+
+        const data = await response.json();
+        window.ApplicationData = data; // Store globally for filtering
+
+        populateFilters(data);
+        renderTable(data);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('tbody').innerHTML = '<tr><td colspan="11">Error loading data.</td></tr>';
+    }
+});
+
+// Populate dropdowns with unique values
+function populateFilters(data) {
+    const jobTypeSet = new Set();
+    const companySet = new Set();
+    const statusSet = new Set();
+
+    data.forEach(app => {
+        jobTypeSet.add(app.JobRole.toLowerCase());
+        companySet.add(app.Company.toLowerCase());
+        statusSet.add(app.Status.toLowerCase());
+    });
+
+    updateDropdown('jobRole', jobTypeSet, "Job Role");
+    updateDropdown('Status', statusSet, "Status");
+    updateDropdown('company', companySet, "Company");
+}
+
+// Update dropdown options dynamically
+function updateDropdown(id, items, defaultOption) {
+    const dropdown = document.getElementById(id);
+    dropdown.innerHTML = `<option value="all">${defaultOption}</option>`;
+
+    const sortedItems = Array.from(items).sort((a, b) => a.localeCompare(b));
+    sortedItems.forEach(item => {
+        dropdown.innerHTML += `<option value="${item}">${item}</option>`;
+    });
+
+    if (sortedItems.length > 5) {
+        dropdown.style.maxHeight = '50px';
+        dropdown.style.overflowY = 'scroll';
+    } else {
+        dropdown.style.maxHeight = 'none';
+        dropdown.style.overflowY = 'none';
+    }
+
+    // Ensure the dropdown triggers application filtering
+    dropdown.addEventListener('change', searchApplicationLeads);
+}
+
+// Function to filter and display applications
+function searchApplicationLeads() {
+    const searchInput = document.getElementById('ApplicationSearch').value.toLowerCase();
+    const selectedJobType = document.getElementById('jobRole').value.toLowerCase();
+    const selectedStatus = document.getElementById('Status').value.toLowerCase();
+    const selectedCompany = document.getElementById('company').value.toLowerCase();
+
+    const filteredData = window.ApplicationData.filter(app => {
+        const matchesSearch = app.ApplicantName.toLowerCase().includes(searchInput) ||
+            app.PhoneNumber.toLowerCase().includes(searchInput) ||
+            new Date(app.AppliedDate).toLocaleDateString("en-IN").includes(searchInput);
+
+        const matchesJobType = selectedJobType === "all" || app.JobRole.toLowerCase() === selectedJobType;
+        const matchesStatus = selectedStatus === "all" || app.Status.toLowerCase() === selectedStatus;
+        const matchesCompany = selectedCompany === "all" || app.Company.toLowerCase() === selectedCompany;
+
+        return matchesSearch && matchesJobType && matchesStatus && matchesCompany;
+    });
+
+    renderTable(filteredData);
+}
+
+// Function to render table with filtered applications
+function renderTable(data) {
+    const tbody = document.getElementById('tbody');
+    tbody.innerHTML = '';
+
+    data.forEach((app, index) => {
+        const statusColor = getStatusColor(app.Status);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${app.ApplicantName}</td>
+            <td>${app.PhoneNumber}</td>
+            <td>${app.Company}</td>
+            <td>${app.JobRole}</td>
+            <td>${app.Salary.toLocaleString("en-IN")}</td>
+            <td>${new Date(app.AppliedDate).toLocaleDateString("en-IN")}</td>
+            <td><a href="/uploads/resumes/${app.Resume}" target="_blank">Resume</a></td>
+            <td>
+                <details>
+                    <summary>Why me</summary>
+                    <p style="white-space: pre-wrap; margin: 0;">${app.Description}</p>
+                </details>
+            </td>
+            <td style="${statusColor}">${app.Status}</td>
+            <td>
+                <a href="/EditApplication/${encodeURIComponent(app.ApplicationId)}" class="btn btn-primary">Edit</a>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    if (data.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="11">No results found.</td></tr>';
+    }
+}
+
+// Function to get color based on status
+function getStatusColor(status) {
+    switch (status.toLowerCase()) {
+        case 'pending': return 'color: #f39c12';  // Amber
+        case 'selected': return 'color: #27ae60';  // Green
+        case 'rejected': return 'color: #e74c3c';  // Red
+        case 'stage1': return 'color: #3498db';  // Blue
+        default: return '';
+    }
+}
+
+// Add event listener for live search input
+document.getElementById('ApplicationSearch').addEventListener('input', searchApplicationLeads);
+
     </script>
-    
-    
-    
-    
 </body>
 </html>
