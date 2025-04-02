@@ -57,8 +57,9 @@ app.use(
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password:  'indra@sql',
-    database:'SipsrecruimentTrial'
+    password: 'indra@sql',
+    database:'SipsrecruimentTrial',
+    timezone: 'Asia/Kolkata' 
 });
 
 db.connect((err) => {
@@ -194,9 +195,20 @@ app.get('/AddPlacedApplicationPage',isAuthenticatedAdmin, (req, res) => {
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/ShowJobs.html'));
 })
-app.get('/LoginToJob',(req,res)=>{
+app.get('/LoginToJobPage',(req,res)=>{
     res.sendFile(path.join(__dirname, 'public/LoginToJobPage.html'));
 })
+app.get('/ViewJobPageBeforeLogin',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'public/ViewJobPageBeforeLogin.html'));
+})
+app.get('/ViewJobPage',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'public/ViewJobPage.html'));
+})
+app.get('/SavedJobsPage',(req,res)=>{
+    res.sendFile(path.join(__dirname, 'public/SavedJobsPage.html'));
+})
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -281,12 +293,6 @@ let ApplicantName=user.ApplicantName
         res.status(500).send('Internal Server Error');
     }
 });
-
-
-
-
-
-
 
 
 
@@ -573,6 +579,76 @@ app.get('/JobsData', (req, res) => {
         res.status(200).json(results); // Return all the results
     });
 });
+
+
+// app.get('/getJobData', (req, res) => {
+// const JobId=req.query.JobId;
+// db.query('SELECT * FROM jobs where JobId=?',[JobId], (err, results) => {
+//     console.log(results)
+//     if (err) {
+//         console.error('Error fetching data:', err.message);
+//         return res.status(500).json({ error: "Internal Server Error" });
+//     }
+//     if (results.length === 0) {
+        
+//         return res.status(200).json([0]); // Return empty array if no jobs found
+//     }
+
+//     res.status(200).json(results[0]); // Return all the results
+// });
+// })
+
+app.get('/getJobData', (req, res) => {
+    const JobId = req.query.JobId;
+    db.query('SELECT * FROM jobs WHERE JobId = ?', [JobId], (err, results) => {
+        if (err) {
+            console.error('Error fetching data:', err.message);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        if (results.length === 0) {
+            return res.status(200).json([0]);
+        }
+
+        // Convert date fields to local timezone
+    
+        res.status(200).json(results[0]);
+    });
+});
+
+
+app.post('/EditJob', (req, res) => {
+    const JobId=req.query.JobId;
+
+
+    const {Company,Category,JobTitle,JobType,Budget,Salary,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Experience,Qualifications,Skills,RolesAndResponsibilities} = req.body;
+
+    const query = `
+        UPDATE jobs
+        SET 
+           Company=?,Category=?,JobTitle=?,JobType=?,Budget=?,Salary=?,Location=?,NoOfJobs=?,PostedDate=?,EndDate=?,Fulfilled=?,Experience=?,Qualifications=?,Skills=?,RolesAndResponsibilities=?
+        WHERE JobId=?`;
+
+    db.query(query, [Company,Category,JobTitle,JobType,Budget,Salary,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Experience,,Qualifications,Skills,RolesAndResponsibilities,JobId], (err, result) => {
+        if (err) {
+            console.log(err)
+            
+            return res.send(`<script>
+                alert("Error updating Job!,${err}");
+                window.location.href = "/EditJobPage?JobId=${Company}";
+                </script>`)
+        }
+        
+        res.send(`<script>
+            alert("Updated Successful");
+            window.location.href = "/Company?companyName=${Company}";
+            </script>`)
+        
+
+  })
+
+    })
+    
+
 app.get('/CompanyiesJobsData', (req, res) => {
     const CompanyName = req.query.CompanyName;
     db.query('SELECT * FROM jobs where company=?',[CompanyName], (err, results) => {
@@ -634,7 +710,7 @@ app.post('/UpdateApplication/:ApplicationId', (req, res) => {
         }
        res.send(` <script>
         alert("Application Submited Succesfully!");
-        window.location.href = "/AllApplicantsPage";
+        window.location.href = "/Applications";
       </script>`)
 
     });
@@ -668,32 +744,7 @@ app.get('/companydata', (req, res) => {
     });
 });
 
-// app.post('/AddCompany',upload.single('companyLogo'), (req, res) => { 
-//     const id = crypto.randomBytes(5).toString('hex');
-// const {companyName,ContactNumber}=req.body;
-// let CompanyLogo=null;
-// if (req.file) {
-//     CompanyLogo = req.file.filename;  // Set the ResumePath to the new file's filename
-// }
-// console.log(CompanyLogo)
 
-// const query = 'Insert into companies (CompanyName,ContactNumber,CompanyLogo) values(?,?,?)';
-// db.query(query,[companyName,ContactNumber,CompanyLogo] , (err, result) => {
-//     if (err) {
-//         console.error('Error fetching application:', err);
-//         return res.status(500).send(`<script>
-//         alert("Company Name Already Exists!");
-//         window.location.href = "/companies";
-//       </script>`);
-//         }
-//     // Serve the HTML file with application data (replace placeholders in the HTML if needed)
-//     res.send(` <script>
-//         alert("Company Added Succesfully!");
-//         window.location.href = "/companies";
-//       </script>`)
-// });
-
-// })
 
 app.post('/AddCompany', upload.single('companyLogo'), (req, res) => {
     const { companyName, ContactNumber } = req.body;
@@ -729,70 +780,152 @@ app.post('/AddCompany', upload.single('companyLogo'), (req, res) => {
 
 app.post('/AddJob', (req, res) => {
 
-    const id = crypto.randomBytes(9).toString('hex');
-    const JobId = `job-${id}`;
+    // const id = crypto.randomBytes(9).toString('hex');
+    // const JobId = `job-${id}`;
 
-    const {JobTitle,JobType,Salary,Category,Company,Location,NoOfJobs,EndDate,Budget,Domain,Experience}=req.body;
-    const query = 'Insert into jobs (JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Category,Budget,Domain,Experience) values(?,?,?,?,?,?,?,CURDATE() + INTERVAL 1 DAY,?,0,?,?,?,?)';
-    db.query(query,[JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,EndDate,Category,Budget,Domain,Experience] , (err, result) => {
-        if (err) {
-            console.error('Error fetching application:', err);
-            return res.status(500).send(`<script>
-            alert("Job Already Exists!");
-            window.location.href = "/companies";
-          </script>`);
-            }
-        // Serve the HTML file with application data (replace placeholders in the HTML if needed)
-        res.send(` <script>
-            alert("Job Added Succesfully!");
-            window.location.href = "/companies";
-          </script>`)
-    });
+    // const {JobTitle,JobType,Salary,Category,Company,Location,NoOfJobs,EndDate,Budget,Domain,Experience}=req.body;
+    // const query = 'Insert into jobs (JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Category,Budget,Domain,Experience) values(?,?,?,?,?,?,?,CURDATE() + INTERVAL 1 DAY,?,0,?,?,?,?)';
+    // db.query(query,[JobId,JobTitle,JobType,Salary,Company,Location,NoOfJobs,EndDate,Category,Budget,Domain,Experience] , (err, result) => {
+    //     if (err) {
+    //         console.error('Error fetching application:', err);
+    //         return res.status(500).send(`<script>
+    //         alert("Job Already Exists!");
+    //         window.location.href = "/companies";
+    //       </script>`);
+    //         }
+    //     // Serve the HTML file with application data (replace placeholders in the HTML if needed)
+    //     res.send(` <script>
+    //         alert("Job Added Succesfully!");
+    //         window.location.href = "/companies";
+    //       </script>`)
+    // });
     
+    // }
+
+// Generate the unique JobId
+const id = crypto.randomBytes(9).toString('hex');
+const JobId = `job-${id}`;
+
+// Destructure the job details from the request body
+const { JobTitle, JobType, Salary, Category, Company, Location, NoOfJobs, EndDate, Budget, Domain, Experience,Skills,RolesAndResponsibilities,Qualifications } = req.body;
+
+// First, fetch the CompanyLogo from the companies table based on the Company name
+const getCompanyLogoQuery = 'SELECT CompanyLogo FROM companies WHERE CompanyName = ?';
+
+db.query(getCompanyLogoQuery, [Company], (err, result) => {
+    if (err) {
+        console.error('Error fetching company logo:', err);
+        return res.status(500).send(`<script>
+            alert("Error fetching company logo!");
+            window.location.href = "/companies";
+        </script>`);
     }
-)
-app.get('/getJobData', (req, res) => {
 
-    const JobId = req.query.JobId;
-   
-    const query = 'SELECT * FROM jobs where JobId=?';
-    db.query(query,[JobId] , (err, result) => {
+    // Check if the company exists and has a logo
+    if (result.length === 0) {
+        return res.status(400).send(`<script>
+            alert("Company not found!");
+            window.location.href = "/companies";
+        </script>`);
+    }
+
+    const CompanyLogo = result[0].CompanyLogo || null;  // Ensure CompanyLogo is set to null if undefined
+
+    // Now insert the job details along with the CompanyLogo into the jobs table
+    const query = 'INSERT INTO jobs (JobId, JobTitle, JobType, Salary, Company, Location, NoOfJobs, PostedDate, EndDate, Fulfilled, Category, Budget, Domain, Experience, CompanyLogo,Skills,RolesAndResponsibilities,Qualifications) ' +
+                  'VALUES (?, ?, ?, ?, ?, ?, ?, CURDATE(), ?, 0, ?, ?, ?, ?,?,?,?,?)';
+
+    db.query(query, [JobId, JobTitle, JobType, Salary, Company, Location, NoOfJobs, EndDate, Category, Budget, Domain, Experience, CompanyLogo,Skills,RolesAndResponsibilities,Qualifications], (err, result) => {
         if (err) {
-            console.error('Error fetching application:', err);
-            return res.status(500).send('Internal Server Error');
+            console.error('Error inserting job:', err);
+            return res.status(500).send(`<script>
+                alert("Job Already Exists!");
+                window.location.href = "/companies";
+            </script>`);
         }
-        // Serve the HTML file with application data (replace placeholders in the HTML if needed)
-        return res.json(result[0]);
-    });
-})
-app.post('/EditJob', (req, res) => {
-    const JobId = req.query.JobId;
-    const {
-        JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Budget,Category,Experience
-    } = req.body;
 
-    const query = `
-        UPDATE jobs
-        SET 
-            jobTitle=?, jobType=?, salary=?, company=?, location=?, noOfJobs=?, postedDate=?, endDate=?, fulfilled=?,Budget=?,Category=?,Experience=?
-        WHERE JobId = ?`;
-
-    db.query(query, [
-        JobTitle,JobType,Salary,Company,Location,NoOfJobs,PostedDate,EndDate,Fulfilled,Budget,Category,Experience, JobId
-    ], (err, result) => {
-        if (err) {
-            console.error('Error updating application:', err);
-            return res.status(500).json({ error: 'Failed to update application' });
-        }
-        
-        // Return a JSON response
-        res.redirect('/companies');
+        // Serve the HTML file with success message
+        res.send(`<script>
+            alert("Job Added Successfully!");
+            window.location.href = "/companies";
+        </script>`);
     });
+});
+
 });
 
 
 
 
+app.get('/SaveJob', (req, res) => {
+
+    const { JobId, ApplicantName,ApplicationStatus } = req.query;
+
+    const query = 'INSERT INTO SavedJobs (JobId,ApplicantName) ' +
+    'VALUES (?, ?)';
+    
+    db.query(query, [JobId,ApplicantName], (err, result) => {
+    if (err) {
+    console.error('Error inserting job:', err);
+    return res.status(500).send(`<script>
+    alert("Job Already Exists!");
+    window.location.href = '/ViewJobPage?JobId=${JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=${ApplicationStatus}';
+    </script>`);
+    }
+    
+    // Serve the HTML file with success message
+    res.send(`<script>
+    alert("Job Added Successfully!");
+    window.location.href = "/ViewJobPage?JobId=${JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=${ApplicationStatus}";
+    </script>`);
+    });
+    
+
+})
+
+
+app.get('/SpecificSavedJobs', (req, res) => {
+    const { ApplicantName, JobId } = req.query;
+
+    if (!ApplicantName || !JobId) {
+        return res.status(400).json({ error: "ApplicantName and JobId are required" });
+    }
+
+    db.query(
+        'SELECT * FROM SavedJobs WHERE ApplicantName = ? AND JobId = ?',
+        [ApplicantName, JobId],
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err.message);
+                return res.status(500).json({ error: "Internal Server Error" });
+            }
+
+            return res.status(200).json(results); // Always return an array
+        }
+    );
+});
+
+app.get('/ApplicantSavedJobs', (req, res) => {
+
+    const { ApplicantName} = req.query;
+
+    if (!ApplicantName ) {
+        return res.status(400).json({ error: "ApplicantName is required" });
+    }
+
+    db.query(
+        'SELECT * FROM SavedJobs WHERE ApplicantName = ?',
+        [ApplicantName],
+        (err, results) => {
+            if (err) {
+                console.error('Database error:', err.message);
+                return res.status(500).json({ error: "Internal Server Error" });
+            }
+
+            return res.status(200).json(results); // Always return an array
+        }
+    );
+})
 
 
 app.get('/AllApplicantsData', (req, res) => {
@@ -822,8 +955,6 @@ app.get('/ApplicantData', (req, res) => {
 
         res.status(200).json(results[0]); // Return all the results
     });
-
-
 })
 app.post('/UpdateApplicant', upload.single('NewResume'), (req, res) => {
     const ApplicantName = req.query.ApplicantName;

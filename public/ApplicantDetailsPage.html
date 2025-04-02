@@ -274,7 +274,7 @@
             </div>
            
         </div>
-     
+       
         <table id="applicationsTable" class="table table-striped table-container">
             <thead  >
                 <tr>
@@ -296,10 +296,10 @@
             <p id="totalPending">: 0</p>
             <p id="totalDenied">: 0</p>
         </div> -->
-        
+
      
     </div>
-    
+   <center><a href="/AllApplicantsPage" class="btn btn-danger mt-5" style="text-decoration: none;">Back</a></center> 
     <script>
         const fullPath = window.location.pathname;
         const ApplicantName = decodeURIComponent(fullPath.split('/').pop());
@@ -321,7 +321,7 @@
                         <td>${app.ApplicationId}</td>
                         <td>${app.Company}</td>
                         <td>${app.JobRole}</td>
-                        <td>${new Date(app.AppliedDate).toLocaleDateString("en-In")}}</td>
+                        <td>${new Date(app.AppliedDate).toLocaleDateString("en-In")}</td>
                         <td>${app.Salary}</td>
                         <td><a href="/uploads/resumes/${app.Resume}" target="_blank">View Resume</a></td>
                         <td>${app.Status}</td>

@@ -231,7 +231,13 @@
                 document.getElementById('position').value = data.JobRole || '';
                 document.getElementById('salary').value = data.Salary || '';
                 document.getElementById('appliedDate').value = data.AppliedDate.split('T')[0]|| '';
-                document.getElementById('status').value = data.Status || 'Pending';
+                const statusDropdown = document.getElementById('status');
+if ([...statusDropdown.options].some(option => option.value === data.Status)) {
+    statusDropdown.value = data.Status;
+} else {
+    statusDropdown.value = 'Pending'; // Default
+}
+
                   document.getElementById('form').action=`/UpdateApplication/${data.ApplicationId}`
             } catch (error) {
                 console.error('Error fetching application data:', error);

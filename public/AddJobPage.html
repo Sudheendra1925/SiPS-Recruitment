@@ -249,7 +249,7 @@
         </div>
         <div class="form-group">
             <label for="salary">Salary</label>
-            <input type="number" id="salary" name="Salary" min="0"  autocomplete="off">
+            <input type="number" id="salary" name="Salary" min="0"  autocomplete="off" >
         </div>
    
         <div class="form-group">
@@ -263,12 +263,31 @@
         </div>
         <div class="form-group">
             <label for="Experience">Experience</label>
-            <input type="text" id="Experience" name="Experience"  autocomplete="off">
+            <input type="text" id="Experience" name="Experience"  autocomplete="off" placeholder="ex 2-5 years or 2 years">
         </div>
         <div class="form-group">
             <label for="endDate">End Date</label>
             <input type="date" id="endDate" name="EndDate" required>
         </div>
+
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <input type="text" id="Description" name="Description" placeholder="Write briefly about job" required>
+        </div>
+        <div class="form-group">
+            <label for="Skills">Skills</label>
+            <input type="textarea" id="Skills" name="Skills" placeholder="use comma ',' between each skill" required>
+        </div>
+        <div class="form-group">
+            <label for="RolesAndResponsibilities">Roles And Responsibilities</label>
+            <input type="textarea" id="RolesAndResponsibilities" name="RolesAndResponsibilities" placeholder="use comma ',' for new one" required>
+        </div>
+        <div class="form-group">
+            <label for="Qualifications">Qualifications</label>
+            <input type="textarea" id="Qualifications" name="Qualifications" placeholder="use comma ',' for new one" required>
+        </div>
+
+        
      <div>   <button type="submit">Add Job</button>
         <span><a id="cancel" class="btn btn-danger">Cancel</a></span>
     </div>

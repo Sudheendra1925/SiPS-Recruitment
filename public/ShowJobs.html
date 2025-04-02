@@ -4,102 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIPS Recruitment - Find Your Perfect Job</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
     <style>
-    
+    div{
+        border-radius: 40px;;
+    }
     /* General Styles */
     :root {
-        --primary-color: #2196f3;
-        --primary-light: #1976d2;
-        --primary-dark: #0d47a1;
-        --text-primary: #333333;
-        --text-secondary: #666666;
-        --text-light: #999999;
-        --background-light: #F5F5F5;
-        --background-dark: #242424;
-        --white: #FFFFFF;
-        --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
-        --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
-        --footer-bg: #1e3a5f;
-        --footer-text: #eeeeee;
-    }
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-lightest: #eff6ff;
+            --accent-color: #f97316;
+            --success-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-light: #6b7280;
+            --background-light: #f9fafb;
+            --white: #FFFFFF;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-large: 0 10px 15px rgba(0,0,0,0.1);
+            --footer-bg: #111827;
+            --footer-text: #e5e7eb;
+        }
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Roboto', sans-serif;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-    body {
-        background-color: var(--background-light);
-        color: var(--text-primary);
-        line-height: 1.6;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        /* background-color: var(--white); */
-    }
+        body {
+            background-color: var(--background-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
 
-    /* Header */
+
     .header {
-        background-color: var(--white);
-        box-shadow: var(--shadow-light);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        width:100%;
-    }
+            background-color: var(--white);
+            box-shadow: var(--shadow-light);
+            height: 80px;
+            position: sticky;
+            top: 30;
+            z-index: 1000;
+            width: 100%;
+        }
 
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 15px 20px;
-    }
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+        }
 
-    .logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-right: 30px;
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
 
-    .header-left {
-        display: flex;
-        align-items: center;
-    }
+        .logo-img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+        }
 
-    .nav-menu {
-        display: flex;
-        gap: 25px;
-    }
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .nav-item {
-        position: relative;
-    }
+        .logo .top-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
 
-    .nav-link {
-        text-decoration: none;
-        color: var(--text-secondary);
-        font-weight: 500;
-        transition: color 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 10px 0;
-    }
+        .logo .bottom-text {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
 
-    .nav-link:hover {
-        color: var(--primary-color);
-    }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-btn, .register-btn {
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .register-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .register-btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .divider {
+            height: 20px;
+            width: 1px;
+            background-color: var(--gray-200);
+            margin: 0 10px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--white);
+            min-width: 200px;
+            box-shadow: var(--shadow-medium);
+            border-radius: 8px;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
 
     .dropdown-content {
         display: grid;
@@ -169,11 +237,14 @@
         border-radius: 4px;
         font-weight: 500;
         transition: all 0.3s ease;
+        font-size: 13px;
     }
 
     .login-btn {
         color: var(--primary-color);
+
         border: 1px solid var(--primary-color);
+      
     }
 
     .login-btn:hover {
@@ -813,6 +884,9 @@
     <style>
   /* Sidebar Styles */
 #SideBar {
+    position: sticky;
+        top: 0;
+        z-index: 1000;
     width: 250px;
     background-color: var(--white);
     box-shadow: var(--shadow-light);
@@ -858,35 +932,104 @@
     }
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.dropdown-content a {
+    display: block;
+    padding: 8px;
+    text-decoration: none;
+    color: black;
+}
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+@media (max-width: 768px) {
+            .job-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px;
+            }
+
+            .company-logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 15px;
+            }
+
+            .job-title {
+                font-size: 24px;
+            }
+
+            .job-meta {
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body>
     <!-- Header -->
+ 
     <header class="header">
         <div class="header-container">
-            <div class="header-left">
-                <a href="#" class="logo">
-                    <img src="images/images.jpeg" alt="SIPS LOGO" height="60" width="60">
-                </a>
-                <nav class="nav-menu" id="navMenu">
-                    <div class="nav-item">
-                        <a href="#" class="nav-link">
-                            Jobs <i class="fas fa-chevron-down"></i>
-                        </a>
-                    </div>
-                </nav>
-            </div>
+            <a href="/" class="logo">
+                <img src="images/images.jpeg" alt="SIPS LOGO" class="logo-img">
+                <div class="logo-text">
+                    <span class="top-text">SiPS</span>
+                    <span class="bottom-text">Talent Hunt</span>
+                </div>
+            </a>
+
             <div class="header-actions">
-                <!-- Sidebar Toggle Button for Small Screens -->
-                <button id="sidebarToggle" class="sidebar-toggle">☰</button>
-                <a href="/Login" class="login-btn">Login</a>
+                <a href="/Login?Type=Login" class="login-btn">Login</a>
+                <a href="/Login?Type=SignUp" class="register-btn">Register</a>
+                <span class="divider"></span>
+                <div class="dropdown">
+                    <button class="btn-outline" style="border:none;">
+                        For Employers <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fas fa-briefcase"></i> Job Posting</a>
+                        <a href="#"><i class="fas fa-search"></i> Resume Search</a>
+                        <a href="#"><i class="fas fa-bullhorn"></i> Employer Branding</a>
+                        <a href="/AdminLogin"><i class="fas fa-sign-in-alt"></i> SiPS Login</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
-
+    <div class="header-actions">
+               
+        <button id="sidebarToggle" class="sidebar-toggle">☰</button>
+        
+    </div>
     <div id="main" class="d-flex justify-content-center align-items-center w-100">
         <!-- Sidebar with Filters -->
-        <div id="SideBar">
+        <div id="SideBar" >
             <div class="filter-group">
                 <label for="jobDomain">Job Domains</label>
                 <select id="jobDomain">
@@ -1013,10 +1156,13 @@
         jobs.forEach(job => {
             const jobCard = document.createElement("div");
             jobCard.classList.add("job-card");
+            jobCard.addEventListener("click", () => {
+                window.location.href = `/ViewJobPageBeforeLogin?JobId=${job.JobId}`;
+            });
             jobCard.innerHTML = `
                 <div class="job-header">
                     <div class="job-logo">
-                        <img src="${job.logoUrl || './Images/images.jpg'}" alt="${job.Company}" style="height: 30px; width: 30px;">
+                        <img src="${job.CompanyLogo || './Images/images.jpg'}" alt="${job.Company}" style="height: 30px; width: 30px;">
                     </div>
                     <div class="job-details">
                         <h3>${job.JobTitle}</h3>
@@ -1031,7 +1177,7 @@
                     <span class="job-salary">${job.Salary ? `<i class="fas fa-money-bill"></i> ${job.Salary}` : `<i class="fas fa-money-bill"></i> Salary not disclosed`}</span>
                 </div>
                 <div class="job-actions">
-                    <button class="apply-btn">Apply Now</button>
+                    <a href="/LoginToJobPage?JobTitle=${job.JobTitle}&Company=${job.Company}&Salary=${job.Salary}" class="apply-btn" style="text-decoration:none;">Apply Now</a>
                 </div>
             `;
             jobsGrid.appendChild(jobCard);

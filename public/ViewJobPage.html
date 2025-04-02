@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Posting | SIPS Talent Hunt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-lightest: #eff6ff;
+            --accent-color: #f97316;
+            --success-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-light: #6b7280;
+            --background-light: #f9fafb;
+            --white: #FFFFFF;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --shadow-light: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-large: 0 10px 15px rgba(0,0,0,0.1);
+            --footer-bg: #111827;
+            --footer-text: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-light);
+            height: 80px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo .top-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .logo .bottom-text {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-btn, .register-btn {
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .register-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .register-btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .divider {
+            height: 20px;
+            width: 1px;
+            background-color: var(--gray-200);
+            margin: 0 10px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: var(--white);
+            min-width: 200px;
+            box-shadow: var(--shadow-medium);
+            border-radius: 8px;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--primary-lightest);
+            color: var(--primary-color);
+            padding-left: 25px;
+        }
+
+        /* Main Content Styles */
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .job-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+            overflow: hidden;
+        }
+
+        .job-header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: var(--white);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .company-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.2);
+            background-color: var(--white);
+            padding: 5px;
+            flex-shrink: 0;
+        }
+
+        .job-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            font-size: 18px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+        }
+
+        .meta-item i {
+            font-size: 16px;
+        }
+
+        .job-body {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: var(--primary-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .info-item {
+            background: var(--gray-100);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .success {
+            color: var(--success-color);
+        }
+
+        .job-description {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .responsibilities {
+            list-style-type: none;
+        }
+
+        .responsibilities li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+        }
+
+        .responsibilities li:before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-size: 18px;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .skill-tag {
+            background: var(--primary-lightest);
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-lightest);
+        }
+
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--footer-text);
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            color: #ef4444;
+            background-color: #fee2e2;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .job-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 25px;
+            }
+
+            .company-logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 15px;
+            }
+
+            .job-title {
+                font-size: 24px;
+            }
+
+            .job-meta {
+                justify-content: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .job-header {
+                padding: 20px;
+            }
+
+            .job-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a  class="logo" id="logo">
+                <img src="images/images.jpeg" alt="SIPS LOGO" class="logo-img">
+                <div class="logo-text">
+                    <span class="top-text">SiPS</span>
+                    <span class="bottom-text">Talent Hunt</span>
+                </div>
+            </a>
+<!-- 
+            <div class="header-actions">
+                <a href="/Login?Type=Login" class="login-btn">Login</a>
+                <a href="/Login?Type=SignUp" class="register-btn">Register</a>
+                <span class="divider"></span>
+                <div class="dropdown">
+                    <button class="btn-outline" style="border:none;">
+                        For Employers <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fas fa-briefcase"></i> Job Posting</a>
+                        <a href="#"><i class="fas fa-search"></i> Resume Search</a>
+                        <a href="#"><i class="fas fa-bullhorn"></i> Employer Branding</a>
+                        <a href="/AdminLogin"><i class="fas fa-sign-in-alt"></i> SiPS Login</a>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="job-card">
+            <div id="loading" class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Loading job details...
+            </div>
+            <div id="job-content" style="display: none;">
+                <div class="job-header">
+                    <img id="company-logo" alt="Company Logo" class="company-logo">
+                    <div>
+                        <h1 class="job-title" id="job-title">Loading...</h1>
+                        <p class="company-name" id="company-name"></p>
+                        <div class="job-meta" id="job-meta"></div>
+                    </div>
+                </div>
+
+                <div class="job-body">
+                    <div class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-info-circle"></i> Job Overview
+                        </h2>
+                        <div class="info-grid" id="job-overview"></div>
+                    </div>
+
+                    <div class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-file-alt"></i> Job Description
+                        </h2>
+                        <p class="job-description" id="job-description"></p>
+                    </div>
+
+                    <div class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-tasks"></i> Key Responsibilities
+                        </h2>
+                        <ul class="responsibilities" id="responsibilities"></ul>
+                    </div>
+
+                    <div class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-code"></i> Required Skills
+                        </h2>
+                        <div class="skills-container" id="skills-container"></div>
+                    </div>
+
+                    <div class="section">
+                        <h2 class="section-title">
+                            <i class="fas fa-graduation-cap"></i> Qualifications
+                        </h2>
+                        <ul class="responsibilities" id="qualifications"></ul>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a id="SaveJob" class="btn ">
+                            <i class="far fa-bookmark"></i> Save Job
+                        </a>
+                        <a  class="btn btn-primary" id="apply-btn">
+                            <i class="fas fa-paper-plane"></i> Apply Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="error-message" class="error-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2025 SIPS Talent Hunt. All rights reserved.</p>
+    </footer>
+
+    <script>
+       let  ApplicantName='';
+       let ApplicationStatus;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get jobId from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobId = urlParams.get('JobId');
+             ApplicantName = urlParams.get('ApplicantName');
+            ApplicationStatus = urlParams.get('ApplicationStatus');
+            const logo=document.getElementById('logo');
+            logo.href=`/Home/${ApplicantName}`;
+            if (!jobId) {
+                showError('No job ID provided in URL');
+                return;
+            }
+
+            // Fetch job details from API
+            fetchJobDetails(jobId);
+        });
+
+        async function fetchJobDetails(jobId) {
+            try {
+                // Replace with your actual API endpoint
+                const response = await fetch(`/getJobData?JobId=${jobId}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const jobData = await response.json();
+                renderJobDetails(jobData);
+                
+                // Hide loading, show content
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('job-content').style.display = 'block';
+            } catch (error) {
+                console.error('Error fetching job details:', error);
+                showError('Failed to load job details. Please try again later.');
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+   async     function renderJobDetails(job) {
+            // Basic job info
+            document.getElementById('job-title').textContent = job.JobTitle || 'No title provided';
+            document.getElementById('company-name').textContent = job.Company || 'Company not specified';
+            document.getElementById('job-description').textContent = job.Description || 'No description available';
+         
+            console.log('ApplicationStatus:',ApplicationStatus);
+
+if(ApplicationStatus==1){
+
+                document.getElementById('apply-btn').textContent = 'Applied';
+                document.getElementById('apply-btn').classList.add('disabled');
+                document.getElementById('apply-btn').style.pointerEvents = 'none';
+                document.getElementById('apply-btn').style.backgroundColor = 'green';
+                document.getElementById('apply-btn').style.color = '#fff';
+}
+else{
+  document.getElementById("apply-btn").href=  ` /ApplyJobPage?ApplicantName=${ApplicantName}&JobTitle=${encodeURIComponent(job.JobTitle)}&Company=${encodeURIComponent(job.Company)}&Salary=${encodeURIComponent(job.Salary)}`;
+  
+}
+async function checkSavedJob(ApplicantName, job) {
+    let SavedJobs = [];
+
+    try {
+        // Fetch saved jobs for the applicant
+        const response = await fetch(`/SpecificSavedJobs?ApplicantName=${encodeURIComponent(ApplicantName)}&JobId=${encodeURIComponent(job.JobId)}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        SavedJobs = await response.json();
+    } catch (error) {
+        console.error("Error fetching saved jobs:", error);
+    }
+
+    // Ensure the element exists before modifying it
+    const saveJobElement = document.getElementById("SaveJob");
+    if (!saveJobElement) {
+        console.error("Element with ID 'SaveJob' not found.");
+        return;
+    }
+
+    if (SavedJobs.length > 0) {
+        saveJobElement.innerHTML = "<div class='btn btn-success btn-sm'><i class='far fa-bookmark'></i><button >Saved</button></div>";
+    } else {
+        saveJobElement.innerHTML = `<div class='btn btn-primary btn-sm'><i class='far fa-bookmark'></i><a class="btn btn-primary" href="/SaveJob?ApplicantName=${encodeURIComponent(ApplicantName)}&JobId=${encodeURIComponent(job.JobId)}&ApplicationStatus=${ApplicationStatus}">Save Job</a></div>`;
+    }
+}
+
+// Call the function with appropriate parameters
+checkSavedJob(ApplicantName,job);
+
+
+
+
+//  document.getElementById("SaveJob").href=  ` /SaveJob?ApplicantName=${ApplicantName}&JobId=${job.JobId}`;
+      
+
+     
+            document.getElementById('company-logo').src = job.CompanyLogo?job.CompanyLogo :'./Images/images.jpeg';
+            // Job meta (location, type, salary)
+            const metaContainer = document.getElementById('job-meta');
+            metaContainer.innerHTML = '';
+            
+            if (job.Location) {
+                metaContainer.appendChild(createMetaItem('map-marker-alt', job.Location));
+            }
+            
+            if (job.JobType) {
+                metaContainer.appendChild(createMetaItem('briefcase', job.JobType));
+            }
+            
+            if (job.Salary) {
+                metaContainer.appendChild(createMetaItem('money-bill-wave', job.Salary));
+            }
+
+            // Job overview grid
+            const overviewContainer = document.getElementById('job-overview');
+            overviewContainer.innerHTML = '';
+            
+            const overviewItems = [
+                { label: 'Job ID', value: job.JobId || 'N/A' },
+                { label: 'Posted Date', value: formatDate(job.PostedDate) },
+                // { label: 'Application Deadline', value: formatDate(job.EndDate), highlight: true },
+                { label: 'Positions Available', value: `${job.PositionsAvailable || 1} (${job.PositionsFilled || 0} filled)`, success: job.PositionsFilled < job.PositionsAvailable },
+                { label: 'Experience Required', value: job.Experience || 'Not specified' },
+                { label: 'Job Category', value: job.Category || 'Not specified' },
+                { label: 'Job Domain', value: job.Domain || 'Not specified' },
+                { label: 'Employment Type', value: job.JobType || 'Not specified' }
+            ];
+            
+            overviewItems.forEach(item => {
+                overviewContainer.appendChild(createInfoItem(item.label, item.value, item.highlight, item.success));
+            });
+
+            // Responsibilities (comma-separated)
+            const responsibilitiesContainer = document.getElementById('responsibilities');
+            responsibilitiesContainer.innerHTML = '';
+            
+            if (job.RolesAndResponsibilities) {
+                const responsibilities = job.RolesAndResponsibilities.split(',').map(item => item.trim());
+                responsibilities.forEach(responsibility => {
+                    if (responsibility) {
+                        const li = document.createElement('li');
+                        li.textContent = responsibility;
+                        responsibilitiesContainer.appendChild(li);
+                    }
+                });
+            }
+
+            // Skills (comma-separated)
+            const skillsContainer = document.getElementById('skills-container');
+            skillsContainer.innerHTML = '';
+            
+            if (job.Skills) {
+                const skills = job.Skills.split(',').map(item => item.trim());
+                skills.forEach(skill => {
+                    if (skill) {
+                        const tag = document.createElement('span');
+                        tag.className = 'skill-tag';
+                        tag.textContent = skill;
+                        skillsContainer.appendChild(tag);
+                    }
+                });
+            }
+
+            // Qualifications (comma-separated)
+            const qualificationsContainer = document.getElementById('qualifications');
+            qualificationsContainer.innerHTML = '';
+            
+            if (job.Qualifications) {
+                const qualifications = job.Qualifications.split(',').map(item => item.trim());
+                qualifications.forEach(qualification => {
+                    if (qualification) {
+                        const li = document.createElement('li');
+                        li.textContent = qualification;
+                        qualificationsContainer.appendChild(li);
+                    }
+                });
+            }
+
+            // Set up apply button
+            if (job.ApplicationLink) {
+                document.getElementById('apply-btn').href = job.ApplicationLink;
+            }
+        }
+
+        function createMetaItem(icon, text) {
+            const div = document.createElement('div');
+            div.className = 'meta-item';
+            
+            const iconElem = document.createElement('i');
+            iconElem.className = `fas fa-${icon}`;
+            
+            const span = document.createElement('span');
+            span.textContent = text;
+            
+            div.appendChild(iconElem);
+            div.appendChild(span);
+            
+            return div;
+        }
+
+        function createInfoItem(label, value, highlight = false, success = false) {
+            const div = document.createElement('div');
+            div.className = 'info-item';
+            
+            const labelElem = document.createElement('span');
+            labelElem.className = 'info-label';
+            labelElem.textContent = label;
+            
+            const valueElem = document.createElement('span');
+            valueElem.className = 'info-value';
+            
+            if (highlight) {
+                valueElem.classList.add('highlight');
+            }
+            
+            if (success) {
+                const successSpan = document.createElement('span');
+                successSpan.className = 'success';
+                successSpan.textContent = ` (${value.split('(')[1]}`;
+                value = value.split('(')[0];
+                valueElem.textContent = value;
+                valueElem.appendChild(successSpan);
+            } else {
+                valueElem.textContent = value;
+            }
+            
+            div.appendChild(labelElem);
+            div.appendChild(valueElem);
+            
+            return div;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Not specified';
+            
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            } catch (e) {
+                return dateString;
+            }
+        }
+
+        function showError(message) {
+            const errorElem = document.getElementById('error-message');
+            errorElem.textContent = message;
+            errorElem.style.display = 'block';
+            document.getElementById('loading').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

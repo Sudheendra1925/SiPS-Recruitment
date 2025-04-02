@@ -240,7 +240,7 @@ padding:20px;
         </div> -->
         <div class="switcher-question-signup">
         <div>  New Applicant? 
-          <span class="switcher" onclick="showForm('signup')" style="text-decoration: none;">Sign Up</span></div> 
+          <span class="switcher"  style="text-decoration: none;"><a href="/Login?Type=SignUp" style="text-decoration: none;">Sign Up</a></span></div> 
           <span class="switcher" ><a href="/ForgetPasswordPage?Type=Client" style="text-decoration: none;color:#e63946">Forgot Password?</a></span>
       </div>
       </div>
@@ -293,14 +293,33 @@ padding:20px;
           <button type="submit" id="signupbutton" class="btn btn-success w-100" disabled>Sign Up</button>
         </form>
         <div class="switcher-question">
-          Already a client? <span class="switcher" onclick="showForm('login')" >Login</span>
+          Already a client? <span class="switcher"  ><a href="/Login?Type=Login" style="text-decoration: none;">Login</a></span>
         </div>
         
       </div>
 
-      <a class="admin-btn" href="/AdminLogin"><img src="./Images/administrator.png" height="30px" width="30px"> Admin Login</a>
+      <!-- <a class="admin-btn" href="/AdminLogin"><img src="./Images/administrator.png" height="30px" width="30px"> Admin Login</a> -->
     </section>
   </div>
+
+
+  <script>
+
+    const Params=new URLSearchParams(window.location.search);
+    const Type=Params.get('Type');
+    if(Type=="Login"){
+      document.getElementById('login-form').style.display="block";
+      document.getElementById('signup-form').style.display="none";
+    }
+    else if(Type=="SignUp"){
+      document.getElementById('login-form').style.display="none";
+      document.getElementById('signup-form').style.display="block";
+    }
+    
+    </script>
+
+
+
   <script>
     function showForm(form) {
       document.querySelectorAll('.form-wrapper').forEach(wrapper => wrapper.classList.remove('is-active'));
@@ -327,8 +346,6 @@ padding:20px;
 window.location.href = `/UserSignup?ApplicantName=${document.getElementById('signup-ApplicantName').value}&PhoneNumber=${document.getElementById('signup-phoneNumber').value}&Password=${password}&Address=${document.getElementById('Address').value}&AadharCard=${document.getElementById('Aadhaar').value}&Email=${document.getElementById('signup-Email').value}`;
   
   }
-
-
   function confirmLogin() {
     event.preventDefault();
     window.location.href = `/check?Email=${document.getElementById('login-Email').value}&Password=${document.getElementById('login-password').value}`;

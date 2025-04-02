@@ -816,6 +816,9 @@
   /* Sidebar Styles */
 #SideBar {
     width: 250px;
+    position: sticky;
+    top:0;
+    z-index: 1000;
     background-color: var(--white);
     box-shadow: var(--shadow-light);
     padding: 20px;
@@ -1005,7 +1008,6 @@ text-decoration: none;
         // Fetch applied jobs
         const response = await fetch(`/SpecificApplications?ApplicantName=${encodeURIComponent(ApplicantName)}`);
         appliedJobs = await response.json();
-        console.log("Applied Jobs:", appliedJobs);
     } catch (error) {
         console.error("Error fetching applied jobs:", error);
     }
@@ -1032,10 +1034,25 @@ text-decoration: none;
         jobs.forEach(job => {
             const jobCard = document.createElement("div");
             jobCard.classList.add("job-card");
-
+jobCard.addEventListener("click", function() {
+                window.location.href = `/ViewJobPage?JobId=${job.JobId}&ApplicantName=${ApplicantName}?ApplicationStatus?${isApplied}`;
+            });
             let isApplied = appliedJobs.some(appliedJob => {
                 const appliedJobRole = appliedJob.JobRole ? appliedJob.JobRole.trim().toLowerCase() : "";
                 const appliedCompany = appliedJob.Company ? appliedJob.Company.trim().toLowerCase() : "";
+
+if(appliedJobRole === job.JobTitle.trim().toLowerCase() &&appliedCompany === job.Company.trim().toLowerCase()){
+
+    jobCard.addEventListener("click", function() {
+                window.location.href = `/ViewJobPage?JobId=${job.JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=1`;
+            });
+}
+else{
+    jobCard.addEventListener("click", function() {
+                window.location.href = `/ViewJobPage?JobId=${job.JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=0`;
+            });
+}
+
 
                 return appliedJobRole === job.JobTitle.trim().toLowerCase() &&
                     appliedCompany === job.Company.trim().toLowerCase();

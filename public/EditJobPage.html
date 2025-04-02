@@ -162,7 +162,7 @@ input[type="number"]::-webkit-outer-spin-button,
                 <label for="company" class="form-label">Company</label>
                 <input type="text" id="company" name="Company" class="form-control" required readonly>
             </div>
-            
+           
             <div class="mb-3">
                 <label for="Category" class="form-label">Category</label>
                 <input type="text" id="Category" name="Category" class="form-control" required placeholder="Type or select a category" autocomplete="off">
@@ -174,7 +174,7 @@ input[type="number"]::-webkit-outer-spin-button,
                 <input type="text" id="jobTitle" name="JobTitle" class="form-control" required placeholder="Type a job title" autocomplete="off">
                 <ul id="jobSuggestions" class="suggestion-list"></ul>
             </div>
-        
+            
             <div class="mb-3">
                 <label for="jobType" class="form-label">Job Type</label>
                 <select id="jobType" name="JobType" class="form-select" required>
@@ -222,10 +222,21 @@ input[type="number"]::-webkit-outer-spin-button,
             </div>
             <div class="mb-3">
                 <label for="Experience" class="form-label">Experience</label>
-                <input type="text" id="Experience" name="Experience" class="form-control" required readonly>
+                <input type="text" id="Experience" name="Experience" class="form-control" required >
+            </div>
+            <div class="mb-3">
+                <label for="Skills" class="form-label">Skills</label>
+                <input type="text" id="Skills" name="Skills" class="form-control" required >
+            </div>
+            <div class="mb-3">
+                <label for="RolesAndResponsibilities" class="form-label">Roles And Responsibilities</label>
+                <input type="text" id="RolesAndResponsibilities" name="RolesAndResponsibilities" class="form-control" required >
+            </div>
+            <div class="mb-3">
+                <label for="Qualifications" class="form-label">Qualifications</label>
+                <input type="text" id="Qualifications" name="Qualifications" class="form-control" required >
             </div>
             
-        
             <button type="submit" class="btn btn-primary">Update Job</button>
             <a href="/Companies" class="btn btn-danger">Cancel</a>
         </form>
@@ -236,20 +247,28 @@ input[type="number"]::-webkit-outer-spin-button,
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-    <script>
+    
+
+
+     <script>
         // Get the job ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const jobId = urlParams.get('JobId');  // Example: /EditJobPage.html?id=123
+        const jobId = urlParams.get('JobId');
+    
         // Fetch job details from backend based on the ID
         async function fetchJobDetails() {
             document.getElementById('loadingSpinner').style.display = 'block'; // Show spinner
             try {
+                if (!jobId) {
+                    throw new Error("Job ID is missing from the URL.");
+                }
+    
                 const response = await fetch(`/getJobData?JobId=${jobId}`);
                 if (!response.ok) {
                     throw new Error('Job not found');
                 }
-                const job = await response.json(); // Wait for JSON to be parsed
-        
+                const job = await response.json();
+                console.log("Fetched Job Data:", job); // Log the job data for debugging
                 fillFormFields(job);
             } catch (error) {
                 console.error('Error fetching job data:', error);
@@ -259,58 +278,64 @@ input[type="number"]::-webkit-outer-spin-button,
             }
         }
     
-        // Fill the form with the current job details
+        // Function to safely format dates
+        function formatDate(dateString) {
+            if (!dateString) return ""; // Return empty if date is missing
+    
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) {
+                console.error("Invalid date:", dateString);
+                return ""; // Prevent NaN errors
+            }
+            return date.toISOString().split("T")[0]; // Convert to YYYY-MM-DD
+        }
+    
+        // Fill the form with job details
         function fillFormFields(job) {
-           
-            document.getElementById('jobTitle').value = job.JobTitle;
-            document.getElementById('jobType').value = job.JobType;
-            document.getElementById('Category').value = job.Category;
-            document.getElementById('Budget').value = job.Budget;
-            document.getElementById('salary').value = job.Salary;
-            document.getElementById('company').value = job.Company;
-            document.getElementById('location').value = job.Location;
-            document.getElementById('noOfJobs').value = job.NoOfJobs;
-            document.getElementById('Experience').value = job.Experience;
+            console.log('your job is' ,job)
+            document.getElementById('jobTitle').value = job.JobTitle || '';
+            document.getElementById('jobType').value = job.JobType || '';
+            document.getElementById('Category').value = job.Category || '';
+            document.getElementById('Budget').value = job.Budget || 0;
+            document.getElementById('salary').value = job.Salary || 0;
+            document.getElementById('company').value = job.Company || '';
+            document.getElementById('location').value = job.Location || '';
+            document.getElementById('noOfJobs').value = job.NoOfJobs || '0';
+            document.getElementById('Experience').value = job.Experience || '0';
+            document.getElementById('RolesAndResponsibilities').value =job.RolesAndResponsibilities|| '';
+            document.getElementById('Skills').value =job.Skills|| '';
+            document.getElementById('Qualifications').value =job.Qualifications|| '';
             
-
-            let postedDate = new Date(job.PostedDate);
-            let formattedPostDate = postedDate.getFullYear() + '-'+ (postedDate.getMonth() + 1).toString().padStart(2, '0') + '-' + postedDate.getDate().toString().padStart(2, '0');
-            document.getElementById('postedDate').value = formattedPostDate;
-          
-            let endDate = new Date(job.EndDate);
-            let formattedDate = endDate.getFullYear() + '-'+ (endDate.getMonth() + 1).toString().padStart(2, '0') + '-' + endDate.getDate().toString().padStart(2, '0');
-            document.getElementById('endDate').value = formattedDate;
-          
-            document.getElementById('fulfilled').value = job.Fulfilled;
+            // Fix Date Issues
+            document.getElementById('postedDate').value = formatDate(job.PostedDate);
+            document.getElementById('endDate').value = formatDate(job.EndDate);
+    
+            document.getElementById('fulfilled').value = job.Fulfilled || 0;
             document.getElementById('editJobForm').action = `/EditJob?JobId=${jobId}`;
         }
     
-        // Handle form submission to update job
-     
         // Fetch job details when the page loads
         fetchJobDetails();
     </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-                // Fetch job data from API
                 const response = await fetch("/JobsData");
-                const jobsData = await response.json(); // Assuming API returns a JSON array
+                const jobsData = await response.json(); 
     
                 // Extract unique categories, job titles, and locations
                 const categories = [...new Set(jobsData.map(job => job.Category))]; 
                 const jobTitles = [...new Set(jobsData.map(job => job.JobTitle))];
                 const locations = [...new Set(jobsData.map(job => job.Location))];
     
-                // Function to create an autocomplete dropdown
                 function setupAutocomplete(inputElement, suggestionBoxId, dataList) {
                     const suggestionBox = document.getElementById(suggestionBoxId);
-    
                     inputElement.addEventListener("input", function () {
                         const value = this.value.toLowerCase();
                         suggestionBox.innerHTML = ""; // Clear previous suggestions
     
-                        if (value.length > 1) { // Show suggestions only after 2+ characters
+                        if (value.length > 1) { 
                             const filtered = dataList.filter(item => item.toLowerCase().includes(value));
                             filtered.forEach(item => {
                                 const li = document.createElement("li");
@@ -324,7 +349,6 @@ input[type="number"]::-webkit-outer-spin-button,
                         }
                     });
     
-                    // Hide suggestions when clicking outside
                     document.addEventListener("click", function (e) {
                         if (!inputElement.contains(e.target) && !suggestionBox.contains(e.target)) {
                             suggestionBox.innerHTML = "";
@@ -332,7 +356,6 @@ input[type="number"]::-webkit-outer-spin-button,
                     });
                 }
     
-                // Apply autocomplete to Category, Job Title, and Location fields
                 setupAutocomplete(document.getElementById("Category"), "categorySuggestions", categories);
                 setupAutocomplete(document.getElementById("jobTitle"), "jobSuggestions", jobTitles);
                 setupAutocomplete(document.getElementById("location"), "locationSuggestions", locations);
@@ -343,5 +366,6 @@ input[type="number"]::-webkit-outer-spin-button,
         });
     </script>
     
+
 </body>
 </html>

@@ -382,7 +382,7 @@ window.onload = function() {
                 });
 
                 document.getElementById('NoOfApplications').innerHTML = `<span class="highlight">${applicationsCount}</span>`;
-                document.getElementById('NoOfApplicants').innerHTML = `<span class="highlight">${applicantsSet.size} s</span>`;
+                document.getElementById('NoOfApplicants').innerHTML = `<span class="highlight">${applicantsSet.size}</span>`;
                 document.getElementById('Reports&Revenue').innerHTML = `<span class="highlight">₹${totalExpectedSalary.toLocaleString("en-In")}</span>`;
             } catch (error) {
                 console.error('Error fetching applicant data:', error);
