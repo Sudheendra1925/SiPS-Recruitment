@@ -59,7 +59,7 @@ const db = mysql.createConnection({
     user: 'root',
     password: 'indra@sql',
     database:'SipsrecruimentTrial',
-    timezone: 'Asia/Kolkata' 
+    timezone: '+05:30'  
 });
 
 db.connect((err) => {
@@ -679,14 +679,27 @@ app.get('/getApplicationData/:ApplicationId', (req, res) => {
     });
 });
 
-app.post('/UpdateApplication/:ApplicationId', (req, res) => {
-    const ApplicationId=req.params.ApplicationId;
-    const {phoneNumber, companyName, position, salary, appliedDate,  status} = req.body;
+app.post('/UpdateApplication/:ApplicationId', isAuthenticatedAdmin, (req, res) => {
+    const ApplicationId = req.params.ApplicationId;
+    const {
+        phoneNumber,
+        companyName,
+        position,
+        salary,
+        appliedDate,
+        status,
+        applicantName
+    } = req.body;
 
-    const query = `
+    // Validate required fields
+    if (!phoneNumber || !companyName || !position || !salary || !appliedDate || !status || !applicantName) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    // First update the main application
+    const updateQuery = `
         UPDATE Applications 
         SET 
-            
             PhoneNumber = ?, 
             Company = ?, 
             JobRole = ?, 
@@ -695,26 +708,98 @@ app.post('/UpdateApplication/:ApplicationId', (req, res) => {
             Status = ?
         WHERE ApplicationId = ?`;
 
-    db.query(query, [
-        phoneNumber, 
-        companyName, 
-        position, 
-        parseInt(salary, 10), 
-        appliedDate, 
-        status, 
+    db.query(updateQuery, [
+        phoneNumber,
+        companyName,
+        position,
+        parseInt(salary, 10),
+        appliedDate,
+        status,
         ApplicationId
     ], (err, result) => {
         if (err) {
             console.error('Error updating application:', err);
             return res.status(500).json({ error: 'Failed to update application' });
         }
-       res.send(` <script>
-        alert("Application Submited Succesfully!");
-        window.location.href = "/Applications";
-      </script>`)
 
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Application not found' });
+        }
+
+        // Handle PlacedApplications table based on status
+        if (status === 'Placed') {
+            // Check if entry exists in PlacedApplications
+            const checkQuery = 'SELECT * FROM PlacedApplications WHERE ApplicationId = ?';
+            db.query(checkQuery, [ApplicationId], (err, results) => {
+                if (err) {
+                    console.error('Error checking placed applications:', err);
+                    return res.status(500).json({ error: 'Failed to check placed applications' });
+                }
+
+                if (results.length === 0) {
+                 
+                    const insertQuery = `
+                        INSERT INTO PlacedApplications 
+                        (ApplicationId, ApplicantName, Company, Salary, Status, PlacedDate, PaymentReceived)
+                        VALUES (?, ?, ?, ?, 'Not Received', CURDATE(), 0)`;
+                    
+                    db.query(insertQuery, [
+                        ApplicationId,
+                        applicantName,
+                        companyName,
+                        parseInt(salary, 10)
+                    ], (err) => {
+                        if (err) {
+                            console.error('Error inserting into placed applications:', err);
+                            return res.status(500).json({ error: 'Failed to update placed applications' });
+                        }
+                        res.send(`<script>
+                            alert("Application Updated Successfully!");
+                            window.location.href = "/Applications";
+                        </script>`);
+                    });
+                } else {
+                    // Update existing entry in PlacedApplications
+                    const updatePlacedQuery = `
+                        UPDATE PlacedApplications 
+                        SET 
+                            Company = ?, 
+                            Salary = ?
+                        WHERE ApplicationId = ?`;
+                    
+                    db.query(updatePlacedQuery, [
+                        companyName,
+                        parseInt(salary, 10),
+                        ApplicationId
+                    ], (err) => {
+                        if (err) {
+                            console.error('Error updating placed applications:', err);
+                            return res.status(500).json({ error: 'Failed to update placed applications' });
+                        }
+                        res.send(`<script>
+                            alert("Application Updated Successfully!");
+                            window.location.href = "/Applications";
+                        </script>`);
+                    });
+                }
+            });
+        } else {
+            // If status is not Placed, remove from PlacedApplications if present
+            const deleteQuery = 'DELETE FROM PlacedApplications WHERE ApplicationId = ?';
+            db.query(deleteQuery, [ApplicationId], (err) => {
+                if (err) {
+                    console.error('Error removing from placed applications:', err);
+                    return res.status(500).json({ error: 'Failed to update placed applications' });
+                }
+                res.send(`<script>
+                    alert("Application Updated Successfully!");
+                    window.location.href = "/Applications";
+                </script>`);
+            });
+        }
     });
 });
+
 app.get('/companiesdata', (req, res) => {
     const ApplicationId = req.params.ApplicationId;
 
@@ -879,8 +964,29 @@ app.get('/SaveJob', (req, res) => {
     window.location.href = "/ViewJobPage?JobId=${JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=${ApplicationStatus}";
     </script>`);
     });
-    
+})
 
+app.get('/UnSaveJob', (req, res) => {
+
+    const { JobId, ApplicantName,ApplicationStatus } = req.query;
+
+    const query = 'Delete  from SavedJobs where JobId=? and ApplicantName=? ';
+    
+    db.query(query, [JobId,ApplicantName], (err, result) => {
+    if (err) {
+    console.error('Error inserting job:', err);
+    return res.status(500).send(`<script>
+    alert("Job Already Exists!");
+    window.location.href = '/ViewJobPage?JobId=${JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=${ApplicationStatus}';
+    </script>`);
+    }
+    
+    // Serve the HTML file with success message
+    res.send(`<script>
+    alert("Job UnSaved Successfully!");
+    window.location.href = "/ViewJobPage?JobId=${JobId}&ApplicantName=${ApplicantName}&ApplicationStatus=${ApplicationStatus}";
+    </script>`);
+    });
 })
 
 
@@ -1367,10 +1473,10 @@ app.get('/PlacedTrendsMonthly', (req, res) => {
   })
   
   app.post('/AddPlacedApplication', (req, res) => {
-    const {ApplicationId, ApplicantName, Company, Salary, PaymentReceived, Status } = req.body;
-    
+    const {ApplicationId, ApplicantName, Company, Salary, PaymentReceived,PlacedDate,Status } = req.body;
+    console.log(req.body,PlacedDate)
     // Query to insert data into PlacedApplications table
-    db.query('Insert into PlacedApplications (ApplicationId,ApplicantName, Company, Salary, PaymentReceived, Status) VALUES (?,?, ?, ?, ?, ?)', [ApplicationId,ApplicantName, Company, Salary, PaymentReceived, Status], (err, results) => {
+    db.query('Insert into PlacedApplications (ApplicationId,ApplicantName, Company, Salary, PaymentReceived, Status,PlacedDate) VALUES (?,?, ?, ?, ?,?,?)', [ApplicationId,ApplicantName, Company, Salary, PaymentReceived, Status,PlacedDate], (err, results) => {
         if (err) {
             return res.send(`
                 <script>

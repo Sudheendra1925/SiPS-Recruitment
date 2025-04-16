@@ -821,15 +821,29 @@
 
     @media (max-width: 576px) {
         .header-container {
-            flex-wrap: wrap;
-            padding: 10px;
+          
+        justify-content: space-between;
+            display: flex;
+            
         }
 
-        .header-actions {
-            width: 100%;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
+   #BUTTONS{
+
+    display: flex;
+    /* align-items: center;
+    
+   flex-direction: column; */
+   justify-content: end;
+   flex-wrap: wrap;
+   gap:0px;
+   }
+.divider{
+    display: none;
+}
+        #BUTTONS a,#BUTTONS div{
+            font-size: 8px;
+      
+        } 
 
         .footer-container {
             grid-template-columns: 1fr;
@@ -885,14 +899,17 @@
   /* Sidebar Styles */
 #SideBar {
     position: sticky;
-        top: 0;
-        z-index: 1000;
+    top: 0;
+     z-index: 1000;
     width: 250px;
     background-color: var(--white);
     box-shadow: var(--shadow-light);
     padding: 20px;
     /* height: calc(100vh - 80px); */
     height: 100vh;
+   
+   
+   
 }
 
 /* Default Hidden Sidebar in Small Screens */
@@ -1004,7 +1021,7 @@
                 </div>
             </a>
 
-            <div class="header-actions">
+            <div  id="BUTTONS">
                 <a href="/Login?Type=Login" class="login-btn">Login</a>
                 <a href="/Login?Type=SignUp" class="register-btn">Register</a>
                 <span class="divider"></span>

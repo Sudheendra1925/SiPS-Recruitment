@@ -11,28 +11,37 @@
 
     <style>
     
-    /* General Styles */
-    :root {
-        --primary-color: #2196f3;
-        --primary-light: #1976d2;
-        --primary-dark: #0d47a1;
-        --text-primary: #333333;
-        --text-secondary: #666666;
-        --text-light: #999999;
-        --background-light: #F5F5F5;
-        --background-dark: #242424;
-        --white: #FFFFFF;
-        --shadow-light: 0 2px 4px rgba(0,0,0,0.1);
-        --shadow-medium: 0 4px 6px rgba(0,0,0,0.1);
-        --footer-bg: #1e3a5f;
-        --footer-text: #eeeeee;
-    }
-
+    *{
+    font-family: 'Poppins', sans-serif;
+  } :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --primary-lightest: #eff6ff;
+            --accent-color: #f97316;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-light: #6b7280;
+            --background-light: #f9fafb;
+            --white: #FFFFFF;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --rounded-sm: 4px;
+            --rounded: 6px;
+            --rounded-lg: 8px;
+            --rounded-xl: 12px;
+        }
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: 'Roboto', sans-serif;
+      
     }
 
     body {
@@ -46,63 +55,7 @@
     }
 
     /* Header */
-    .header {
-        background-color: var(--white);
-        box-shadow: var(--shadow-light);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        width:100%;
-    }
-
-    .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 15px 20px;
-    }
-
-    .logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        font-size: 24px;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-right: 30px;
-    }
-
-    .header-left {
-        display: flex;
-        align-items: center;
-    }
-
-    .nav-menu {
-        display: flex;
-        gap: 25px;
-    }
-
-    .nav-item {
-        position: relative;
-    }
-
-    .nav-link {
-        text-decoration: none;
-        color: var(--text-secondary);
-        font-weight: 500;
-        transition: color 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        padding: 10px 0;
-    }
-
-    .nav-link:hover {
-        color: var(--primary-color);
-    }
-
+  
     .dropdown-content {
         display: grid;
         grid-template-rows: repeat(10, auto); /* Max 10 rows */
@@ -155,9 +108,6 @@
         display: block;
     }
 
-    .nav-item:hover .dropdown-content {
-        display: block;
-    }
 
     .header-actions {
         display: flex;
@@ -165,32 +115,7 @@
         gap: 15px;
     }
 
-    .login-btn, .register-btn {
-        text-decoration: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-    }
-
-    .login-btn {
-        color: var(--primary-color);
-        border: 1px solid var(--primary-color);
-    }
-
-    .login-btn:hover {
-        background-color: rgba(33, 150, 243, 0.1);
-    }
-
-    .register-btn {
-        background-color: var(--primary-color);
-        color: var(--white);
-    }
-
-    .register-btn:hover {
-        background-color: var(--primary-light);
-    }
-
+  
     /* Hero Search Section */
     .hero-search {
         background-color: var(--white);
@@ -751,11 +676,7 @@
     }
 
     @media (max-width: 576px) {
-        .header-container {
-            flex-wrap: wrap;
-            padding: 10px;
-        }
-
+       
         .header-actions {
             width: 100%;
             justify-content: flex-end;
@@ -867,31 +788,238 @@ a{
 text-decoration: none;
 }
     </style>
+    <style>
+        .header {
+             background-color: var(--white);
+             box-shadow: var(--shadow-sm);
+             height: 80px;
+             position: sticky;
+             top: 0;
+             z-index: 1000;
+             width: 100%;
+         }
+ 
+         .header-container {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             max-width: 1200px;
+             margin: 0 auto;
+             padding: 0 20px;
+             height: 100%;
+         }
+ 
+         .logo {
+             display: flex;
+             align-items: center;
+             text-decoration: none;
+             gap: 12px;
+             transition: transform 0.2s ease;
+         }
+ 
+         .logo:hover {
+             transform: translateY(-1px);
+         }
+ 
+         .logo-img {
+             height: 50px;
+             width: 50px;
+             object-fit: contain;
+             border-radius: 50%;
+           
+         }
+ 
+         .logo-text {
+             display: flex;
+             flex-direction: column;
+         }
+ 
+         .logo .top-text {
+             font-size: 24px;
+             font-weight: 700;
+             color: var(--primary-color);
+             line-height: 1;
+             letter-spacing: 0.5px;
+         }
+ 
+         .logo .bottom-text {
+             font-size: 12px;
+             color: var(--accent-color);
+             font-weight: 500;
+             letter-spacing: 1px;
+             text-transform: uppercase;
+         }
+ 
+         .header-actions {
+             display: flex;
+             align-items: center;
+             gap: 16px;
+         }
+ 
+         .divider {
+             display: inline-block;
+             width: 1px;
+             height: 24px;
+             background-color: var(--gray-200);
+         }
+ 
+         /* Profile Dropdown Styles */
+         .profile-dropdown {
+             position: relative;
+             display: inline-block;
+         }
+ 
+         .profile-btn {
+             background: none;
+             border: none;
+             cursor: pointer;
+             display: flex;
+             align-items: center;
+             gap: 8px;
+             padding: 8px 16px;
+             border-radius: var(--rounded);
+             font-weight: 500;
+             color: var(--text-primary);
+             transition: all 0.2s ease;
+             font-size: 15px;
+         }
+ 
+         .profile-btn:hover {
+             background-color: var(--gray-100);
+             color: var(--primary-color);
+         }
+ 
+         .profile-dropdown-content {
+             display: none;
+             position: absolute;
+             right: 0;
+             background-color: var(--white);
+             min-width: 220px;
+             box-shadow: var(--shadow-lg);
+             border-radius: var(--rounded-lg);
+             z-index: 100;
+             padding: 8px 0;
+             margin-top: 8px;
+             animation: fadeIn 0.2s ease-out;
+         }
+ 
+         @keyframes fadeIn {
+             from { opacity: 0; transform: translateY(-10px); }
+             to { opacity: 1; transform: translateY(0); }
+         }
+ 
+         .profile-dropdown-content a {
+             color: var(--text-primary);
+             padding: 10px 20px;
+             text-decoration: none;
+             display: flex;
+             align-items: center;
+             gap: 12px;
+             font-size: 14px;
+             transition: all 0.2s ease;
+         }
+ 
+         .profile-dropdown-content a:hover {
+             background-color: var(--primary-lightest);
+             color: var(--primary-color);
+         }
+ 
+         .profile-dropdown-content a i {
+             width: 20px;
+             text-align: center;
+             color: var(--text-secondary);
+         }
+ 
+         .profile-img {
+             width: 36px;
+             height: 36px;
+             border-radius: 50%;
+             object-fit: cover;
+             border: 2px solid var(--gray-200);
+             transition: border-color 0.2s ease;
+         }
+ 
+         .profile-btn:hover .profile-img {
+             border-color: var(--primary-light);
+         }
+ 
+ 
+ 
+         @media (max-width: 768px) {
+             .header-container {
+                 padding: 0 15px;
+             }
+             
+             .page-header h1 {
+                 font-size: 1.875rem;
+             }
+         }
+         @media (max-width: 576px) {
+     
+             .header-actions {
+                 gap: 10px;
+             }
+             
+             .profile-btn {
+                 padding: 8px 12px;
+                 font-size: 14px;
+             }
+ 
+             .logo .top-text {
+                 font-size: 20px;
+             }
+ 
+             .logo .bottom-text {
+                 font-size: 10px;
+             }
+ 
+             .logo-img {
+                 height: 40px;
+                 width: 40px;
+             }
+         }
+ </style>
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
-        <div class="header-container">
-            <div class="header-left">
-                <a href="#" class="logo">
-                    <img src="/Images/images.jpeg" alt="SIPS LOGO" height="60" width="60">
-                </a>
-                <nav class="nav-menu" id="navMenu">
-                    <div class="nav-item">
-                        <a href="#" class="nav-link">
-                            Jobs <i class="fas fa-chevron-down"></i>
-                        </a>
-                    </div>
-                </nav>
+   
+<header class="header">
+    <div class="header-container">
+        <a id="LogoBlock" class="logo">
+            <img src="/Images/images.jpeg" alt="SIPS LOGO" class="logo-img">
+            <div class="logo-text">
+                <span class="top-text">SiPS</span>
+                <span class="bottom-text">Talent Hunt</span>
             </div>
-            <div class="header-actions">
-                <!-- Sidebar Toggle Button for Small Screens -->
-                <button id="sidebarToggle" class="sidebar-toggle">☰</button>
-                <a id="Home" class="login-btn">Home</a>
+        </a>
+
+        <div class="header-actions">
+            <a  class="btn" id="NavHome"><i class="fas fa-home"></i> Home</a>
+            <a  class="btn" id="NavJobs"><i class="fas fa-briefcase"></i> Jobs</a>
+            <span class="divider"></span>
+            
+            <div class="profile-dropdown">
+                <button class="profile-btn">
+                    <img src="/Images/Dummy profile.png" alt="Profile" class="profile-img">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <div class="profile-dropdown-content">
+                   
+                    <a  id="NavEditProfile"><i class="fas fa-user"></i> Edit Profile</a>
+                    <a id="NavSavedJobs"><i class="fas fa-bookmark"></i> Saved Jobs</a>
+                    <a href="/"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+                </div>
             </div>
         </div>
-    </header>
-
+    </div>
+    <div class="header-actions">
+        <!-- Sidebar Toggle Button for Small Screens -->
+        <button id="sidebarToggle" class="sidebar-toggle">☰</button>
+      
+    </div>
+</header>
+  
     <div id="main" class=" w-100">
         <!-- Sidebar with Filters -->
         <div id="SideBar">
@@ -989,7 +1117,7 @@ text-decoration: none;
         document.addEventListener("DOMContentLoaded", async function () {
     // Extract Applicant Name from URL
     const ApplicantName = window.location.pathname.split('/').pop();
-    document.getElementById("Home").href = `/Home/${ApplicantName}`;
+    
 
     const searchForm = document.querySelector(".search-form");
     const jobTitleInput = document.querySelector(".search-input input[placeholder='Job Title, Keywords, or Company']");
@@ -1177,6 +1305,32 @@ else{
 
     </script>
 
- 
+<script>
+    const profileBtn = document.querySelector('.profile-btn');
+          const profileDropdown = document.querySelector('.profile-dropdown-content');
+          
+          profileBtn.addEventListener('click', function(e) {
+              e.stopPropagation();
+              profileDropdown.style.display = profileDropdown.style.display === 'block' ? 'none' : 'block';
+          });
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', function() {
+              profileDropdown.style.display = 'none';
+          });
+  
+</script>
+
+<script>
+  const ApplicantName =window.location.pathname.split('/').pop(); 
+      const NavHome=document.getElementById('NavHome');
+      const NavJobs=document.getElementById('NavJobs');
+      const NavEditProfile=document.getElementById('NavEditProfile');
+      const NavSavedJobs=document.getElementById('NavSavedJobs');
+      NavHome.href=`/Home/${ApplicantName}`;
+      NavJobs.href=`/DisplayJobsPage/${ApplicantName}`;
+      NavEditProfile.href=`/EditProfilePage/${ApplicantName}`;
+      NavSavedJobs.href=`/SavedJobsPage?ApplicantName=${ApplicantName}`;
+  </script>
 </body>
 </html>

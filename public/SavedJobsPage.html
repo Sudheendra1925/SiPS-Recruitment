@@ -87,7 +87,7 @@
             width: 50px;
             object-fit: contain;
             border-radius: 50%;
-            border: 2px solid var(--primary-light);
+          
         }
 
         .logo-text {
@@ -235,7 +235,7 @@
         /* Jobs Grid */
         .jobs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(3, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-top: 2rem;
         }
@@ -447,35 +447,38 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-container">
-            <a href="/" class="logo">
-                <img src="images/images.jpeg" alt="SIPS LOGO" class="logo-img">
-                <div class="logo-text">
-                    <span class="top-text">SiPS</span>
-                    <span class="bottom-text">Talent Hunt</span>
-                </div>
-            </a>
+   
+<header class="header">
+    <div class="header-container">
+        <a id="LogoBlock" class="logo">
+            <img src="/Images/images.jpeg" alt="SIPS LOGO" class="logo-img">
+            <div class="logo-text">
+                <span class="top-text">SiPS</span>
+                <span class="bottom-text">Talent Hunt</span>
+            </div>
+        </a>
 
-            <div class="header-actions">
-                <span class="divider"></span>
-                
-                <div class="profile-dropdown">
-                    <button class="profile-btn">
-                        <img src="images/default-profile.png" alt="Profile" class="profile-img">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="profile-dropdown-content">
-                        <a href="/"><i class="fas fa-home"></i> Home</a>
-                        <a href="/profile"><i class="fas fa-user"></i> My Profile</a>
-                        <a href="/saved-jobs"><i class="fas fa-bookmark"></i> Saved Jobs</a>
-                        <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="/logout"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
-                    </div>
+        <div class="header-actions">
+            <a  class="btn" id="NavHome"><i class="fas fa-home"></i> Home</a>
+            <a  class="btn" id="NavJobs"><i class="fas fa-briefcase"></i> Jobs</a>
+            <span class="divider"></span>
+            
+            <div class="profile-dropdown">
+                <button class="profile-btn">
+                    <img src="/Images/Dummy profile.png" alt="Profile" class="profile-img">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+
+                <div class="profile-dropdown-content">
+                   
+                    <a  id="NavEditProfile"><i class="fas fa-user"></i> Edit Profile</a>
+                    <a id="NavSavedJobs"><i class="fas fa-bookmark"></i> Saved Jobs</a>
+                    <a href="/"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
     <div class="main-container">
         <div class="page-header">
@@ -700,5 +703,34 @@
                 .replace(/'/g, "&#039;");
         }
     </script>
+    <script>
+        const profileBtn = document.querySelector('.profile-btn');
+              const profileDropdown = document.querySelector('.profile-dropdown-content');
+              
+              profileBtn.addEventListener('click', function(e) {
+                  e.stopPropagation();
+                  profileDropdown.style.display = profileDropdown.style.display === 'block' ? 'none' : 'block';
+              });
+              
+              // Close dropdown when clicking outside
+              document.addEventListener('click', function() {
+                  profileDropdown.style.display = 'none';
+              });
+      
+  </script>
+  <script>
+      const params=new URLSearchParams(window.location.search);
+      const ApplicantName=params.get('ApplicantName');
+      const NavHome=document.getElementById('NavHome');
+      const NavJobs=document.getElementById('NavJobs');
+      const NavEditProfile=document.getElementById('NavEditProfile');
+      const NavSavedJobs=document.getElementById('NavSavedJobs');
+      const LogoBlock=document.getElementById('LogoBlock');
+      LogoBlock.href=`/Home/${ApplicantName}`;
+      NavHome.href=`/Home/${ApplicantName}`;
+      NavJobs.href=`/DisplayJobsPage/${ApplicantName}`;s
+      NavEditProfile.href=`/EditProfilePage/${ApplicantName}`;
+      NavSavedJobs.href=`/SavedJobsPage?ApplicantName=${ApplicantName}`;
+  </script>
 </body>
 </html>

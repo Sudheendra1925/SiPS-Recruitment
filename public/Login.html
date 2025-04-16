@@ -4,53 +4,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SiPS Recuritment Login</title>
+  <title>SiPS Recruitment Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    *{
-      color:black;
-    }
     :root {
-      --primary-color: #1773d5;
-      --secondary-color: #eef3f8;
-      --accent-color: #3785eb;
-      --highlight-color: #f0a500;
-      --danger-color: #e63946;
-      --text-dark: #212529;
-      --text-light: #6c757d;
-      --shadow: rgba(0, 0, 0, 0.15);
-      --card-shadow: rgba(0, 0, 0, 0.25);
+      --primary-color: #2563eb;
+      --primary-light: #3b82f6;
+      --secondary-color: #f8fafc;
+      --accent-color: #1d4ed8;
+      --highlight-color: #f59e0b;
+      --danger-color: #ef4444;
+      --accent-color: #f97316;
+      --success-color: #10b981;
+      --text-dark: #1e293b;
+      --text-medium: #475569;
+      --text-light: #64748b;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --rounded-sm: 0.375rem;
+      --rounded-md: 0.5rem;
+      --rounded-lg: 0.75rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      /* background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); */
+      /* font-family: 'Poppins', sans-serif; */
+      background-color: #f1f5f9;
+      color: var(--text-dark);
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: 0;
     }
-nav {
-   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-  width:100%;
-  color:black;
 
-padding:20px;
+   
+    .header {
+            background-color: white;
+            box-shadow: var(--shadow-light);
+            height: 80px;
+            position: sticky;
+            top: 30;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: 50px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo .top-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .logo .bottom-text {
+            font-size: 12px;
+            color: var(--accent-color);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .login-btn, .register-btn {
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .register-btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .register-btn:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
+        }
+
+        .divider {
+            height: 20px;
+            width: 1px;
+            background-color: var(--gray-200);
+            margin: 0 10px;
+        }
+
+        .dropdown {
+    position: relative;
+    display: inline-block;
 }
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 10px;
+  
+    z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.dropdown-content a {
+    display: block;
+    padding: 8px;
+    text-decoration: none;
+    color: black;
+}
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
     .forms-section {
-      width: 90%;
-      margin: 10vh;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      background-color: white;
+      border-radius: var(--rounded-lg);
       padding: 2.5rem;
-      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s ease;
     }
 
     .section-title {
       text-align: center;
-      font-size: 2rem;
+      font-size: 1.75rem;
       color: var(--primary-color);
       margin-bottom: 2rem;
       font-weight: 600;
@@ -62,263 +207,379 @@ padding:20px;
 
     .form-wrapper.is-active {
       display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .input-block {
       margin-bottom: 1.5rem;
+      position: relative;
     }
 
     .input-block label {
       display: block;
       margin-bottom: 0.5rem;
       font-size: 0.9rem;
-      color: var(--text-light);
+      color: var(--text-medium);
+      font-weight: 500;
     }
 
     .input-block input {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid var(--text-light);
-      border-radius: 5px;
-      transition: border-color 0.3s;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--rounded-md);
+      font-size: 1rem;
+      transition: all 0.2s ease;
     }
 
     .input-block input:focus {
       border-color: var(--primary-color);
       outline: none;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .input-block input::placeholder {
+      color: var(--text-light);
+      opacity: 0.7;
     }
 
     .btn-eye {
       position: absolute;
-      right: 10px;
-      top: 70%;
-      transform: translateY(-50%);
+      right: 12px;
+      top: 38px;
       background: transparent;
       border: none;
       cursor: pointer;
-      font-size: 1.2em;
+      color: var(--text-light);
+      transition: color 0.2s;
     }
 
-    .btn-eye:focus {
-      outline: none;
+    .btn-eye:hover {
+      color: var(--primary-color);
     }
 
     .btn {
-      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
-      border: none;
+      width: 100%;
       padding: 0.75rem;
-      border-radius: 5px;
-      color: #fff;
+      border-radius: var(--rounded-md);
       font-weight: 600;
-      transition: background 0.3s;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
     }
 
-    .btn:hover {
-      background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-color);
+      transform: translateY(-1px);
+    }
+
+    .btn-success {
+      background-color: var(--success-color);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #0d9f6e;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary-color);
+      color: var(--primary-color);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: #e2e8f0;
     }
 
     .switcher-question {
       text-align: center;
-      font-size: 1rem;
-      margin-top: 1rem;
+      font-size: 0.95rem;
+      margin-top: 1.5rem;
+      color: var(--text-medium);
     }
 
     .switcher {
-      color: var(--accent-color);
+      color: var(--primary-color);
+      font-weight: 600;
       cursor: pointer;
-      
-      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
     }
 
     .switcher:hover {
-      color: var(--primary-color);
+      color: var(--accent-color);
+      text-decoration: underline;
     }
+
     .switcher-question-signup {
       display: flex;
       justify-content: space-between;
       align-items: center;
-        font-size: 16px;
-        color: #555;
-        margin-top: 20px;
+      font-size: 0.95rem;
+      color: var(--text-medium);
+      margin-top: 1.5rem;
     }
 
-    .admin-btn {
+    .error-message {
+      color: var(--danger-color);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
       display: block;
-      margin: 1rem auto 0;
+    }
+
+    .success-message {
+      color: var(--success-color);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    .otp-section {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .password-strength {
+      height: 4px;
+      background-color: var(--border-color);
+      border-radius: 2px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      transition: width 0.3s ease, background-color 0.3s ease;
+    }
+
+    .form-footer {
+      margin-top: 2rem;
       text-align: center;
-      font-size: 0.9rem;
-      color: var(--highlight-color);
-      border: 1px solid var(--highlight-color);
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.3s;
     }
 
-    .admin-btn:hover {
-      background-color: var(--highlight-color);
-      color: #fff;
+    @media (max-width: 768px) {
+      .forms-section {
+        padding: 1.5rem;
+      }
+      
+      .section-title {
+        font-size: 1.5rem;
+      }
+      
+      nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      
+      .page-title {
+        font-size: 1.25rem;
+      }
     }
 
-  
-
-    .navbar {
-      background-color: var(--primary-color);
+    /* Loading spinner */
+    .spinner {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      display: inline-block;
     }
 
-    .navbar-brand,
-    .nav-link {
-      color: white !important;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
-
-    .forms-section {
-      width: 90%;
-      margin: 10vh;
-      background-color: rgba(255, 255, 255, 0.9);
-      border-radius: 15px;
-      padding: 2.5rem;
-      box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-      backdrop-filter: blur(10px);
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 2rem;
-      color: var(--primary-color);
-      margin-bottom: 2rem;
-      font-weight: 600;
-    }
- 
   </style>
-
-
 </head>
 
 <body>
-  <nav  style="padding: 20px;background-color: #fff;display: flex;align-items: center;">
-  <div> <img src="./Images/images.jpeg" height="50px" width="50px" style="border-radius: 10%;margin-right: 20px;">
-      <a href="/" style="text-decoration: none;color:white;font-size:30px;margin: 0;">Home</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button></div>
-      <h1 style="margin-left:15vw;">  <center>Find Your Dream Job With SiPS</center> </h1>
+  <header class="header">
+    <div class="header-container">
+        <a href="/" class="logo">
+            <img src="images/images.jpeg" alt="SIPS LOGO" class="logo-img">
+            <div class="logo-text">
+                <span class="top-text">SiPS</span>
+                <span class="bottom-text">Talent Hunt</span>
+            </div>
+        </a>
 
-      <!-- <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li  >
-            <a style="color:white;text-decoration: none;"  href="/">HOME</a>
-          </li>
-     
-           <li class="nav-item">
-            <a class="nav-link" href="/AdminLogin">Admin Login</a>   class="nav-link"  class="nav-item"
-          </li>
-        </ul>
-      </div>
-   -->
-  </nav>
-  <div>
-   
+        <div class="header-actions">
+            <!-- <a href="/Login?Type=Login" class="login-btn">Login</a>
+            <a href="/Login?Type=SignUp" class="register-btn">Register</a> -->
+            <a href="/" class="login-btn">Show Jobs</a>
+            <span class="divider"></span>
+            <div class="dropdown">
+                <button class="btn-outline" style="border:none;">
+                    For Employers <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#"><i class="fas fa-briefcase"></i> Job Posting</a>
+                    <a href="#"><i class="fas fa-search"></i> Resume Search</a>
+                    <a href="#"><i class="fas fa-bullhorn"></i> Employer Branding</a>
+                    <a href="/AdminLogin"><i class="fas fa-sign-in-alt"></i> SiPS Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+  <div class="main-container">
     <section class="forms-section">
       <div class="form-wrapper is-active" id="login-form">
         <form id="login-form" onsubmit="confirmLogin()">
-          <h1 class="section-title">SiPS Recruitment Applicant Login</h1>
+          <h1 class="section-title">Applicant Login</h1>
+          
           <div class="input-block">
-            <label for="login-Email">Email Id</label>
-            <input id="login-Email" type="text" class="form-control" placeholder="Enter your Email Id" required>
+            <label for="login-Email">Email Address</label>
+            <input id="login-Email" type="email" class="form-control" placeholder="Enter your email" required>
           </div>
-          <div class="input-block position-relative">
+          
+          <div class="input-block">
             <label for="login-password">Password</label>
             <input id="login-password" type="password" class="form-control" placeholder="Enter your password" required>
-            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('login-password')">👁</button>
+            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('login-password')">
+              <i class="far fa-eye"></i>
+            </button>
           </div>
-          <button type="submit" class="btn btn-success w-100">Login</button>
+          
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">
+              <span id="login-btn-text">Login</span>
+              <span id="login-spinner" class="spinner" style="display: none;"></span>
+            </button>
+          </div>
         </form>
-        <!-- <div class="switcher-question">
-          Already a client? <span class="switcher" onclick="showForm('signup')">Sign Up</span>
-          <span><a>Forget Password</a></span>
-        </div> -->
-        <div class="switcher-question-signup">
-        <div>  New Applicant? 
-          <span class="switcher"  style="text-decoration: none;"><a href="/Login?Type=SignUp" style="text-decoration: none;">Sign Up</a></span></div> 
-          <span class="switcher" ><a href="/ForgetPasswordPage?Type=Client" style="text-decoration: none;color:#e63946">Forgot Password?</a></span>
-      </div>
+        
+        <div class="form-footer">
+          <div class="switcher-question-signup">
+            <div>New Applicant? <a href="/Login?Type=SignUp" class="switcher">Sign Up</a></div>
+            <a href="/ForgetPasswordPage?Type=Client" class="switcher" style="color: var(--danger-color);">Forgot Password?</a>
+          </div>
+        </div>
       </div>
 
       <div class="form-wrapper" id="signup-form">
         <form id="signup-form" onsubmit="confirmSignUp()">
-          <h1 class="section-title">SiPS Recruitment signup</h1>
+          <h1 class="section-title">Create Account</h1>
+          
           <div class="input-block">
-            <label for="signup-ApplicantName">Applicant Name*</label>
-            <input id="signup-ApplicantName" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
-            <p id="NameError" style="color:#e63946;font-size:2vh;padding-top: 0.5vh;"></p>
+            <label for="signup-ApplicantName">Full Name</label>
+            <input id="signup-ApplicantName" type="text" class="form-control" placeholder="Enter your full name" required>
+            <span id="NameError" class="error-message"></span>
           </div>
+          
           <div class="input-block">
-            <label for="signup-phoneNumber">Phone Number*</label>
-            <input id="signup-phoneNumber" type="tel" class="form-control" minlength="10" maxlength="10" placeholder="Enter your Phone Number" required>
+            <label for="signup-phoneNumber">Phone Number</label>
+            <input id="signup-phoneNumber" type="tel" class="form-control" minlength="10" maxlength="10" 
+                   placeholder="Enter your 10-digit phone number" required>
           </div>
+          
           <div class="input-block">
-            <label for="signup-Email">Email*</label>
+            <label for="signup-Email">Email Address</label>
             <input id="signup-Email" type="email" class="form-control" placeholder="Enter your email" required>
-            <p id="EmailError" style="color:#e63946; font-size:2vh; padding-top: 0.5vh;"></p>
-        
-            <button id="send-otp-btn" type="button" class="btn btn-primary mt-2" onclick="sendOtp()">Send OTP</button>
-            <p id="email-otp-status" style="color:#e63946; font-size:2vh; padding-top: 0.5vh;"></p>
-        </div>
-        
-        <div class="input-block" id="otp-section" style="display: none;">
-            <label for="signup-email-otp">Enter OTP</label>
-            <input id="signup-email-otp" type="text" class="form-control" placeholder="Enter OTP" required oninput="enableVerifyButton()">
-            <button id="verify-otp-btn" type="button" class="btn btn-success mt-2" onclick="verifyOtp()" disabled>Verify OTP</button>
-            <p id="otp-status" style="color:#e63946; font-size:2vh; padding-top: 0.5vh;"></p>
-        </div>
+            <span id="EmailError" class="error-message"></span>
+            
+            <button id="send-otp-btn" type="button" class="btn btn-secondary mt-2" onclick="sendOtp()">
+              <span id="otp-btn-text">Send Verification Code</span>
+              <span id="otp-spinner" class="spinner" style="display: none;"></span>
+            </button>
+            <span id="email-otp-status" class="success-message"></span>
+          </div>
+          
+          <div class="otp-section" id="otp-section" style="display: none;">
+            <div class="input-block">
+              <label for="signup-email-otp">Verification Code</label>
+              <input id="signup-email-otp" type="text" class="form-control" placeholder="Enter 6-digit code" required 
+                     oninput="enableVerifyButton()">
+              <button id="verify-otp-btn" type="button" class="btn btn-success mt-2" onclick="verifyOtp()" disabled>
+                <span id="verify-btn-text">Verify Code</span>
+                <span id="verify-spinner" class="spinner" style="display: none;"></span>
+              </button>
+              <span id="otp-status" class="error-message"></span>
+            </div>
+          </div>
+          
           <div class="input-block">
-            <label for="Address">Address*</label>
-            <input id="Address" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
+            <label for="Address">Address</label>
+            <input id="Address" type="text" class="form-control" placeholder="Enter your full address" required>
           </div>
+          
           <div class="input-block">
-            <label for="Aadhaar">Aadhaar*</label>
-            <input id="Aadhaar" type="text" class="form-control" placeholder="Enter your Applicant Name" required>
+            <label for="Aadhaar">Aadhaar Number</label>
+            <input id="Aadhaar" type="text" class="form-control" placeholder="Enter 12-digit Aadhaar" required>
           </div>
-          <div class="input-block position-relative">
-            <label for="signup-password">Password*</label>
-            <input id="signup-password" type="password" class="form-control" placeholder="Enter your password" required>
-            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-password')">👁</button>
+          
+          <div class="input-block">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" type="password" class="form-control" placeholder="Create a password" required
+                   oninput="checkPasswordStrength()">
+            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-password')">
+              <i class="far fa-eye"></i>
+            </button>
+            <div class="password-strength">
+              <div class="password-strength-bar" id="password-strength-bar"></div>
+            </div>
           </div>
-          <div class="input-block position-relative">
-            <label for="signup-Confirmpassword">Confirm Password*</label>
-            <input id="signup-Confirmpassword" type="password" class="form-control" placeholder="Enter your password" required>
-            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-Confirmpassword')">👁</button>
+          
+          <div class="input-block">
+            <label for="signup-Confirmpassword">Confirm Password</label>
+            <input id="signup-Confirmpassword" type="password" class="form-control" placeholder="Confirm your password" required>
+            <button type="button" class="btn-eye" onclick="togglePasswordVisibility('signup-Confirmpassword')">
+              <i class="far fa-eye"></i>
+            </button>
+            <span id="password-match-error" class="error-message"></span>
           </div>
-          <button type="submit" id="signupbutton" class="btn btn-success w-100" disabled>Sign Up</button>
+          
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" id="signupbutton" class="btn btn-primary" disabled>
+              <span id="signup-btn-text">Create Account</span>
+              <span id="signup-spinner" class="spinner" style="display: none;"></span>
+            </button>
+          </div>
         </form>
-        <div class="switcher-question">
-          Already a client? <span class="switcher"  ><a href="/Login?Type=Login" style="text-decoration: none;">Login</a></span>
-        </div>
         
+        <div class="form-footer">
+          <div class="switcher-question">
+            Already have an account? <a href="/Login?Type=Login" class="switcher">Sign In</a>
+          </div>
+        </div>
       </div>
-
-      <!-- <a class="admin-btn" href="/AdminLogin"><img src="./Images/administrator.png" height="30px" width="30px"> Admin Login</a> -->
     </section>
   </div>
 
-
   <script>
-
-    const Params=new URLSearchParams(window.location.search);
-    const Type=Params.get('Type');
-    if(Type=="Login"){
-      document.getElementById('login-form').style.display="block";
-      document.getElementById('signup-form').style.display="none";
+    const Params = new URLSearchParams(window.location.search);
+    const Type = Params.get('Type');
+    if (Type == "Login") {
+      document.getElementById('login-form').style.display = "block";
+      document.getElementById('signup-form').style.display = "none";
     }
-    else if(Type=="SignUp"){
-      document.getElementById('login-form').style.display="none";
-      document.getElementById('signup-form').style.display="block";
+    else if (Type == "SignUp") {
+      document.getElementById('login-form').style.display = "none";
+      document.getElementById('signup-form').style.display = "block";
     }
-    
-    </script>
-
-
+  </script>
 
   <script>
     function showForm(form) {
@@ -328,173 +589,218 @@ padding:20px;
 
     function togglePasswordVisibility(inputId) {
       const inputField = document.getElementById(inputId);
-      inputField.type = inputField.type === "password" ? "text" : "password";
+      const eyeIcon = inputField.nextElementSibling.querySelector('i');
+      
+      if (inputField.type === "password") {
+        inputField.type = "text";
+        eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        inputField.type = "password";
+        eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+    
+    function checkPasswordStrength() {
+      const password = document.getElementById('signup-password').value;
+      const strengthBar = document.getElementById('password-strength-bar');
+      let strength = 0;
+      
+      if (password.length > 0) strength += 20;
+      if (password.length >= 8) strength += 20;
+      if (/[A-Z]/.test(password)) strength += 20;
+      if (/[0-9]/.test(password)) strength += 20;
+      if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+      
+      strengthBar.style.width = strength + '%';
+      
+      if (strength < 40) {
+        strengthBar.style.backgroundColor =`var(--danger-color)`;
+      } else if (strength < 80) {
+        strengthBar.style.backgroundColor = `var(--highlight-color)`;
+      } else {
+        strengthBar.style.backgroundColor = `var(--success-color)`;
+      }
     }
   </script>
 
-<script>
-  function confirmSignUp() {
-    event.preventDefault();
-    const password = document.getElementById('signup-password').value;
-    const confirmPassword = document.getElementById('signup-Confirmpassword').value;
-
-    if (password !== confirmPassword) {
-      alert('Passwords do not match. Please try again.');
-      return;
+  <script>
+    function confirmSignUp() {
+      event.preventDefault();
+      const password = document.getElementById('signup-password').value;
+      const confirmPassword = document.getElementById('signup-Confirmpassword').value;
+      
+      if (password !== confirmPassword) {
+        document.getElementById('password-match-error').textContent = 'Passwords do not match';
+        return;
+      }
+      
+      // Show loading spinner
+      document.getElementById('signup-btn-text').style.display = 'none';
+      document.getElementById('signup-spinner').style.display = 'inline-block';
+      
+      window.location.href = `/UserSignup?ApplicantName=${document.getElementById('signup-ApplicantName').value}&PhoneNumber=${document.getElementById('signup-phoneNumber').value}&Password=${password}&Address=${document.getElementById('Address').value}&AadharCard=${document.getElementById('Aadhaar').value}&Email=${document.getElementById('signup-Email').value}`;
     }
-  
-window.location.href = `/UserSignup?ApplicantName=${document.getElementById('signup-ApplicantName').value}&PhoneNumber=${document.getElementById('signup-phoneNumber').value}&Password=${password}&Address=${document.getElementById('Address').value}&AadharCard=${document.getElementById('Aadhaar').value}&Email=${document.getElementById('signup-Email').value}`;
-  
-  }
-  function confirmLogin() {
-    event.preventDefault();
-    window.location.href = `/check?Email=${document.getElementById('login-Email').value}&Password=${document.getElementById('login-password').value}`;
-  }
-  document.getElementById('signup-phoneNumber').addEventListener('input', function (e) {
-  let value = e.target.value;
-  if (!/^\d*$/.test(value)) {
-      value = value.replace(/\D/g, ''); // Remove non-numeric characters
-  }
-  if (value.length > 10) {
-      value = value.slice(0, 10); // Limit to 10 digits
-  }
-
-  e.target.value = value; // Update the input field
-});
-document.getElementById('Aadhaar').addEventListener('input', function (e) {
-  let value = e.target.value;
-  if (!/^\d*$/.test(value)) {
-      value = value.replace(/\D/g, ''); // Remove non-numeric characters
-  }
-  if (value.length > 12) {
-      value = value.slice(0, 12); // Limit to 10 digits
-  }
-
-  e.target.value = value; // Update the input field
-});
-</script>
-
-
-<script>
-  let allApplicants = [];
-
-  async function fetchAllApplicants() {
-    try {
-      const response = await fetch('/AllApplicantsData');
-      allApplicants = await response.json();
-    } catch (error) {
-      console.error('Error fetching applicants:', error);
+    
+    function confirmLogin() {
+      event.preventDefault();
+      
+      // Show loading spinner
+      document.getElementById('login-btn-text').style.display = 'none';
+      document.getElementById('login-spinner').style.display = 'inline-block';
+      
+      window.location.href = `/check?Email=${document.getElementById('login-Email').value}&Password=${document.getElementById('login-password').value}`;
     }
-  }
+    
+    document.getElementById('signup-phoneNumber').addEventListener('input', function (e) {
+      let value = e.target.value;
+      if (!/^\d*$/.test(value)) {
+        value = value.replace(/\D/g, '');
+      }
+      if (value.length > 10) {
+        value = value.slice(0, 10);
+      }
+      e.target.value = value;
+    });
+    
+    document.getElementById('Aadhaar').addEventListener('input', function (e) {
+      let value = e.target.value;
+      if (!/^\d*$/.test(value)) {
+        value = value.replace(/\D/g, '');
+      }
+      if (value.length > 12) {
+        value = value.slice(0, 12);
+      }
+      e.target.value = value;
+    });
+  </script>
 
-  async function checkIfExists(fieldId, fieldName, errorMessageId) {
-    const inputElement = document.getElementById(fieldId);
-    const inputValue = inputElement.value.trim().toLowerCase();
-
-    if (inputValue) {
+  <script>
+    let allApplicants = [];
+    let Otp = 0;
+    
+    async function fetchAllApplicants() {
+      try {
+        const response = await fetch('/AllApplicantsData');
+        allApplicants = await response.json();
+      } catch (error) {
+        console.error('Error fetching applicants:', error);
+      }
+    }
+    
+    async function checkIfExists(fieldId, fieldName, errorMessageId) {
+      const inputElement = document.getElementById(fieldId);
+      const inputValue = inputElement.value.trim().toLowerCase();
+      
+      if (inputValue) {
         const exists = allApplicants.some(applicant => 
-            applicant[fieldName].toLowerCase() === inputValue
+          applicant[fieldName].toLowerCase() === inputValue
         );
-
+        
         if (exists) {
-            document.getElementById(errorMessageId).innerHTML = `${fieldName} already exists. Please choose a different ${fieldName}.`;
-            inputElement.setCustomValidity(`${fieldName} already exists.`);
+          document.getElementById(errorMessageId).textContent = `${fieldName} already exists. Please use a different ${fieldName}.`;
+          inputElement.setCustomValidity(`${fieldName} already exists.`);
         } else {
-            inputElement.setCustomValidity('');
-            document.getElementById(errorMessageId).innerHTML = '';
+          inputElement.setCustomValidity('');
+          document.getElementById(errorMessageId).textContent = '';
         }
+      }
     }
-}
-
-// For Applicant Name validation
-document.getElementById('signup-ApplicantName').addEventListener('input', () => {
-    checkIfExists('signup-ApplicantName', 'ApplicantName', 'NameError');
-});
-
-// For Email validation
-document.getElementById('signup-Email').addEventListener('input', () => {
-    checkIfExists('signup-Email', 'Email', 'EmailError');
-});
-
-  window.onload = fetchAllApplicants;
-</script>
-
-<script>
-  let Otp = 0;
-  
-  async function sendOtp() {
+    
+    document.getElementById('signup-ApplicantName').addEventListener('input', () => {
+      checkIfExists('signup-ApplicantName', 'ApplicantName', 'NameError');
+    });
+    
+    document.getElementById('signup-Email').addEventListener('input', () => {
+      checkIfExists('signup-Email', 'Email', 'EmailError');
+    });
+    
+    async function sendOtp() {
       const emailInput = document.getElementById('signup-Email');
       const email = emailInput.value.trim();
       const sendOtpBtn = document.getElementById('send-otp-btn');
-
-
+      
       if (!validateEmail(email)) {
-          document.getElementById('EmailError').innerText = 'Please enter a valid email.';
-          return;
+        document.getElementById('EmailError').textContent = 'Please enter a valid email address.';
+        return;
       }
-  
-      document.getElementById('EmailError').innerText = '';
-      sendOtpBtn.disabled = true; // Disable button to prevent multiple clicks
-      sendOtpBtn.innerText = "Sending...";
-  
+      
+      document.getElementById('EmailError').textContent = '';
+      
+      // Show loading spinner
+      document.getElementById('otp-btn-text').style.display = 'none';
+      document.getElementById('otp-spinner').style.display = 'inline-block';
+      sendOtpBtn.disabled = true;
+      
       Otp = Math.floor(100000 + Math.random() * 900000);
-  
+      
       try {
-          const response = await fetch(`/sendOtp?Email=${email}&Otp='Your Otp for email verification is ${Otp}'`, {
-              method: 'POST',
-              headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email })
-          });
-  
-          if (response.ok) {
-              document.getElementById('email-otp-status').innerHTML = '<p style="color:green">OTP sent to your email.</p>';
-              document.getElementById('otp-section').style.display = 'block';
-              document.getElementById('signup-email-otp').focus(); // Auto-focus OTP input
-          } else {
-            console.log(response)
-              document.getElementById('email-otp-status').innerText = 'Failed to send OTP. Please try again.';
-          }
+        const response = await fetch(`/sendOtp?Email=${email}&Otp='Your verification code is ${Otp}'`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email })
+        });
+        
+        if (response.ok) {
+          document.getElementById('email-otp-status').textContent = 'Verification code sent to your email.';
+          document.getElementById('email-otp-status').style.color = 'var(--success-color)';
+          document.getElementById('otp-section').style.display = 'block';
+          document.getElementById('signup-email-otp').focus();
+        } else {
+          document.getElementById('email-otp-status').textContent = 'Failed to send code. Please try again.';
+          document.getElementById('email-otp-status').style.color = 'var(--danger-color)';
+        }
       } catch (error) {
-          console.error(error);
-          document.getElementById('email-otp-status').innerText = 'Error sending OTP.';
+        console.error(error);
+        document.getElementById('email-otp-status').textContent = 'Error sending verification code.';
+        document.getElementById('email-otp-status').style.color = 'var(--danger-color)';
       }
-  
-      setTimeout(() => {
-          sendOtpBtn.disabled = false;
-          sendOtpBtn.innerText = "Send OTP";
-      }, 3000); // Re-enable button after 30 seconds
-  }
-  
-  function verifyOtp() {
+      
+      // Hide loading spinner
+      document.getElementById('otp-btn-text').style.display = 'inline';
+      document.getElementById('otp-spinner').style.display = 'none';
+      sendOtpBtn.disabled = false;
+    }
+    
+    function verifyOtp() {
       const enteredOtp = document.getElementById('signup-email-otp').value.trim();
       const verifyOtpBtn = document.getElementById('verify-otp-btn');
-  
-      if (enteredOtp === Otp.toString()) {
-          verifyOtpBtn.disabled = true;
-          document.getElementById('otp-status').innerText = 'Email verified successfully!';
-          document.getElementById('otp-status').style.color = 'green';
+      
+      // Show loading spinner
+      document.getElementById('verify-btn-text').style.display = 'none';
+      document.getElementById('verify-spinner').style.display = 'inline-block';
+      verifyOtpBtn.disabled = true;
+      
+      // Simulate network delay
+      setTimeout(() => {
+        if (enteredOtp === Otp.toString()) {
+          document.getElementById('otp-status').textContent = 'Email verified successfully!';
+          document.getElementById('otp-status').style.color = 'var(--success-color)';
           document.getElementById('signupbutton').disabled = false;
-      } else {
-          document.getElementById('otp-status').innerText = 'Invalid OTP. Please try again.';
-          document.getElementById('otp-status').style.color = 'red';
-      }
-  }
-  
-  function enableVerifyButton() {
+        } else {
+          document.getElementById('otp-status').textContent = 'Invalid code. Please try again.';
+          document.getElementById('otp-status').style.color = 'var(--danger-color)';
+          verifyOtpBtn.disabled = false;
+        }
+        
+        // Hide loading spinner
+        document.getElementById('verify-btn-text').style.display = 'inline';
+        document.getElementById('verify-spinner').style.display = 'none';
+      }, 1000);
+    }
+    
+    function enableVerifyButton() {
       const otpInput = document.getElementById('signup-email-otp').value.trim();
       document.getElementById('verify-otp-btn').disabled = otpInput.length !== 6;
-  }
-  
-  function validateEmail(email) {
+    }
+    
+    function validateEmail(email) {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       return emailRegex.test(email);
-  }
+    }
+    
+    window.onload = fetchAllApplicants;
   </script>
-
-
-
 </body>
-
 </html>

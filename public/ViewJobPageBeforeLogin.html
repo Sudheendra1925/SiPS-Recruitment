@@ -600,6 +600,7 @@
             document.getElementById('job-description').textContent = job.Description || 'No description available';
             
             // Company logo
+            document.getElementById('apply-btn').href =`/LoginToJobPage?JobTitle=${job.JobTitle}&Company=${job.Company}&Salary=${job.Salary}`;
           
             document.getElementById('company-logo').src = job.CompanyLogo?job.CompanyLogo :'./Images/images.jpeg'; 
 
@@ -685,9 +686,6 @@
             }
 
             // Set up apply button
-            if (job.ApplicationLink) {
-                document.getElementById('apply-btn').href = job.ApplicationLink;
-            }
         }
 
         function createMetaItem(icon, text) {

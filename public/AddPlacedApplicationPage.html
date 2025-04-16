@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Placed Application</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></script>
+    
+    <!-- Font Awesome (Fixed) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -26,24 +31,22 @@
             margin-bottom: 15px;
         }
 
-    
         input[type="number"]::-webkit-outer-spin-button,
         input[type="number"]::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         /* For Firefox */
         input[type="number"] {
-          -moz-appearance: textfield;
+            -moz-appearance: textfield;
         }
+
         select.form-control {
-    appearance: auto;
-    -webkit-appearance: auto;
-    -moz-appearance: auto;
-}
-
-
+            appearance: auto;
+            -webkit-appearance: auto;
+            -moz-appearance: auto;
+        }
     </style>
 </head>
 <body>
@@ -61,24 +64,27 @@
                 <label for="ApplicantName" class="form-label">Applicant Name</label>
                 <input type="text" class="form-control" name="ApplicantName" id="ApplicantName" required>
             </div>
-
+            <div class="mb-3">
+                <label for="PlacedDate" class="form-label">Placed Date</label>
+                <input type="date" class="form-control" name="PlacedDate" id="PlacedDate" required>
+            </div>
             <div class="mb-3">
                 <label for="Company" class="form-label">Company</label>
-                <input type="text" class="form-control" id="Company" name="Company"  required>
+                <input type="text" class="form-control" id="Company" name="Company" required>
             </div>
 
             <div class="mb-3">
                 <label for="Salary" class="form-label">Salary</label>
-                <input type="number" class="form-control" id="Salary" name="Salary"  required>
+                <input type="number" class="form-control" id="Salary" name="Salary" required>
             </div>
 
             <div class="mb-3">
                 <label for="PaymentReceived" class="form-label">Payment Received</label>
-                <input type="number" class="form-control" id="PaymentReceived" name="PaymentReceived"  required>
+                <input type="number" class="form-control" id="PaymentReceived" name="PaymentReceived" required>
             </div>
 
             <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
+                <label for="Status" class="form-label">Status</label>
                 <select class="form-control" id="Status" name="Status" required>
                     <option value="Not Received">Not Received</option>
                     <option value="Completely Received">Completely Received</option>
@@ -87,17 +93,13 @@
             </div>
 
             <button type="submit" class="btn btn-primary btn-submit">Add Application</button>
-            <a href="/RevenueAndReports" class="btn btn-danger ">Cancel</a>
+            <a href="/RevenueAndReports" class="btn btn-danger">Cancel</a>
         </form>
-
- 
     </div>
-
-  
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
+    
 </body>
 </html>

@@ -10,7 +10,7 @@
     <style>
    /* General Styles */
    body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #f4f4f9;
     margin: 0;
     padding: 0;
@@ -167,8 +167,6 @@ tr:hover {
         white-space: nowrap;
     }
 }
-
-
     </style>
 </head>
 <body>
@@ -197,7 +195,7 @@ tr:hover {
         <!-- Filter and Search Section -->
         <div class="filter-container">
             <!-- Search by Applicant Name -->
-            <input type="text" id="searchBar"  placeholder="Search by Applicant Name or Company" onkeyup="filterData()">
+            <input type="text" id="searchBar"  placeholder="Search by Name or Company or Date or Payment Received " onkeyup="filterData()" style="font-size:small;">
             <select id="statusFilter" onchange="filterData()">
                 <option value="">Filter by Status</option>
                 <option value="Not Received">Not Received</option>
@@ -213,13 +211,14 @@ tr:hover {
         <table id="applicationsTable">
             <thead>
                 <tr>
-                    <th>ApplicationId</th>
-                    <th>ApplicantName</th>
+                    <th>Application Id</th>
+                    <th>Placed Date</th>
+                    <th>Applicant Name</th>
                     <th>Company</th>
                     <th>Salary</th>
-                    <th>PaymentReceived</th>
+                    <th>Payment Received</th>
                     <th>Status</th>
-                   
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -241,6 +240,23 @@ tr:hover {
             })
             .catch(error => console.error('Error fetching data:', error));
 
+        // Function to format date in Indian format (dd/mm/yyyy)
+        function formatIndianDate(dateString) {
+            if (!dateString) return '-';
+            
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('en-IN', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+            } catch (e) {
+                console.error('Error formatting date:', e);
+                return dateString; // Return original string if formatting fails
+            }
+        }
+
         // Function to populate the table with data
         function populateTable(data) {
             const tableBody = document.getElementById('applicationsTable').getElementsByTagName('tbody')[0];
@@ -250,10 +266,20 @@ tr:hover {
             data.forEach(application => {
                 let row = tableBody.insertRow();
                 
-                // Add cells to the row
-                Object.keys(application).forEach(key => {
+                // Add cells in specific order matching the table headers
+                let cells = [
+                    application.ApplicationId || '-',
+                    formatIndianDate(application.PlacedDate),
+                    application.ApplicantName || '-',
+                    application.Company || '-',
+                    application.Salary ? '₹' + application.Salary.toLocaleString('en-IN') : '-',
+                    application.PaymentReceived ? '₹' + application.PaymentReceived.toLocaleString('en-IN') : '-',
+                    application.Status || '-'
+                ];
+
+                cells.forEach(cellData => {
                     let cell = row.insertCell();
-                    cell.innerText = application[key];  // Populate the cell with the value from the API
+                    cell.innerText = cellData;
                 });
 
                 // Add the edit button to the last column
@@ -266,9 +292,8 @@ tr:hover {
             });
         }
 
-
         function redirectToEditPage(applicationId) {
-            window.location.href = `/EditPlacedApplicationPage?ApplicationId=${applicationId}`;  // Replace with the actual URL of your EditPlacedApplication page
+            window.location.href = `/EditPlacedApplicationPage?ApplicationId=${applicationId}`;
         }
 
         // Function to filter data based on status and search query
@@ -280,13 +305,20 @@ tr:hover {
 
             // Filter by Status
             if (status) {
-                filteredData = filteredData.filter(application => application.Status.toLowerCase() === status.toLowerCase());
+                filteredData = filteredData.filter(application => 
+                    application.Status && application.Status.toLowerCase() === status.toLowerCase()
+                );
             }
 
             // Filter by Applicant Name or Company
             if (searchQuery) {
-                filteredData = filteredData.filter(application => application.ApplicantName.toLowerCase().includes(searchQuery) ||
-                    application.Company.toLowerCase().includes(searchQuery));
+                filteredData = filteredData.filter(application => 
+                    (application.ApplicantName && application.ApplicantName.toLowerCase().includes(searchQuery)) ||
+                    (application.PaymentReceived && application.PaymentReceived.toLowerCase().includes(searchQuery)) ||
+                    (formatIndianDate(application.PlacedDate) && formatIndianDate(application.PlacedDate).toLowerCase().includes(searchQuery)) ||
+                    (application.Company && application.Company.toLowerCase().includes(searchQuery))
+
+                );
             }
 
             // Re-populate the table with filtered data
@@ -297,6 +329,5 @@ tr:hover {
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
 </body>
 </html>
